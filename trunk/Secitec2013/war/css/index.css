@@ -1,0 +1,138 @@
+#main {
+	/* 	border: solid black 1px; */
+	width: 100%;
+	height: auto;
+	/* 	margin-left: 8%; */ /* 	margin-right: 8%; */
+	/* 	background-color: green; */ /* 	background-color: white; */
+	margin-left: auto;
+	margin-right: auto;
+	/*     min-height: 100%; */
+}
+
+#menu {
+	width: 100%;
+	height: auto;
+}
+
+#menuHorizontal {	
+	width: auto;
+	margin-left: 10%;
+	height: auto;
+	margin-right: 10%;
+	float: left;
+}
+
+#menuDir {
+	width: auto;
+	margin-left: 10%;
+	height: auto;
+	margin-right: 10%;
+	float: right;
+}
+
+.aMenuDir{
+	color: black;
+	display: block;
+	text-decoration: none;
+	padding: 10px 0px 10px 0px;
+}
+
+.nomeUsuario{
+	font: bold;
+	font-size: 14px;
+	color: black;
+	display: block;
+	text-decoration: none;
+	padding: 10px 40px 10px 5px;
+}
+
+.aMenuDir a:HOVER{
+	text-decoration: none;
+}
+
+.aMenuHorizontal {
+	color: black;
+	display: block;
+	text-decoration: none;
+	padding: 10px 40px 10px 0px;
+}
+
+.aMenuHorizontal a:HOVER {
+	text-decoration: none;
+}
+
+#aMenuHorizontalLogin {
+	color: black;
+	display: block;
+	text-decoration: none;
+	padding: 10px 40px 10px 0px;
+}
+
+#aMenuHorizontalLogin a:HOVER {
+	text-decoration: none;
+}
+
+#banner {
+	width: auto;
+	margin-left: 10%;
+	height: 300px;
+	margin-right: 10%;
+	background-image: url("/images/head.png");
+}
+
+#corpo {
+	/* 	border: solid green 1px; */
+	width: auto;
+	margin-left: 10%;
+	/*depois mudar o height para auto*/
+	min-height: auto;
+	margin-right: 10%;
+}
+
+#corpoEsq {
+	border: solid red 1px;
+	width: 72%;
+	margin-left: 0%;
+	margin-right: 1%;
+	margin-bottom: 2%;
+	margin-top: 2%;
+	/*depois mudar o height para auto*/
+	height: auto;
+	float: left;
+}
+
+#corpoDir {
+	border: solid pink 1px;
+	width: 25%;
+	margin-right: 0%;
+	margin-left: 1%;
+	margin-bottom: 2%;
+	margin-top: 2%;
+	/*depois mudar o height para auto*/
+	height: auto;
+	float: right;
+}
+
+.vPanelApresentacao {
+	border: solid blue 3px;
+	width: 100%;
+	margin-left: 2%;
+	margin-right: 1%;
+	margin-bottom: 2%;
+	margin-top: 2%;
+	/*depois mudar o height para auto*/
+	height: 600px;
+	/*float: left;*/
+}
+
+/* PageContent */
+.vpMainPageContent {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.lbTitle {
+	color: black;
+	font-size: 18px;
+	padding-bottom: 15px
+}
