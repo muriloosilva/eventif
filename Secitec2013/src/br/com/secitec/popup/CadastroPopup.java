@@ -270,7 +270,7 @@ public class CadastroPopup {
 	public void setCpf(final TextBoxBase cpfText) {
 		cpfText.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
-				if (verificaTecla(event)) {
+				/*if (verificaTecla(event)) {
 					if (cpfText.getValue().length() == 3
 							|| cpfText.getValue().length() == 7) {
 						cpfText.setValue(cpfText.getValue() + ".");
@@ -281,7 +281,7 @@ public class CadastroPopup {
 				}
 				else {
 					cpfText.cancelKey();
-				}
+				}*/
 			}
 		});
 	}

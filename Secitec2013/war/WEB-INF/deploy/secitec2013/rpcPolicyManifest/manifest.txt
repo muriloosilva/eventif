@@ -1,2 +1,3 @@
 # Module secitec2013
 # RPC service class, partial path of RPC policy file
+br.com.secitec.client.RPCService, 8B98966089D8B0A4A9D96651EC951FD5.gwt.rpc
