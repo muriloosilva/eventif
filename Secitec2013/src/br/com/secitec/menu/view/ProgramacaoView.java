@@ -46,7 +46,7 @@ public class ProgramacaoView extends Composite implements
 		hpTop.setBorderWidth(0);
 		hpTop.setSpacing(0);
 		hpTop.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
-		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
+		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 		hpTop.setWidth("100%");
 		hpTop.setHeight("24px");
 
@@ -143,8 +143,15 @@ public class ProgramacaoView extends Composite implements
 		for (int i = 0; i < lista.size(); ++i) {
 			Atividade a = lista.get(i);
 			ftb.setText(i, 0, a.getNomeAtiv());
-			ftb.setWidget(i, 1, new Button("Mais Informações"));
-			ftb.setWidget(i, 2, new Button("Inscrever"));
+			Button btM = new Button("Mais Informações");
+			btM.removeStyleName("gwt-Button");
+			btM.addStyleName("btn-info");
+			ftb.setWidget(i, 1, btM);
+			
+			Button btInsc = new Button("Inscrever");
+			btInsc.addStyleName("btn");
+			btInsc.removeStyleName("gwt-Button");
+			ftb.setWidget(i, 2, btInsc);
 			ftb.getRowFormatter().getElement(i)
 					.setAttribute("id", String.valueOf(a.getIdAtiv()));
 		}
@@ -155,14 +162,17 @@ public class ProgramacaoView extends Composite implements
 		titulo.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 		titulo.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 		titulo.setWidth("100%");
-		titulo.setHeight("auto");
-		titulo.add(new HTML(s));
+//		titulo.setHeight("auto");
+		HTML lbTitulo = new HTML(s);
+		lbTitulo.addStyleName("lbTituloAtividade");
+		titulo.addStyleName("backLabelAtividades");
+		titulo.add(lbTitulo);
 
 		return titulo;
 	}
 
 	private void vpAtividade(VerticalPanel vp) {
-		vp.setBorderWidth(1);
+		vp.setBorderWidth(0);
 		vp.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 		vp.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 		vp.setWidth("100%");
@@ -186,7 +196,7 @@ public class ProgramacaoView extends Composite implements
 		tb.getColumnFormatter().setWidth(0, "60%");
 		tb.getColumnFormatter().setWidth(1, "20%");
 		tb.getColumnFormatter().setWidth(2, "20%");
-		tb.setBorderWidth(1);
+//		tb.setBorderWidth(0);
 
 		return tb;
 	}

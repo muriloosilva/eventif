@@ -6,6 +6,8 @@ import br.com.secitec.menu.presenter.Presenter;
 import br.com.secitec.menu.view.LoginView;
 import br.com.secitec.shared.model.User;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
@@ -169,8 +171,9 @@ public class CadastroPopup {
 	}
 
 	public boolean verificaCampos() {
-		if (nome.getText().equals("") || cpf.getText().equals("") || email.getText().equals("") 
-				|| login.getText().equals("") || senha.getText().equals("")) {
+		if (nome.getText().equals("") || cpf.getText().equals("")
+				|| email.getText().equals("") || login.getText().equals("")
+				|| senha.getText().equals("")) {
 			return false;
 		}
 		return true;
@@ -192,19 +195,23 @@ public class CadastroPopup {
 					if (!matricula.getText().equals(null))
 						user.setMatr_aluno_partic(matricula.getText());
 
-					rpcService.cadastraUsuario(user, new AsyncCallback<Boolean>() {
+					rpcService.cadastraUsuario(user,
+							new AsyncCallback<Boolean>() {
 								@Override
 								public void onSuccess(Boolean result) {
 									if (result) {
 										tela.hide();
-										ip = new InformacaoPopup("Cadastro realizado com sucesso! Efetue login.");
+										ip = new InformacaoPopup(
+												"Cadastro realizado com sucesso! Efetue login.");
 										ip.getTela().center();
 										ClickHandler ch = new ClickHandler() {
 											@Override
 											public void onClick(ClickEvent event) {
 												ip.getTela().hide();
-												//tela.hide();
-												Presenter presenter = new LoginPresenter(rpcService, eventBus, new LoginView());
+												// tela.hide();
+												Presenter presenter = new LoginPresenter(
+														rpcService, eventBus,
+														new LoginView());
 												if (presenter != null)
 													presenter.go();
 											}
@@ -213,7 +220,8 @@ public class CadastroPopup {
 										ip.getFechar().addClickHandler(ch);
 									} else {
 										tela.hide();
-										ip = new InformacaoPopup("Login indisponível! Tente outro.");
+										ip = new InformacaoPopup(
+												"Login indisponível! Tente outro.");
 										ip.getTela().center();
 										ClickHandler ch = new ClickHandler() {
 											@Override
@@ -223,7 +231,7 @@ public class CadastroPopup {
 												login.setText("");
 												login.setFocus(true);
 											}
-										}; 
+										};
 										ip.getOk().addClickHandler(ch);
 										ip.getFechar().addClickHandler(ch);
 									}
@@ -245,7 +253,7 @@ public class CadastroPopup {
 							tela.center();
 							camposVazios();
 						}
-					}; 
+					};
 					ip.getOk().addClickHandler(ch);
 					ip.getFechar().addClickHandler(ch);
 				}
@@ -253,47 +261,71 @@ public class CadastroPopup {
 			}
 		});
 	}
-	
-	public void camposVazios(){
-		if(nome.getText().equals(""))
+
+	public void camposVazios() {
+		if (nome.getText().equals(""))
 			nome.setFocus(true);
-		else if(cpf.getText().equals(""))
+		else if (cpf.getText().equals(""))
 			cpf.setFocus(true);
-		else if(email.getText().equals(""))
+		else if (email.getText().equals(""))
 			email.setFocus(true);
-		else if(login.getText().equals(""))
+		else if (login.getText().equals(""))
 			login.setFocus(true);
 		else
 			senha.setFocus(true);
 	}
-	
+
 	public void setCpf(final TextBoxBase cpfText) {
 		cpfText.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
-				/*if (verificaTecla(event)) {
-					if (cpfText.getValue().length() == 3
-							|| cpfText.getValue().length() == 7) {
-						cpfText.setValue(cpfText.getValue() + ".");
+				System.out.println("teclado: " + event.getNativeEvent().getKeyCode());
+				if (verificaTecla(event)) {
+					if (event.getNativeEvent().getKeyCode() != 8) {
+						if (cpfText.getValue().length() == 3
+								|| cpfText.getValue().length() == 7) {
+							cpfText.setValue(cpfText.getValue() + ".");
+						}
+						if (cpfText.getValue().length() == 11) {
+							cpfText.setValue(cpfText.getValue() + "-");
+						}
 					}
-					if (cpfText.getValue().length() == 11) {
-						cpfText.setValue(cpfText.getValue() + "-");
-					}
-				}
-				else {
+				} else {
 					cpfText.cancelKey();
-				}*/
+				}
+			}
+		});
+		cpfText.addBlurHandler(new BlurHandler() {
+			@Override
+			public void onBlur(BlurEvent event) {
+				if(!CPF.isCPF(cpfText.getValue())){
+					tela.hide();
+					ip = new InformacaoPopup("CPF inv�lido!");
+					ip.getTela().center();
+					ClickHandler ch = new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							ip.getTela().hide();
+							tela.center();
+							cpf.setSelectionRange(0, 14);
+						}
+					};
+					ip.getOk().addClickHandler(ch);
+					ip.getFechar().addClickHandler(ch);
+				}
 			}
 		});
 	}
-	
-	public boolean verificaTecla(KeyPressEvent event){
-		if (event.getNativeEvent().getKeyCode() == 48 || event.getNativeEvent().getKeyCode() == 49 || event.getNativeEvent().getKeyCode() == 50
-				|| event.getNativeEvent().getKeyCode() == 51 || event.getNativeEvent().getKeyCode() == 52 || event.getNativeEvent().getKeyCode() == 53
-				|| event.getNativeEvent().getKeyCode() == 54 || event.getNativeEvent().getKeyCode() == 55 || event.getNativeEvent().getKeyCode() == 56
-				|| event.getNativeEvent().getKeyCode() == 57) {
+
+	public boolean verificaTecla(KeyPressEvent event) {
+		if (event.getCharCode() == 48 || event.getCharCode() == 49
+				|| event.getCharCode() == 50 || event.getCharCode() == 51
+				|| event.getCharCode() == 52 || event.getCharCode() == 53
+				|| event.getCharCode() == 54 || event.getCharCode() == 55
+				|| event.getCharCode() == 56 || event.getCharCode() == 57
+				|| event.getNativeEvent().getKeyCode() == 8) {
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 }

@@ -1,3 +1,9 @@
+body {
+	background: url(/images/back.png) !important;
+	background-position: center;
+	background-repeat: repeat;
+}
+
 #main {
 	/* 	border: solid black 1px; */
 	width: 100%;
@@ -14,12 +20,11 @@
 	height: auto;
 }
 
-#menuHorizontal {	
+#menuHorizontal {
 	width: auto;
 	margin-left: 10%;
 	height: auto;
 	margin-right: 10%;
-	float: left;
 }
 
 #menuDir {
@@ -30,33 +35,41 @@
 	float: right;
 }
 
-.aMenuDir{
+.aMenuDir {
 	color: black;
 	display: block;
 	text-decoration: none;
 	padding: 10px 0px 10px 0px;
 }
 
-.nomeUsuario{
+.nomeUsuario {
 	font: bold;
 	font-size: 14px;
 	color: black;
 	display: block;
 	text-decoration: none;
-	padding: 10px 40px 10px 5px;
+	padding: 10px 0px 10px 5px;
+	margin-right: 40px;
 }
 
-.aMenuDir a:HOVER{
+.aMenuDir a:HOVER {
 	text-decoration: none;
 }
 
 .aMenuHorizontal {
-	color: black;
+	border: none !important;
+	background-color: #09043F;
+	color: #FFFFFF !important;
 	display: block;
 	text-decoration: none;
-	padding: 10px 40px 10px 0px;
+	padding: 10px 0px 10px 5px;
+	margin-right: 40px;
 }
 
+/* color: black; */
+/* 	display: block; */
+/* 	text-decoration: none; */
+/* 	padding: 10px 40px 10px 0px; */
 .aMenuHorizontal a:HOVER {
 	text-decoration: none;
 }
@@ -77,7 +90,9 @@
 	margin-left: 10%;
 	height: 300px;
 	margin-right: 10%;
-	background-image: url("/images/head.png");
+	background-image: url(/images/logo.png);
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 #corpo {
@@ -90,7 +105,9 @@
 }
 
 #corpoEsq {
-	border: solid red 1px;
+	/* 	border: solid red 1px; */
+	background-image: url(/images/back_bodyLeft.png);
+	border-radius: 10px;
 	width: 72%;
 	margin-left: 0%;
 	margin-right: 1%;
@@ -134,5 +151,26 @@
 .lbTitle {
 	color: black;
 	font-size: 18px;
-	padding-bottom: 15px
+	padding-bottom: 15px;
+	padding-top: 15px;
+	color: #09043f;
+}
+
+.tabelaAtividades {
+	
+}
+
+.backLabelAtividades {
+	background-image: url("/images/back.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-left: 0px !important;
+	color: #09043f;
+	font-weight: bold;
+	
+}
+
+.lbTituloAtividade{
+	margin-top: 5px;
+	margin-bottom: 5px;
 }

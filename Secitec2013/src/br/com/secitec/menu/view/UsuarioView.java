@@ -52,7 +52,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display{
 		hpTop.setWidth("100%");
 		hpTop.setHeight("24px");
 
-		HTML titlePage = new HTML("Área do Participante");
+		HTML titlePage = new HTML("Ã�rea do Participante");
 		titlePage.setStyleName("lbTitle");
 		hpTop.add(titlePage);
 		
@@ -198,7 +198,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display{
 		for (int i = 0; i < lista.size(); ++i) {
 			Atividade a = lista.get(i);
 			ftb.setText(i, 0, a.getNomeAtiv());
-			ftb.setWidget(i, 1, new Button("Mais Informações"));
+			ftb.setWidget(i, 1, new Button("Mais InformaÃ§Ãµes"));
 			ftb.setWidget(i, 2, new Button("Inscrever"));
 			ftb.getRowFormatter().getElement(i)
 					.setAttribute("id", String.valueOf(a.getIdAtiv()));
@@ -210,7 +210,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display{
 		for (int i = 0; i < lista.size(); ++i) {
 			Atividade a = lista.get(i);
 			ftb.setText(i, 0, a.getNomeAtiv());
-			ftb.setWidget(i, 1, new Button("Mais Informações"));
+			ftb.setWidget(i, 1, new Button("Mais InformaÃ§Ãµes"));
 			ftb.setWidget(i, 2, new Button("Cancelar"));
 			ftb.getRowFormatter().getElement(i)
 					.setAttribute("id", String.valueOf(a.getIdAtiv()));
@@ -223,7 +223,9 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display{
 		titulo.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 		titulo.setWidth("100%");
 		titulo.setHeight("auto");
-		titulo.add(new HTML(s));
+		HTML lbTitulo = new HTML(s);
+//		lbTitulo.addStyleName("");
+		titulo.add(lbTitulo);
 
 		return titulo;
 	}
