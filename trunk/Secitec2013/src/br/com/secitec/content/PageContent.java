@@ -37,7 +37,7 @@ public class PageContent extends Composite {
 		hpTop.setBorderWidth(0);
 		hpTop.setSpacing(0);
 		hpTop.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
-		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
+		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 		hpTop.setWidth("100%");
 		hpTop.setHeight("24px");
 
