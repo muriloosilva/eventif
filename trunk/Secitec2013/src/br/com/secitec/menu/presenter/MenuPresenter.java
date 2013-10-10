@@ -6,6 +6,7 @@ import br.com.secitec.client.RPCServiceAsync;
 import br.com.secitec.menu.event.ApresentationEvent;
 import br.com.secitec.menu.event.LoginEvent;
 import br.com.secitec.menu.event.ProgramacaoEvent;
+import br.com.secitec.menu.view.FaleConoscoView;
 import br.com.secitec.menu.view.LoginView;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -26,6 +27,8 @@ public class MenuPresenter implements Presenter {
 		HasClickHandlers getLoginLabel();
 		
 		HasClickHandlers getAtividadesLabel();
+		
+		HasClickHandlers getFaleConosco();
 
 		void setData(List<String> data);
 
@@ -75,6 +78,19 @@ public class MenuPresenter implements Presenter {
 				eventBus.fireEvent(new LoginEvent("login"));
 			}
 		});
+		
+		display.getFaleConosco().addClickHandler(new ClickHandler(){
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Presenter presenter = new FaleConoscoPresenter(rpcService, eventBus,
+						new FaleConoscoView());
+				if (presenter != null)
+					presenter.go();
+				
+			}
+		});
+		
 	}
 
 	public void go(final HasWidgets container) {

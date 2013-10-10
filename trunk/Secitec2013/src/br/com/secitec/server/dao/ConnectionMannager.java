@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnectionMannager {
 	
-	static boolean openShift = true;
+	static boolean openShift = false;
 	
 	public static Connection getConnetion(){
 		
@@ -15,7 +15,7 @@ public class ConnectionMannager {
 		if(!openShift){
 			try {
 				Class.forName("org.postgresql.Driver");
-				conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/TesteEventif", "postgres", "1234");
+				conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/secitecifgformosa", "postgres", "123456");
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {

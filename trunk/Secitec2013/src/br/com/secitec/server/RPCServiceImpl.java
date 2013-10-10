@@ -1,13 +1,7 @@
 package br.com.secitec.server;
 
 import java.util.List;
-import java.util.Properties;
 
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import br.com.secitec.client.RPCService;
@@ -27,7 +21,9 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	@Override
 	public List<Atividade> getAtividades() {
 
+		System.out.println("#####Atividades");
 		List<Atividade> atividades = AtividadeDAO.getTodasAtividades();
+		System.out.println("Atividades: "  + atividades.size());
 
 		return atividades;
 	}

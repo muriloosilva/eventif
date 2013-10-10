@@ -15,6 +15,7 @@ public class MenuView extends Composite implements MenuPresenter.Display {
 	private Anchor programacao;
 	private Anchor login;
 	private Anchor atividades;
+	private Anchor faleConosco;
 	private HorizontalPanel menuHorizontal;
 	
 	public MenuView() {
@@ -30,11 +31,18 @@ public class MenuView extends Composite implements MenuPresenter.Display {
 		atividades = new Anchor("Minhas Atividades");
 		atividades.addStyleName("aMenuHorizontal");
 		atividades.setVisible(false);
+		faleConosco = new Anchor("Fale Conosco");
+		faleConosco.addStyleName("aMenuHorizontal");
 		
 		menuHorizontal.add(apresentacao);
 		menuHorizontal.add(programacao);
 		menuHorizontal.add(atividades);
 		menuHorizontal.add(login);
+		menuHorizontal.add(faleConosco);
+	}
+	
+	public HasClickHandlers getFaleConosco() {
+		return faleConosco;
 	}
 
 	public HasClickHandlers getApresentationLabel() {
