@@ -2,11 +2,14 @@ package br.com.secitec.client;
 
 import br.com.secitec.menu.event.ApresentationEvent;
 import br.com.secitec.menu.event.ApresentationEventHandler;
+import br.com.secitec.menu.event.FaleConoscoEvent;
+import br.com.secitec.menu.event.FaleConoscoEventHandler;
 import br.com.secitec.menu.event.LoginEvent;
 import br.com.secitec.menu.event.LoginEventHandler;
 import br.com.secitec.menu.event.ProgramacaoEvent;
 import br.com.secitec.menu.event.ProgramacaoEventHandler;
 import br.com.secitec.menu.presenter.ApresentationPresenter;
+import br.com.secitec.menu.presenter.FaleConoscoPresenter;
 import br.com.secitec.menu.presenter.InfoUsuarioPresenter;
 import br.com.secitec.menu.presenter.MenuLateralPresenter;
 import br.com.secitec.menu.presenter.MenuPresenter;
@@ -14,6 +17,7 @@ import br.com.secitec.menu.presenter.Presenter;
 import br.com.secitec.menu.presenter.ProgramacaoPresenter;
 import br.com.secitec.menu.presenter.UsuarioPresenter;
 import br.com.secitec.menu.view.ApresentationView;
+import br.com.secitec.menu.view.FaleConoscoView;
 import br.com.secitec.menu.view.InfoUsuarioView;
 import br.com.secitec.menu.view.MenuLateralView;
 import br.com.secitec.menu.view.MenuView;
@@ -65,6 +69,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		eventBus.addHandler(LoginEvent.TYPE, new LoginEventHandler() {
 			public void onLogin(LoginEvent event) {
 				History.newItem("login");
+			}
+		});
+		
+		eventBus.addHandler(FaleConoscoEvent.TYPE, new FaleConoscoEventHandler() {
+			public void onFaleConosco(FaleConoscoEvent event) {
+				History.newItem("faleConosco");
 			}
 		});
 	}
@@ -143,6 +153,16 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 						if (presenter != null)
 							presenter.go(container);
 					}
+					else if(token.equals("faleConosco")){
+						presenterMenu.getLogin().setVisible(false);
+						presenterMenu.getAtividades().setVisible(true);
+						RootPanel.get("menuDir").setVisible(true);
+						infoUsuario();
+						Presenter presenter = new FaleConoscoPresenter(rpcService, eventBus,
+								new FaleConoscoView());
+						if (presenter != null)
+							presenter.go(container);
+					}
 //					infoUsuario();
 //					presenterMenu.getLogin().setVisible(false);
 //					presenterMenu.getAtividades().setVisible(true);
@@ -178,6 +198,16 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 						//infoUsuario();
 						Presenter presenter = new ApresentationPresenter(rpcService, eventBus,
 								new ApresentationView());
+						if (presenter != null)
+							presenter.go(container);
+					}
+					else if(token.equals("faleConosco")){
+						presenterMenu.getLogin().setVisible(false);
+						presenterMenu.getAtividades().setVisible(true);
+						RootPanel.get("menuDir").setVisible(true);
+						//infoUsuario();
+						Presenter presenter = new FaleConoscoPresenter(rpcService, eventBus,
+								new FaleConoscoView());
 						if (presenter != null)
 							presenter.go(container);
 					}
