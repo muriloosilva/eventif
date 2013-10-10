@@ -57,69 +57,10 @@ public class LoginPresenter implements Presenter {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				User user = new User();
-
-				TextBox login = display.getTbLogin();
-				PasswordTextBox senha = display.getTbSenha();
-
-				user.setLogin_partic(login.getText());
-				user.setSenha_partic(senha.getText());
-
-				if (!login.getText().equals("") && !senha.getText().equals("")) {
-					rpcService.login(user.getLogin_partic(), user.getSenha_partic(), new AsyncCallback<Boolean>() {
-								@Override
-								public void onFailure(Throwable caught) {
-								}
-								@Override
-								public void onSuccess(Boolean b) {
-									if (b) {
-										display.getPopup().hide();
-										if (History.getToken().equals("login")) {
-											Presenter presenter = new UsuarioPresenter(rpcService, eventBus, new UsuarioView());
-											if (presenter != null)
-												presenter.go(RootPanel.get("corpoEsq"));
-										} else
-											eventBus.fireEvent(new LoginEvent("login"));
-									} else {
-										display.getPopup().hide();
-										ip = new InformacaoPopup("Login ou senha inválidos!");
-										ip.getTela().center();
-										ClickHandler ch = new ClickHandler() {
-											@Override
-											public void onClick(ClickEvent event) {
-												display.getPopup().center();
-												display.getTbLogin().setText("");
-												display.getTbSenha().setText("");
-												display.getTbLogin().setFocus(true);
-												ip.getTela().hide();
-											}
-										};
-										ip.getOk().addClickHandler(ch);
-										ip.getFechar().addClickHandler(ch);
-									}
-								}
-							});
-				} else {
-					display.getPopup().hide();
-					ip = new InformacaoPopup("Preencha os campos corretamente!");
-					ip.getTela().center();
-					ClickHandler ch = new ClickHandler() {
-						@Override
-						public void onClick(ClickEvent event) {									
-							display.getPopup().center();
-							display.getTbLogin().setText("");
-							display.getTbSenha().setText("");
-							display.getTbLogin().setFocus(true);
-							ip.getTela().hide();
-						}
-					};
-					ip.getOk().addClickHandler(ch);
-					ip.getFechar().addClickHandler(ch);
-				}
-
+				login();
 			}
 		});
-
+		
 		display.getCadastrar().addClickHandler(new ClickHandler() {
 
 			@Override
@@ -130,13 +71,79 @@ public class LoginPresenter implements Presenter {
 					@Override
 					public void onClick(ClickEvent event) {
 						cadastro.getTela().hide();
-						display.getPopup().center();
+						//display.getPopup().center();
 					}
 				});
 			}
 		});
 	}
 
+	private void login(){
+		User user = new User();
+
+		TextBox login = display.getTbLogin();
+		PasswordTextBox senha = display.getTbSenha();
+
+		System.out.println("Email: "+login.getText());
+		System.out.println("Senha: "+senha.getText());
+		
+		user.setEmail_partic(login.getText());
+		user.setSenha_partic(senha.getText());
+
+		if (!login.getText().equals("") && !senha.getText().equals("")) {
+			rpcService.login(login.getText(), senha.getText(), new AsyncCallback<Boolean>() {
+						@Override
+						public void onFailure(Throwable caught) {
+						}
+						@Override
+						public void onSuccess(Boolean b) {
+							if (b) {
+								display.getPopup().hide();
+								if (History.getToken().equals("login")) {
+									Presenter presenter = new UsuarioPresenter(rpcService, eventBus, new UsuarioView());
+									if (presenter != null)
+										presenter.go(RootPanel.get("corpoEsq"));
+								} else
+									eventBus.fireEvent(new LoginEvent("login"));
+							} else {
+								display.getPopup().hide();
+								ip = new InformacaoPopup("Login ou senha inválidos!");
+								ip.getTela().center();
+								ClickHandler ch = new ClickHandler() {
+									@Override
+									public void onClick(ClickEvent event) {
+										display.getPopup().center();
+										display.getTbLogin().setText("");
+										display.getTbSenha().setText("");
+										display.getTbLogin().setFocus(true);
+										ip.getTela().hide();
+									}
+								};
+								ip.getOk().addClickHandler(ch);
+								ip.getFechar().addClickHandler(ch);
+								//LOGIN DANDO PROBLEMA
+							}
+						}
+					});
+		} else {
+			display.getPopup().hide();
+			ip = new InformacaoPopup("Preencha os campos corretamente!");
+			ip.getTela().center();
+			ClickHandler ch = new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {									
+					display.getPopup().center();
+					display.getTbLogin().setText("");
+					display.getTbSenha().setText("");
+					display.getTbLogin().setFocus(true);
+					ip.getTela().hide();
+				}
+			};
+			ip.getOk().addClickHandler(ch);
+			ip.getFechar().addClickHandler(ch);
+		}
+	}
+	
 	public void go(final HasWidgets container) {}
 
 	@Override

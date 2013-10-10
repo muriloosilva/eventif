@@ -12,6 +12,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -42,7 +44,10 @@ public class CadastroPopup {
 	private TextBox login;
 	private TextBox matricula;
 	private PasswordTextBox senha;
+	private PasswordTextBox confirmaSenha;
 	private Image imgFechar;
+	private HTML vCpf, vEmail, vMatricula, vConfirmaSenha;
+	private VerticalPanel vpCpf, vpEmail, vpMatricula, vpConfirmaSenha;
 
 	public CadastroPopup(RPCServiceAsync rpcService, HandlerManager eventBus) {
 		this.rpcService = rpcService;
@@ -51,7 +56,7 @@ public class CadastroPopup {
 		addEvento(cadastrar);
 	}
 
-	public void montaTela() {
+	private void montaTela() {
 		tela = new PopupPanel(true);
 		tela.setStyleName("demo-popup");
 
@@ -112,50 +117,104 @@ public class CadastroPopup {
 		nome = new TextBox();
 		nome.setWidth("260px");
 		tb.setWidget(0, 1, nome);
+		
+		vpCpf = new VerticalPanel();
+		vpCpf.setWidth("260px");
 
 		HTML h1 = new HTML("CPF:");
 		h1.addStyleName("alignDir");
 		tb.setWidget(1, 0, h1);
+		
 		cpf = new TextBox();
 		cpf.setMaxLength(14);
 		setCpf(cpf);
-		cpf.setWidth("260px");
-		tb.setWidget(1, 1, cpf);
+		cpf.setWidth("260px");		
+//		tb.setWidget(1, 1, cpf);
+		
+		vCpf = new HTML("*CPF inválido!");
+		vCpf.setVisible(false);
+		vCpf.addStyleName("vCPF");
+//		vCpf.setWidth("100px");
+//		tb.setWidget(1, 2, vCpf);
+		
+		vpCpf.add(vCpf);
+		vpCpf.add(cpf);
+		tb.setWidget(1, 1, vpCpf);
 
+		vpEmail = new VerticalPanel();
+		vpEmail.setWidth("260px");
+		
 		HTML h2 = new HTML("Email:");
 		h2.addStyleName("alignDir");
 		tb.setWidget(2, 0, h2);
+		
 		email = new TextBox();
 		email.setWidth("260px");
-		tb.setWidget(2, 1, email);
+		setEmail(email);
+//		tb.setWidget(2, 1, email);
 
-		HTML h3 = new HTML("Login:");
+		vEmail = new HTML("*Email inválido!");
+		vEmail.setVisible(false);
+		vEmail.addStyleName("vCPF");
+		
+		vpEmail.add(vEmail);
+		vpEmail.add(email);
+		tb.setWidget(2, 1, vpEmail);
+		
+		HTML h3 = new HTML("Senha:");
 		h3.addStyleName("alignDir");
 		tb.setWidget(3, 0, h3);
-		login = new TextBox();
-		login.setWidth("260px");
-		tb.setWidget(3, 1, login);
-
-		HTML h4 = new HTML("Senha:");
-		h4.addStyleName("alignDir");
-		tb.setWidget(4, 0, h4);
 		senha = new PasswordTextBox();
 		senha.setWidth("260px");
-		tb.setWidget(4, 1, senha);
+		senha.setText("");
+		tb.setWidget(3, 1, senha);
 
+		vpConfirmaSenha = new VerticalPanel();
+		vpConfirmaSenha.setWidth("260px");
+		
+		HTML h4 = new HTML("Confirma senha:");
+		h4.addStyleName("alignDir");
+		tb.setWidget(4, 0, h4);
+		
+		confirmaSenha = new PasswordTextBox();
+		confirmaSenha.setWidth("260px");
+		setConfirmaSenha(confirmaSenha);
+		
+		vConfirmaSenha = new HTML("* Confirmação de senha incorreta!");
+		vConfirmaSenha.setVisible(false);
+		vConfirmaSenha.addStyleName("vCPF");
+		
+		vpConfirmaSenha.add(vConfirmaSenha);
+		vpConfirmaSenha.add(confirmaSenha);
+		tb.setWidget(4, 1, vpConfirmaSenha);
+
+		vpMatricula = new VerticalPanel();
+		vpMatricula.setWidth("260px");
+		
 		HTML h5 = new HTML("MatrÃ­cula:");
 		h5.addStyleName("alignDir");
 		tb.setWidget(5, 0, h5);
+		
 		matricula = new TextBox();
+		matricula.setMaxLength(14);
 		matricula.setWidth("260px");
-		tb.setWidget(5, 1, matricula);
+		setMatricula(matricula);
+		
+		vMatricula = new HTML("* Matrícula inválida!");
+		vMatricula.setVisible(false);
+		vMatricula.addStyleName("vCPF");
+		
+		vpMatricula.add(vMatricula);
+		vpMatricula.add(matricula);
+		tb.setWidget(5, 1, vpMatricula);
 	}
 
 	private FlexTable tabela(FlexTable tb) {
 		tb.setWidth("400px");
 		tb.setHeight("80px");
-		tb.getColumnFormatter().setWidth(0, "50px");
-		tb.getColumnFormatter().setWidth(1, "160px");
+//		tb.getColumnFormatter().setWidth(0, "100px");
+//		tb.getColumnFormatter().setWidth(1, "160px");
+//		tb.getColumnFormatter().setWidth(2, "160px");
 		tb.setBorderWidth(0);
 		tb.addStyleName("tabelaCadastro");
 
@@ -170,16 +229,16 @@ public class CadastroPopup {
 		return this.tela;
 	}
 
-	public boolean verificaCampos() {
+	private boolean verificaCampos() {
 		if (nome.getText().equals("") || cpf.getText().equals("")
-				|| email.getText().equals("") || login.getText().equals("")
-				|| senha.getText().equals("")) {
+				|| email.getText().equals("") || senha.getText().equals("")
+				|| confirmaSenha.getText().equals("") || matricula.getText().equals("")) {
 			return false;
 		}
 		return true;
 	}
 
-	public void addEvento(Button bt) {
+	private void addEvento(Button bt) {
 
 		bt.addClickHandler(new ClickHandler() {
 			@Override
@@ -190,10 +249,9 @@ public class CadastroPopup {
 					user.setNome_partic(nome.getText());
 					user.setCpf_partic(cpf.getText());
 					user.setEmail_partic(email.getText());
-					user.setLogin_partic(login.getText());
+//					user.setLogin_partic(login.getText());
 					user.setSenha_partic(senha.getText());
-					if (!matricula.getText().equals(null))
-						user.setMatr_aluno_partic(matricula.getText());
+					user.setMatr_aluno_partic(matricula.getText());
 
 					rpcService.cadastraUsuario(user,
 							new AsyncCallback<Boolean>() {
@@ -221,7 +279,7 @@ public class CadastroPopup {
 									} else {
 										tela.hide();
 										ip = new InformacaoPopup(
-												"Login indisponÃ­vel! Tente outro.");
+												"Email indisponÃ­vel! Tente outro.");
 										ip.getTela().center();
 										ClickHandler ch = new ClickHandler() {
 											@Override
@@ -262,20 +320,22 @@ public class CadastroPopup {
 		});
 	}
 
-	public void camposVazios() {
+	private void camposVazios() {
 		if (nome.getText().equals(""))
 			nome.setFocus(true);
 		else if (cpf.getText().equals(""))
 			cpf.setFocus(true);
 		else if (email.getText().equals(""))
 			email.setFocus(true);
-		else if (login.getText().equals(""))
-			login.setFocus(true);
-		else
+		else if (senha.getText().equals(""))
 			senha.setFocus(true);
+		else if(confirmaSenha.getText().equals(""))
+			confirmaSenha.setFocus(true);
+		else if(matricula.getText().equals(""))
+			matricula.setFocus(true);
 	}
 
-	public void setCpf(final TextBoxBase cpfText) {
+	private void setCpf(final TextBoxBase cpfText) {
 		cpfText.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				System.out.println("teclado: " + event.getNativeEvent().getKeyCode());
@@ -297,27 +357,40 @@ public class CadastroPopup {
 		cpfText.addBlurHandler(new BlurHandler() {
 			@Override
 			public void onBlur(BlurEvent event) {
-				if(!CPF.isCPF(cpfText.getValue())){
-					tela.hide();
-					ip = new InformacaoPopup("CPF inválido!");
-					ip.getTela().center();
-					ClickHandler ch = new ClickHandler() {
-						
+				if(!CPF.isCPF(cpfText.getValue()) && !cpfText.getValue().equals("")){
+					vCpf.setText("*CPF inválido!");
+					vCpf.setVisible(true);
+					cpf.setText("");
+					cpf.setFocus(true);
+				}
+				else{
+					rpcService.getCpf(cpfText.getValue(), new AsyncCallback<Boolean>() {
+
 						@Override
-						public void onClick(ClickEvent event) {
-							ip.getTela().hide();
-							tela.center();
-							cpf.setSelectionRange(0, 14);
+						public void onFailure(Throwable caught) {
 						}
-					};
-					ip.getOk().addClickHandler(ch);
-					ip.getFechar().addClickHandler(ch);
+
+						@Override
+						public void onSuccess(Boolean result) {
+							//se true, cpf disponível
+							if(result){
+								vCpf.setVisible(false);
+							}
+							else{
+								vCpf.setText("*CPF já cadastrado!");
+								vCpf.setVisible(true);
+								cpf.setText("");
+								cpf.setFocus(true);
+							}
+						}
+					});
+
 				}
 			}
 		});
 	}
 
-	public boolean verificaTecla(KeyPressEvent event) {
+	private boolean verificaTecla(KeyPressEvent event) {
 		if (event.getCharCode() == 48 || event.getCharCode() == 49
 				|| event.getCharCode() == 50 || event.getCharCode() == 51
 				|| event.getCharCode() == 52 || event.getCharCode() == 53
@@ -327,5 +400,115 @@ public class CadastroPopup {
 			return true;
 		} else
 			return false;
+	}
+	
+	private void setEmail(final TextBoxBase tbEmail){
+		tbEmail.addBlurHandler(new BlurHandler() {
+			
+			@Override
+			public void onBlur(BlurEvent event) {
+				if(!verificaEmail(tbEmail.getValue()) && !tbEmail.getValue().equals("")){
+					vEmail.setText("*Email inválido!");
+					vEmail.setVisible(true);
+					email.setText("");
+					email.setFocus(true);
+				}
+				else{
+					rpcService.getEmail(tbEmail.getValue(), new AsyncCallback<Boolean>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+						}
+
+						@Override
+						public void onSuccess(Boolean result) {
+							//se true, cpf disponível
+							System.out.println("result email: "+result);
+							if(result){
+								vEmail.setVisible(false);
+							}
+							else{
+								vEmail.setText("*Email já cadastrado!");
+								vEmail.setVisible(true);
+								email.setText("");
+								email.setFocus(true);
+							}
+						}
+					});
+
+				}
+				
+//				if(!verificaEmail(tbEmail.getValue()) && !tbEmail.getValue().equals("")){
+//					vEmail.setVisible(true);
+//					email.setSelectionRange(0, tbEmail.getValue().length());
+//				}else
+//					vEmail.setVisible(false);
+			}
+		});
+		
+		tbEmail.addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if(event.getNativeEvent().getKeyCode() != 9)
+				tbEmail.setValue(tbEmail.getValue().toLowerCase());				
+			}
+		});
+	}
+	
+	private boolean verificaEmail(String email){
+		if(!email.matches("^([a-zA-Z0-9_.\\-+])+@(([a-zA-Z0-9\\-])+\\.)+[a-zA-Z0-9]{2,4}$"))
+			return false;
+		else
+			return true;
+	}
+	
+	private void setMatricula(final TextBoxBase tbMatr){
+		tbMatr.addKeyPressHandler(new KeyPressHandler() {
+			
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if(verificaTecla(event))
+					tbMatr.setValue(tbMatr.getValue());					
+				else
+					tbMatr.cancelKey();
+			}
+		});
+		
+		tbMatr.addBlurHandler(new BlurHandler() {
+			
+			@Override
+			public void onBlur(BlurEvent event) {
+				if(tbMatr.getValue().length() < 14 && !tbMatr.getValue().equals("")){
+					vMatricula.setVisible(true);
+					matricula.setFocus(true);
+					matricula.setText("");
+					matricula.setFocus(true);
+				}
+				else
+					vMatricula.setVisible(false);
+			}
+		});
+	}
+	
+	private void setConfirmaSenha(final TextBoxBase tbConfirmaSenha){
+		tbConfirmaSenha.addBlurHandler(new BlurHandler() {
+			
+			@Override
+			public void onBlur(BlurEvent event) {
+				if(!tbConfirmaSenha.getValue().equals(senha.getValue()) && !senha.getValue().equals("") && !tbConfirmaSenha.getValue().equals("")){
+					vConfirmaSenha.setVisible(true);
+//					confirmaSenha.setFocus(true);
+					confirmaSenha.setText("");
+					confirmaSenha.setFocus(true);
+				}
+				else{
+					if(senha.getValue().equals("")){
+						confirmaSenha.setText("");
+					} else
+					vConfirmaSenha.setVisible(false);
+				}
+			}
+		});
 	}
 }

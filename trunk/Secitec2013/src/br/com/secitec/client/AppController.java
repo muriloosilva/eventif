@@ -23,6 +23,7 @@ import br.com.secitec.menu.view.MenuLateralView;
 import br.com.secitec.menu.view.MenuView;
 import br.com.secitec.menu.view.ProgramacaoView;
 import br.com.secitec.menu.view.UsuarioView;
+import br.com.secitec.shared.model.User;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -71,7 +72,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				History.newItem("login");
 			}
 		});
-		
 		eventBus.addHandler(FaleConoscoEvent.TYPE, new FaleConoscoEventHandler() {
 			public void onFaleConosco(FaleConoscoEvent event) {
 				History.newItem("faleConosco");
@@ -100,6 +100,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 	private void loadMenu() {
 		presenterMenu = new MenuPresenter(rpcService, eventBus, new MenuView());
+		presenterMenu.getHpUsuario().setVisible(false);
 		presenterMenu.go(RootPanel.get("menuHorizontal"));
 	}
 
@@ -116,64 +117,86 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		presenterInfoUsuario = new InfoUsuarioPresenter(rpcService, eventBus,
 				new InfoUsuarioView());
 		presenterInfoUsuario.go(RootPanel.get("menuDir"));
-	}
+	} 
 
+	public void configurarMenu(){
+		rpcService.getSession(new AsyncCallback<User>() {
+			
+			@Override
+			public void onSuccess(User result) {
+				presenterMenu.getHpUsuario().setVisible(true);
+				presenterMenu.getNomeUsuario().setText(result.getNome_partic());
+				presenterMenu.getLogin().setVisible(false);
+				presenterMenu.getAtividades().setVisible(true);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+		});
+	}
+	
 	public void verificaSessao() {
 		rpcService.getSessao(new AsyncCallback<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
 				if (result) {
 					if(token.equals("apresentacao")){
-						presenterMenu.getLogin().setVisible(false);
-						presenterMenu.getAtividades().setVisible(true);
-						RootPanel.get("menuDir").setVisible(true);
-						infoUsuario();
+//						presenterMenu.getHpUsuario().setVisible(true);
+//						presenterMenu.getNomeUsuario().setText();
+//						presenterMenu.getLogin().setVisible(false);
+//						presenterMenu.getAtividades().setVisible(true);
+//						RootPanel.get("menuDir").setVisible(true);
+//						infoUsuario();
+						configurarMenu();
 						Presenter presenter = new ApresentationPresenter(rpcService, eventBus,
 								new ApresentationView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("programacao")){
-						presenterMenu.getLogin().setVisible(false);
-						presenterMenu.getAtividades().setVisible(true);
-						RootPanel.get("menuDir").setVisible(true);
-						infoUsuario();
+//						presenterMenu.getHpUsuario().setVisible(true);
+//						presenterMenu.getLogin().setVisible(false);
+//						presenterMenu.getAtividades().setVisible(true);
+//						RootPanel.get("menuDir").setVisible(true);
+//						infoUsuario();
+						configurarMenu();
 						Presenter presenter = new ProgramacaoPresenter(rpcService, eventBus,
 								new ProgramacaoView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("login")){
-						presenterMenu.getLogin().setVisible(false);
-						presenterMenu.getAtividades().setVisible(true);
-						RootPanel.get("menuDir").setVisible(true);
-						infoUsuario();
+//						presenterMenu.getHpUsuario().setVisible(true);
+//						presenterMenu.getLogin().setVisible(false);
+//						presenterMenu.getAtividades().setVisible(true);
+//						RootPanel.get("menuDir").setVisible(true);
+//						infoUsuario();
+						configurarMenu();
 						Presenter presenter = new UsuarioPresenter(rpcService, eventBus,
 								new UsuarioView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("faleConosco")){
-						presenterMenu.getLogin().setVisible(false);
-						presenterMenu.getAtividades().setVisible(true);
-						RootPanel.get("menuDir").setVisible(true);
-						infoUsuario();
+//						presenterMenu.getLogin().setVisible(false);
+//						presenterMenu.getAtividades().setVisible(true);
+//						RootPanel.get("menuDir").setVisible(true);
+//						infoUsuario();
+						configurarMenu();
 						Presenter presenter = new FaleConoscoPresenter(rpcService, eventBus,
 								new FaleConoscoView());
 						if (presenter != null)
 							presenter.go(container);
 					}
-//					infoUsuario();
-//					presenterMenu.getLogin().setVisible(false);
-//					presenterMenu.getAtividades().setVisible(true);
-//					RootPanel.get("menuDir").setVisible(true);
 				} else {
 					if(token.equals("apresentacao")){
 						loadMenu();
+						presenterMenu.getHpUsuario().setVisible(false);
 						presenterMenu.getLogin().setVisible(true);
 						presenterMenu.getAtividades().setVisible(false);
-						RootPanel.get("menuDir").setVisible(false);
-						//infoUsuario();
+//						RootPanel.get("menuDir").setVisible(false);
 						Presenter presenter = new ApresentationPresenter(rpcService, eventBus,
 								new ApresentationView());
 						if (presenter != null)
@@ -181,10 +204,10 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 					}
 					else if(token.equals("programacao")){
 						loadMenu();
+						presenterMenu.getHpUsuario().setVisible(false);
 						presenterMenu.getLogin().setVisible(true);
 						presenterMenu.getAtividades().setVisible(false);
-						RootPanel.get("menuDir").setVisible(false);
-						//infoUsuario();
+//						RootPanel.get("menuDir").setVisible(false);
 						Presenter presenter = new ProgramacaoPresenter(rpcService, eventBus,
 								new ProgramacaoView());
 						if (presenter != null)
@@ -192,30 +215,26 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 					}
 					else if(token.equals("login")){
 						loadMenu();
+						presenterMenu.getHpUsuario().setVisible(false);
 						presenterMenu.getLogin().setVisible(true);
 						presenterMenu.getAtividades().setVisible(false);
-						RootPanel.get("menuDir").setVisible(false);
-						//infoUsuario();
+//						RootPanel.get("menuDir").setVisible(false);
 						Presenter presenter = new ApresentationPresenter(rpcService, eventBus,
 								new ApresentationView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("faleConosco")){
-						presenterMenu.getLogin().setVisible(false);
-						presenterMenu.getAtividades().setVisible(true);
-						RootPanel.get("menuDir").setVisible(true);
+						presenterMenu.getHpUsuario().setVisible(false);
+						presenterMenu.getLogin().setVisible(true);
+						presenterMenu.getAtividades().setVisible(false);
+//						RootPanel.get("menuDir").setVisible(true);
 						//infoUsuario();
 						Presenter presenter = new FaleConoscoPresenter(rpcService, eventBus,
 								new FaleConoscoView());
 						if (presenter != null)
 							presenter.go(container);
 					}
-//					if(token.equals("login"))
-//						eventBus.fireEvent(new ProgramacaoEvent("programacao"));
-//					presenterMenu.getLogin().setVisible(true);
-//					presenterMenu.getAtividades().setVisible(false);
-//					RootPanel.get("menuDir").setVisible(false);
 				}
 			}
 

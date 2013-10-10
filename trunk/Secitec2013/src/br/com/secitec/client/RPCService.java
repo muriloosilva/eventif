@@ -21,4 +21,7 @@ public interface RPCService extends RemoteService {
 	boolean cancelar(int codAtividade);
 	void removeSessao();
 	Atividade getAtividade(int idAtividade);
+	boolean getCpf(String cpf);
+	boolean getEmail(String email);
+	boolean getMinicursosDoAluno();
 }
