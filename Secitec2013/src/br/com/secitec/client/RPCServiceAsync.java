@@ -28,4 +28,10 @@ public interface RPCServiceAsync {
 	public void removeSessao(AsyncCallback<Void> callback);
 
 	public void getAtividade(int idAtividade, AsyncCallback<Atividade> callback);
+
+	public void getCpf(String cpf, AsyncCallback<Boolean> callback);
+
+	public void getEmail(String email, AsyncCallback<Boolean> callback);
+
+	public void getMinicursosDoAluno(AsyncCallback<Boolean> callback);
 }

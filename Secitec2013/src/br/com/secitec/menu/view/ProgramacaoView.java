@@ -123,7 +123,7 @@ public class ProgramacaoView extends Composite implements
 	private int[] getAtividade(ClickEvent event, FlexTable ftb) {
 		int linha = -1;
 		int col = -1;
-		int idOficina = -1;
+		int idAtividade = -1;
 		HTMLTable.Cell cel = ftb.getCellForEvent(event);
 
 		if (cel != null) {
@@ -131,10 +131,10 @@ public class ProgramacaoView extends Composite implements
 			col = cel.getCellIndex();
 		}
 
-		idOficina = Integer.parseInt(ftb.getRowFormatter().getElement(linha)
+		idAtividade = Integer.parseInt(ftb.getRowFormatter().getElement(linha)
 				.getAttribute("id"));
 
-		int e[] = { idOficina, col };
+		int e[] = { idAtividade, col };
 		return e;
 	}
 
@@ -142,19 +142,58 @@ public class ProgramacaoView extends Composite implements
 		ftb.removeAllRows();
 		for (int i = 0; i < lista.size(); ++i) {
 			Atividade a = lista.get(i);
-			ftb.setText(i, 0, a.getNomeAtiv());
+
+			HTML nome = new HTML();
+			nome.setText(a.getNomeAtiv());
+			nome.removeStyleName("gwt-HTML");
+			nome.addStyleName("tbAtividadesCol1");
+
+			HTML data = new HTML();
+			data.setText(formataData(String.valueOf(a.getDtAtiv())));
+			data.removeStyleName("gwt-HTML");
+			data.addStyleName("tbAtividadesCol2");
+
+			HTML horario = new HTML();
+			horario.setText(""+String.valueOf(a.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(a.getHrFim()).substring(0, 5)+"h");
+			horario.removeStyleName("gwt-HTML");
+			horario.addStyleName("tbAtividadesCol3");
+
+			HTML vagas = new HTML();
+			vagas.setText("Vagas: "+a.getVagasDisponiveis());
+			vagas.removeStyleName("gwt-HTML");
+			vagas.addStyleName("tbAtividadesCol4");
+						
+			ftb.setWidget(i, 0, nome);
+			ftb.setWidget(i, 1, data);
+			ftb.setWidget(i, 2, horario);
+			ftb.setWidget(i, 3, vagas);
+			
 			Button btM = new Button("Mais Informações");
 			btM.removeStyleName("gwt-Button");
 			btM.addStyleName("btn-info");
-			ftb.setWidget(i, 1, btM);
+			ftb.setWidget(i, 4, btM);
 			
 			Button btInsc = new Button("Inscrever");
-			btInsc.addStyleName("btn");
+			btInsc.addStyleName("btn-info");
 			btInsc.removeStyleName("gwt-Button");
-			ftb.setWidget(i, 2, btInsc);
-			ftb.getRowFormatter().getElement(i)
-					.setAttribute("id", String.valueOf(a.getIdAtiv()));
+			ftb.setWidget(i, 5, btInsc);
+			ftb.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(a.getIdAtiv()));
 		}
+	}
+	
+	private String formataData(String data){
+//		String dataString = "dd/MM/yy";  
+//		SimpleDateFormat spd = new SimpleDateFormat(dataString);
+//		System.out.println("Data de hoje: "+spd.format(data)); 
+//		return String.valueOf(spd.format(data));
+//		aa/mm/dd
+//		String[] split = data.split("/");
+//		System.out.println("split: "+split.length);
+//		String dataFormatada = split[2] + "/" + split[1] + "/" + split[0];
+		String dataFormatada;
+		dataFormatada = data.substring(8, 10) + "/" + data.substring(5, 7) + "/" + data.substring(2, 4);
+		System.out.println("DATA: "+dataFormatada);
+		return dataFormatada;
 	}
 
 	private HorizontalPanel titulo(String s) {
@@ -193,9 +232,13 @@ public class ProgramacaoView extends Composite implements
 		tb.setCellSpacing(0);
 		tb.setCellPadding(0);
 		tb.setWidth("100%");
-		tb.getColumnFormatter().setWidth(0, "60%");
-		tb.getColumnFormatter().setWidth(1, "20%");
-		tb.getColumnFormatter().setWidth(2, "20%");
+		tb.getColumnFormatter().setWidth(0, "230px");
+		tb.getColumnFormatter().setWidth(1, "70px");
+		tb.getColumnFormatter().setWidth(2, "100px");
+		tb.getColumnFormatter().setWidth(3, "70px");
+		tb.getColumnFormatter().setWidth(4, "115px");
+		tb.getColumnFormatter().setWidth(5, "60px");
+		tb.addStyleName("tbAtividades");
 //		tb.setBorderWidth(0);
 
 		return tb;

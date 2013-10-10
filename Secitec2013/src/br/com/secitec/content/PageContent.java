@@ -50,8 +50,8 @@ public class PageContent extends Composite {
 		hpMiddle.setSpacing(0);
 		hpMiddle.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 		hpMiddle.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
-		hpMiddle.setWidth("100%");
-		hpMiddle.addStyleName("hpMiddlePageContent");
+		hpMiddle.setWidth("auto");
+		hpMiddle.addStyleName("conteudoApresentacao");
 
 		contentPage = new SimplePanel();
 		hpMiddle.add(contentPage);

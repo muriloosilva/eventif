@@ -69,7 +69,7 @@ public class ProgramacaoPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				int e[] = display.getMinicurso(event);
-				eventoBotoes(e);
+				eventoBotoesMinicursos(e);
 			}
 		});
 
@@ -82,14 +82,14 @@ public class ProgramacaoPresenter implements Presenter {
 		});
 	}
 
-	public void eventoBotoes(final int[] e){
-		if (e[1] == 1) {
+	public void eventoBotoesMinicursos(final int[] e){
+		if (e[1] == 4) {
 			Presenter presenter = new MaisInformacaoPresenter(
 					rpcService, eventBus, new MaisInformacaoView("Inscrever"),
 					e[0]);
 			if (presenter != null)
 				presenter.go();
-		} else if (e[1] == 2) {
+		} else if (e[1] == 5) {
 			rpcService.getSessao(new AsyncCallback<Boolean>() {
 				@Override
 				public void onFailure(Throwable caught) {
@@ -97,39 +97,72 @@ public class ProgramacaoPresenter implements Presenter {
 				}
 				@Override
 				public void onSuccess(Boolean result) {
+					//se estiver logado
 					if (result) {
-						rpcService.inscrever(e[0],
-								new AsyncCallback<Boolean>() {
-									@Override
-									public void onFailure(Throwable caught) {
+						//verificar minicurso
+						rpcService.getMinicursosDoAluno(new AsyncCallback<Boolean>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void onSuccess(Boolean result) {
+								// TODO Auto-generated method stub
+								if(result)
+									inscrever(e);
+								else{
+									//n�o pode ser inscrito
+									ip = new InformacaoPopup("Você j� est� inscrito em um Minicurso!");
+									ip.getTela().center();
+									ip.getOk().addClickHandler(new ClickHandler() {													
+										@Override
+										public void onClick(ClickEvent event) {
+											ip.getTela().hide();
+										}
+									});
+									ip.getFechar().addClickHandler(new ClickHandler() {													
+										@Override
+										public void onClick(ClickEvent event) {
+											ip.getTela().hide();
+										}
+									});
+								}
 									
-									}
-									@Override
-									public void onSuccess(Boolean result) {
-										if(result){
-											ip = new InformacaoPopup("Inscrição efetuada com sucesso!");
-											ip.getTela().center();
-											ip.getOk().addClickHandler(new ClickHandler() {														
-												@Override
-												public void onClick(ClickEvent event) {
-													ip.getTela().hide();
-													eventBus.fireEvent(new LoginEvent("login"));
-												}
-											});
-										}
-										else{
-											ip = new InformacaoPopup("Você está inscrito em outra(s) atividade(s) no mesmo"
-													+ " horário!");
-											ip.getTela().center();
-											ip.getOk().addClickHandler(new ClickHandler() {													
-												@Override
-												public void onClick(ClickEvent event) {
-													ip.getTela().hide();
-												}
-											});
-										}
-									}
-								});
+							}
+						});
+					} else {
+						Presenter presenter = new LoginPresenter(
+								rpcService, eventBus, new LoginView());
+						if (presenter != null)
+							presenter.go();
+					}
+				}
+			});
+		}
+	}
+	
+	public void eventoBotoes(final int[] e){
+		if (e[1] == 4) {
+			Presenter presenter = new MaisInformacaoPresenter(
+					rpcService, eventBus, new MaisInformacaoView("Inscrever"),
+					e[0]);
+			if (presenter != null)
+				presenter.go();
+		} else if (e[1] == 5) {
+			rpcService.getSessao(new AsyncCallback<Boolean>() {
+				@Override
+				public void onFailure(Throwable caught) {
+
+				}
+				@Override
+				public void onSuccess(Boolean result) {
+					//se estiver logado
+					if (result) {
+						//verificar minicurso
+						inscrever(e);
 					} else {
 						Presenter presenter = new LoginPresenter(
 								rpcService, eventBus, new LoginView());
@@ -173,5 +206,54 @@ public class ProgramacaoPresenter implements Presenter {
 	@Override
 	public void go() {
 
+	}
+	
+	private void inscrever(int[] e){
+		rpcService.inscrever(e[0],
+				new AsyncCallback<Boolean>() {
+					@Override
+					public void onFailure(Throwable caught) {
+					
+					}
+					@Override
+					public void onSuccess(Boolean result) {
+						if(result){
+							ip = new InformacaoPopup("Inscrição efetuada com sucesso!");
+							ip.getTela().center();
+							ip.getOk().addClickHandler(new ClickHandler() {														
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+									eventBus.fireEvent(new LoginEvent("login"));
+								}
+							});
+							ip.getFechar().addClickHandler(new ClickHandler() {														
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+									eventBus.fireEvent(new LoginEvent("login"));
+								}
+							});
+							
+						}
+						else{
+							ip = new InformacaoPopup("Você está inscrito em outra(s) atividade(s) no mesmo"
+									+ " horário!");
+							ip.getTela().center();
+							ip.getOk().addClickHandler(new ClickHandler() {													
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+								}
+							});
+							ip.getFechar().addClickHandler(new ClickHandler() {													
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+								}
+							});
+						}
+					}
+				});
 	}
 }

@@ -71,46 +71,46 @@ LoginPresenter.Display{
 		tabela = tabela(tabela);
 		preencheTabela(tabela);
 		
-		HorizontalPanel hpRodape = new HorizontalPanel();
-		hpRodape.setHeight("40px");
-		hpRodape.setWidth("300px");
-		hpRodape.setSpacing(0);
-		hpRodape.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
-		
-		HorizontalPanel hpLogin = new HorizontalPanel();
-		hpLogin.setSpacing(0);
-		hpLogin.setHeight("40px");
-		
-		login = new Button();
-		login.setText("Login");
-		login.setHeight("40px");
-		
-		hpLogin.add(login);
-		
-		HorizontalPanel hpCadastrar = new HorizontalPanel();
-		hpCadastrar.addStyleName("botaoCadastrar");
-		hpCadastrar.setSpacing(8);
-		hpCadastrar.setHeight("40px");
-		
-		cadastro = new Anchor();
-		cadastro.setText("Cadastre-se");
-		cadastro.setHeight("40px");
-
-		hpCadastrar.add(new HTML("ou"));
-		hpCadastrar.add(cadastro);
-		
-		hpRodape.add(hpLogin);
-		hpRodape.add(hpCadastrar);
+//		HorizontalPanel hpRodape = new HorizontalPanel();
+//		hpRodape.setHeight("40px");
+//		hpRodape.setWidth("300px");
+//		hpRodape.setSpacing(0);
+//		hpRodape.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+//		
+//		HorizontalPanel hpLogin = new HorizontalPanel();
+//		hpLogin.setSpacing(0);
+//		hpLogin.setHeight("40px");
+//		
+//		login = new Button();
+//		login.setText("Login");
+//		login.setHeight("40px");
+//		
+//		hpLogin.add(login);
+//		
+//		HorizontalPanel hpCadastrar = new HorizontalPanel();
+//		hpCadastrar.addStyleName("botaoCadastrar");
+//		hpCadastrar.setSpacing(8);
+//		hpCadastrar.setHeight("40px");
+//		
+//		cadastro = new Anchor();
+//		cadastro.setText("Cadastre-se");
+//		cadastro.setHeight("40px");
+//
+//		hpCadastrar.add(new HTML("ou"));
+//		hpCadastrar.add(cadastro);
+//		
+//		hpRodape.add(hpLogin);
+//		hpRodape.add(hpCadastrar);
 		
 		vp.add(hpTop);
 		vp.add(tabela);
-		vp.add(hpRodape);
+//		vp.add(hpRodape);
 		tela.add(vp);
 		tela.setGlassEnabled(true);
 	}
 
 	private void preencheTabela(FlexTable tb) {
-		HTML hLogin = new HTML("Login: ");
+		HTML hLogin = new HTML("Email: ");
 		hLogin.addStyleName("alignDir");
 		tb.setWidget(0, 0, hLogin);
 		TextBox login = new TextBox();
@@ -123,6 +123,47 @@ LoginPresenter.Display{
 		PasswordTextBox senha = new PasswordTextBox();
 		senha.setWidth("140px");
 		tb.setWidget(1, 1, senha);
+		
+		HorizontalPanel hpRodape = new HorizontalPanel();
+//		hpRodape.setHeight("40px");
+//		hpRodape.setWidth("300px");
+		hpRodape.setSpacing(0);
+//		hpRodape.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+		
+		HorizontalPanel hpLogin = new HorizontalPanel();
+		hpLogin.setSpacing(0);
+		hpLogin.setHeight("40px");
+		
+		this.login = new Button();
+		this.login.setText("Login");
+		this.login.setHeight("40px");
+		
+		hpLogin.add(this.login);
+		
+		HorizontalPanel hpOu = new HorizontalPanel();
+		hpOu.setHeight("40px");
+		hpOu.addStyleName("ou");
+		
+		HTML ou = new HTML("ou");
+		
+		hpOu.add(ou);
+		
+		HorizontalPanel hpCadastrar = new HorizontalPanel();
+		hpCadastrar.addStyleName("botaoCadastrar");
+		hpCadastrar.setSpacing(8);
+		hpCadastrar.setHeight("40px");
+		
+		cadastro = new Anchor();
+		cadastro.setText("Cadastre-se");
+		cadastro.setHeight("40px");
+
+		hpCadastrar.add(cadastro);
+		
+		hpRodape.add(hpLogin);
+		hpRodape.add(hpOu);
+		hpRodape.add(hpCadastrar);
+		
+		tb.setWidget(2, 1, hpRodape);
 	}
 
 	private FlexTable tabela(FlexTable tb) {

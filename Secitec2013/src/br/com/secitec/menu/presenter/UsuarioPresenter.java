@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.secitec.client.RPCServiceAsync;
+import br.com.secitec.menu.event.LoginEvent;
 import br.com.secitec.menu.view.LoginView;
 import br.com.secitec.menu.view.MaisInformacaoView;
+import br.com.secitec.popup.ConfirmacaoPopup;
 import br.com.secitec.popup.InformacaoPopup;
 import br.com.secitec.shared.model.Atividade;
 
@@ -53,6 +55,7 @@ public class UsuarioPresenter implements Presenter {
 	private List<Atividade> palestras;
 	private List<Atividade> atividades;
 	private InformacaoPopup ip;
+	private ConfirmacaoPopup cp;
 
 	public UsuarioPresenter(RPCServiceAsync rpcService,
 			HandlerManager eventBus, Display view) {
@@ -80,7 +83,7 @@ public class UsuarioPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				int e[] = display.getMinicurso(event);
-				eventoBotoesAtividades(e);
+				eventoBotoesMinicursos(e);
 			}
 		});
 		display.getListaPalestra().addClickHandler(new ClickHandler() {
@@ -93,13 +96,13 @@ public class UsuarioPresenter implements Presenter {
 	}
 
 	public void eventoBotoesUsuario(final int[] e) {
-		if (e[1] == 1) {
+		if (e[1] == 4) {
 			Presenter presenter = new MaisInformacaoPresenter(rpcService,
 					eventBus, new MaisInformacaoView("Cancelar inscrição"),
 					e[0], this);
 			if (presenter != null)
 				presenter.go();
-		} else if (e[1] == 2) {
+		} else if (e[1] == 5) {
 			rpcService.getSessao(new AsyncCallback<Boolean>() {
 				@Override
 				public void onFailure(Throwable caught) {
@@ -109,38 +112,28 @@ public class UsuarioPresenter implements Presenter {
 				@Override
 				public void onSuccess(Boolean result) {
 					if (result) {
-						rpcService.cancelar(e[0],
-								new AsyncCallback<Boolean>() {
-									@Override
-									public void onFailure(Throwable caught) {
-
-									}
-
-									@Override
-									public void onSuccess(Boolean result) {
-										if (result) {
-											ip = new InformacaoPopup("Inscrição cancelada com sucesso!");
-											ip.getTela().center();
-											ip.getOk().addClickHandler(new ClickHandler() {
-												@Override
-												public void onClick(ClickEvent event) {
-													ip.getTela().hide();
-													setDadosUsuario();
-												}
-											});
-										} else {
-											ip = new InformacaoPopup(
-													"Não foi possível cancelar a inscrição");
-											ip.getTela().center();
-											ip.getOk().addClickHandler(new ClickHandler() {
-												@Override
-												public void onClick(ClickEvent event) {
-													ip.getTela().hide();
-												}
-											});
-										}
-									}
-								});
+						cp = new ConfirmacaoPopup("Deseja realmente cancelar a inscri��o?");
+						cp.getTela().center();
+						
+						ClickHandler chNao = new ClickHandler() {
+							
+							@Override
+							public void onClick(ClickEvent event) {
+								cp.getTela().hide();
+							}
+						};
+						ClickHandler chSim = new ClickHandler() {
+							
+							@Override
+							public void onClick(ClickEvent event) {
+								cp.getTela().hide();
+								cancelarInscricao(e);
+							}
+						};		
+						
+						cp.getBtNao().addClickHandler(chNao);
+						cp.getFechar().addClickHandler(chNao);
+						cp.getSim().addClickHandler(chSim);
 					} else {
 						Presenter presenter = new LoginPresenter(rpcService,
 								eventBus, new LoginView());
@@ -152,13 +145,61 @@ public class UsuarioPresenter implements Presenter {
 		}
 	}
 
+	private void cancelarInscricao(int e[]){
+		rpcService.cancelar(e[0],
+				new AsyncCallback<Boolean>() {
+					@Override
+					public void onFailure(Throwable caught) {
+
+					}
+
+					@Override
+					public void onSuccess(Boolean result) {
+						if (result) {
+							ip = new InformacaoPopup("Inscrição cancelada com sucesso!");
+							ip.getTela().center();
+							ip.getFechar().addClickHandler(new ClickHandler() {
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+									setDadosUsuario();
+								}
+							});
+							ip.getOk().addClickHandler(new ClickHandler() {
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+									setDadosUsuario();
+								}
+							});
+						} else {
+							ip = new InformacaoPopup(
+									"Não foi possível cancelar a inscrição");
+							ip.getTela().center();
+							ip.getOk().addClickHandler(new ClickHandler() {
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+								}
+							});
+							ip.getFechar().addClickHandler(new ClickHandler() {
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+								}
+							});
+						}
+					}
+				});
+	}
+	
 	public void eventoBotoesAtividades(final int[] e) {
-		if (e[1] == 1) {
+		if (e[1] == 4) {
 			Presenter presenter = new MaisInformacaoPresenter(rpcService,
 					eventBus, new MaisInformacaoView("Inscrever"), e[0], this);
 			if (presenter != null)
 				presenter.go();
-		} else if (e[1] == 2) {
+		} else if (e[1] == 5) {
 			rpcService.getSessao(new AsyncCallback<Boolean>() {
 				@Override
 				public void onFailure(Throwable caught) {
@@ -190,12 +231,29 @@ public class UsuarioPresenter implements Presenter {
 															setDadosUsuario();
 														}
 													});
+											ip.getFechar().addClickHandler(
+													new ClickHandler() {
+														@Override
+														public void onClick(
+																ClickEvent event) {
+															ip.getTela().hide();
+															setDadosUsuario();
+														}
+													});
 										} else {
 											ip = new InformacaoPopup(
 													"Você está inscrito em outra(s) atividade(s) no mesmo"
 															+ " horário!");
 											ip.getTela().center();
 											ip.getOk().addClickHandler(
+													new ClickHandler() {
+														@Override
+														public void onClick(
+																ClickEvent event) {
+															ip.getTela().hide();
+														}
+													});
+											ip.getFechar().addClickHandler(
 													new ClickHandler() {
 														@Override
 														public void onClick(
@@ -272,5 +330,116 @@ public class UsuarioPresenter implements Presenter {
 	@Override
 	public void go() {
 
+	}
+	
+	public void eventoBotoesMinicursos(final int[] e){
+		if (e[1] == 4) {
+			Presenter presenter = new MaisInformacaoPresenter(
+					rpcService, eventBus, new MaisInformacaoView("Inscrever"),
+					e[0]);
+			if (presenter != null)
+				presenter.go();
+		} else if (e[1] == 5) {
+			rpcService.getSessao(new AsyncCallback<Boolean>() {
+				@Override
+				public void onFailure(Throwable caught) {
+
+				}
+				@Override
+				public void onSuccess(Boolean result) {
+					//se estiver logado
+					if (result) {
+						//verificar minicurso
+						rpcService.getMinicursosDoAluno(new AsyncCallback<Boolean>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void onSuccess(Boolean result) {
+								// TODO Auto-generated method stub
+								if(result)
+									inscrever(e);
+								else{
+									//n�o pode ser inscrito
+									ip = new InformacaoPopup("Você j� est� inscrito em um Minicurso!");
+									ip.getTela().center();
+									ip.getOk().addClickHandler(new ClickHandler() {													
+										@Override
+										public void onClick(ClickEvent event) {
+											ip.getTela().hide();
+										}
+									});
+									ip.getFechar().addClickHandler(new ClickHandler() {													
+										@Override
+										public void onClick(ClickEvent event) {
+											ip.getTela().hide();
+										}
+									});
+								}
+									
+							}
+						});
+					} else {
+						Presenter presenter = new LoginPresenter(
+								rpcService, eventBus, new LoginView());
+						if (presenter != null)
+							presenter.go();
+					}
+				}
+			});
+		}
+	}
+	
+	private void inscrever(int[] e){
+		rpcService.inscrever(e[0],
+				new AsyncCallback<Boolean>() {
+					@Override
+					public void onFailure(Throwable caught) {
+					
+					}
+					@Override
+					public void onSuccess(Boolean result) {
+						if(result){
+							ip = new InformacaoPopup("Inscrição efetuada com sucesso!");
+							ip.getTela().center();
+							ip.getOk().addClickHandler(new ClickHandler() {														
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+									eventBus.fireEvent(new LoginEvent("login"));
+								}
+							});
+							ip.getFechar().addClickHandler(new ClickHandler() {														
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+									eventBus.fireEvent(new LoginEvent("login"));
+								}
+							});
+							
+						}
+						else{
+							ip = new InformacaoPopup("Você está inscrito em outra(s) atividade(s) no mesmo"
+									+ " horário!");
+							ip.getTela().center();
+							ip.getOk().addClickHandler(new ClickHandler() {													
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+								}
+							});
+							ip.getFechar().addClickHandler(new ClickHandler() {													
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+								}
+							});
+						}
+					}
+				});
 	}
 }
