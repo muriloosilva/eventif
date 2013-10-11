@@ -15,7 +15,7 @@ public class LoginDAO {
 			Connection con = ConnectionMannager.getConnetion();
 			PreparedStatement stmt = con
 					.prepareStatement("select * from participantes "
-							+ "where login_partic = ? and senha_partic = ?");
+							+ "where email_partic = ? and senha_partic = ?");
 			stmt.setString(1, login);
 			stmt.setString(2, senha);
 			ResultSet rs = stmt.executeQuery();
@@ -37,7 +37,7 @@ public class LoginDAO {
 		}
 		
 		if (user != null) {
-			if (user.getLogin_partic().equals(login)
+			if (user.getEmail_partic().equals(login)
 					&& user.getSenha_partic().equals(
 							senha)) {
 				user.setLogado(true);
