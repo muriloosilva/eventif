@@ -13,7 +13,9 @@ public interface RPCServiceAsync {
 
 	public void cadastraUsuario(User user, AsyncCallback<Boolean> callback);
 	
-	public void login(String login, String senha, AsyncCallback<Boolean> callback);
+	public void login(String login, String senha, AsyncCallback<Integer> callback);
+	
+	public void faleConosco(String name, String email, String msg, AsyncCallback<Boolean> callback);
 
 	public void getSession(AsyncCallback<User> callback);
 

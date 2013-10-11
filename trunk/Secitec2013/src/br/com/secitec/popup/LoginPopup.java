@@ -101,7 +101,7 @@ public class LoginPopup {
 				user.setSenha_partic(senha.getText());
 
 				rpcService.login(user.getLogin_partic(),
-						user.getSenha_partic(), new AsyncCallback<Boolean>() {
+						user.getSenha_partic(), new AsyncCallback<Integer>() {
 
 							@Override
 							public void onFailure(Throwable caught) {
@@ -110,7 +110,7 @@ public class LoginPopup {
 							}
 
 							@Override
-							public void onSuccess(Boolean b) {
+							public void onSuccess(Integer b) {
 								// TODO Auto-generated method stub
 							}
 						});
