@@ -29,9 +29,9 @@ body {
 
 #menuDir {
 	width: auto;
-	margin-left: 10%;
+	margin-left: 0%;
 	height: auto;
-	margin-right: 10%;
+	margin-right: 10px;
 	float: right;
 }
 
@@ -45,11 +45,18 @@ body {
 .nomeUsuario {
 	font: bold;
 	font-size: 14px;
-	color: black;
-	display: block;
 	text-decoration: none;
 	padding: 10px 0px 10px 5px;
-	margin-right: 40px;
+	margin-right: 20px;
+	border: none !important;
+	background-color: #09043F;
+	color: #FFFFFF !important;
+	display: block;
+}
+
+.hpUsuario {
+	margin-right: 0px;
+	margin-left: 331px;
 }
 
 .aMenuDir a:HOVER {
@@ -64,6 +71,25 @@ body {
 	text-decoration: none;
 	padding: 10px 0px 10px 5px;
 	margin-right: 40px;
+}
+
+.conteudoApresentacao{
+	margin-left: 7px;
+	margin-right: 7px;
+}
+
+p{
+	padding-bottom: 2px;
+	text-align: justify;
+}
+
+.aMenuUsuario {
+	border: none !important;
+	background-color: #09043F;
+	color: #FFFFFF !important;
+	display: block;
+	text-decoration: none;
+	padding: 10px 0px 10px 5px;
 }
 
 /* color: black; */
@@ -167,10 +193,9 @@ body {
 	margin-left: 0px !important;
 	color: #09043f;
 	font-weight: bold;
-	
 }
 
-.lbTituloAtividade{
+.lbTituloAtividade {
 	margin-top: 5px;
 	margin-bottom: 5px;
 }

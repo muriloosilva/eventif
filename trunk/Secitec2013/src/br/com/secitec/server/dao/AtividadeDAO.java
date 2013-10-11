@@ -11,6 +11,44 @@ import java.util.List;
 import br.com.secitec.shared.model.Atividade;
 
 public class AtividadeDAO {
+	public static boolean getMinicursosDoAluno(int idParticipante){
+		PreparedStatement stmt;
+		List<Atividade> atividades = new ArrayList<Atividade>();
+		try {
+			Connection con = ConnectionMannager.getConnetion();
+			stmt = con
+					.prepareStatement("select a.id_ativid, a.nome_ativid, "
+							+ "a.tipo_ativid, a.dt_ativid, a.hr_inicio_ativid, a.hr_fim_ativid "
+							+ "from atividades a inner join "
+							+ "inscricoes i on a.id_ativid = i.id_ativid "
+							+ "inner join participantes p on "
+							+ "p.id_partic = i.id_partic where "
+							+ "p.id_partic = "+idParticipante+" and a.tipo_ativid= 'Minicurso'");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Atividade atividade = new Atividade();
+				atividade.setIdAtiv(rs.getInt(1));
+				atividade.setNomeAtiv(rs.getString(2));
+				atividade.setTipoAtiv(rs.getString(3));
+				atividade.setDtAtiv(rs.getDate(4));
+				atividade.setHrInicio(rs.getTime(5));
+				atividade.setHrFim(rs.getTime(6));
+
+				atividades.add(atividade);
+			}
+			rs.close();
+			stmt.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		if (atividades.size() >= 1)
+			return false;
+		else
+			return true;
+	}
+	
 	public static Atividade criarAtividade(Atividade atividade) {
 		ResultSet rs;
 		Atividade ativCriada = new Atividade();
@@ -95,13 +133,20 @@ public class AtividadeDAO {
 		try {
 			Connection con = ConnectionMannager.getConnetion();
 			stmt = con
-					.prepareStatement("select id_ativid, nome_ativid, tipo_ativid from atividades");
+					.prepareStatement("select * from atividades");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Atividade atividade = new Atividade();
-				atividade.setIdAtiv(rs.getInt(1));
-				atividade.setNomeAtiv(rs.getString(2));
-				atividade.setTipoAtiv(rs.getString(3));
+				atividade.setIdAtiv(Integer.parseInt(rs.getString(1)));
+				atividade.setIdEvento(Integer.parseInt(rs.getString(2)));
+				atividade.setDtAtiv(rs.getDate(3));
+				atividade.setHrInicio(rs.getTime(4));
+				atividade.setHrFim(rs.getTime(5));
+				atividade.setVagasAtiv(Integer.parseInt(rs.getString(6)));
+				atividade.setTipoAtiv(rs.getString(7));
+				atividade.setNomeAtiv(rs.getString(8));
+				atividade.setDescAtiv(rs.getString(9));
+				atividade.setVagasDisponiveis(rs.getInt(10));
 				
 				atividades.add(atividade);
 			}
