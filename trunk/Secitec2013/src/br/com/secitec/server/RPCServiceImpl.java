@@ -1,7 +1,13 @@
 package br.com.secitec.server;
 
 import java.util.List;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import br.com.secitec.client.RPCService;
@@ -21,9 +27,7 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	@Override
 	public List<Atividade> getAtividades() {
 
-		System.out.println("#####Atividades");
 		List<Atividade> atividades = AtividadeDAO.getTodasAtividades();
-		System.out.println("Atividades: "  + atividades.size());
 
 		return atividades;
 	}
@@ -32,7 +36,7 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	public boolean cadastraUsuario(User user) {
 		if (ParticipanteDAO.loginDisponivel(user.getLogin_partic())) {
 			ParticipanteDAO.cadastraParticipante(user);
-			MailUtil.confirmacaoDeCadastro(user);
+//			MailUtil.confirmacaoDeCadastro(user);
 			return true;
 		} else
 			return false;
@@ -156,6 +160,25 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	public boolean cancelar(int codAtividade) {
 		User user = getSession();
 		return InscricaoDAO.cancelar(codAtividade, user.getId_partic());
+	}
+
+	@Override
+	public boolean getCpf(String cpf) {
+		return ParticipanteDAO.getCPF(cpf);
+	}
+
+	@Override
+	public boolean getEmail(String email) {
+		// TODO Auto-generated method stub
+		return ParticipanteDAO.getEmail(email);
+	}
+
+	@Override
+	public boolean getMinicursosDoAluno() {
+		User user = (User) getThreadLocalRequest().getSession(true)
+				.getAttribute("user");
+		
+		return AtividadeDAO.getMinicursosDoAluno(user.getId_partic());
 	}
 
 }

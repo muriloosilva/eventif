@@ -9,12 +9,34 @@
 	text-align: right;
 }
 
+.vCPF {
+	color: red;
+}
+
 .titulo {
 	color: black;
 	font-size: 18px;
 	font-style: normal;
 	margin-top: 10px;
 }
+
+.tbAtividades{
+	border-bottom-color: red;
+}
+
+.tbAtividadesCol1 {
+	padding-left: 7px;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	border-bottom-color: red;
+	margin-right: 20px;
+}
+
+.tbAtividadesCol2{}
+
+.tbAtividadesCol3{}
+
+.tbAtividadesCol4{}
 
 .tabelaLogin {
 	margin-top: 10px;
@@ -37,6 +59,13 @@
 	margin-right: -76px;
 }
 
+.botaoFecharMaisInformacao {
+	padding-right: 10px;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	margin-right: -173px;
+}
+
 .botaoFechar {
 	padding-right: 0px;
 	margin-top: 10px;
@@ -47,23 +76,27 @@
 /* .hpTop { */
 /* 	margin-right: 0px; */
 /* } */
-
-.botaoFecharCadastro{
+.botaoFecharCadastro {
 	padding-right: 10px;
 	margin-top: 10px;
 	margin-bottom: 0px;
 	margin-right: -174px;
 }
 
-.botaoCadastrar {
-	margin-bottom: 10px;
-	padding-right: 50px;
-	margin-left: -104px;
-	padding-top: 5px;
-	text-decoration: none;
+.ou {
+	margin-right: 11px;
+	margin-left: 12px;
+	margin-top: 10px;
 }
 
-.btCadastrar{
+.botaoCadastrar {
+	margin-top: 10px;
+	/* 	margin-left: 22px; */ /* 	margin-bottom: 10px; */
+/* 	padding-right: 50px; */ /* 	margin-left: -104px; */
+/* 	text-decoration: none; */
+}
+
+.btCadastrar {
 	margin-bottom: 10px;
 }
 
