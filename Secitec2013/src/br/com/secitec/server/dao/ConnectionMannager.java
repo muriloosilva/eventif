@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnectionMannager {
 	
-	static boolean openShift = false;
+	static boolean openShift = true;
 	
 	public static Connection getConnetion(){
 		

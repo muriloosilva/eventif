@@ -127,7 +127,7 @@ public class CadastroPopup {
 		
 		cpf = new TextBox();
 		cpf.setMaxLength(14);
-		setCpf(cpf);
+		setCpf();
 		cpf.setWidth("260px");		
 //		tb.setWidget(1, 1, cpf);
 		
@@ -150,7 +150,7 @@ public class CadastroPopup {
 		
 		email = new TextBox();
 		email.setWidth("260px");
-		setEmail(email);
+		setEmail();
 //		tb.setWidget(2, 1, email);
 
 		vEmail = new HTML("*Email inválido!");
@@ -253,14 +253,22 @@ public class CadastroPopup {
 					user.setSenha_partic(senha.getText());
 					user.setMatr_aluno_partic(matricula.getText());
 
+					tela.hide();
+					final PopupPanel pp = new PopupPanel(false);
+					pp.setGlassEnabled(true);
+					pp.add(new HTML("Realizando cadastro, aguarde..."));
+					pp.center();
+					
+					//ip.getTela().center();
 					rpcService.cadastraUsuario(user,
 							new AsyncCallback<Boolean>() {
 								@Override
 								public void onSuccess(Boolean result) {
 									if (result) {
 										tela.hide();
+										pp.hide();
 										ip = new InformacaoPopup(
-												"Cadastro realizado com sucesso! Efetue login.");
+												"Foi enviado para o seu e-mail o link para a confirmação do cadastro. Antes de fazer login, ative o seu cadastro.");
 										ip.getTela().center();
 										ClickHandler ch = new ClickHandler() {
 											@Override
@@ -277,9 +285,10 @@ public class CadastroPopup {
 										ip.getOk().addClickHandler(ch);
 										ip.getFechar().addClickHandler(ch);
 									} else {
-										tela.hide();
+										//tela.hide();
+										pp.hide();
 										ip = new InformacaoPopup(
-												"Email indisponÃ­vel! Tente outro.");
+												"Email indisponível! Tente outro.");
 										ip.getTela().center();
 										ClickHandler ch = new ClickHandler() {
 											@Override
@@ -301,7 +310,7 @@ public class CadastroPopup {
 								}
 							});
 				} else {
-					tela.hide();
+					//tela.hide();
 					ip = new InformacaoPopup("Preencha os campos corretamente!");
 					ip.getTela().center();
 					ClickHandler ch = new ClickHandler() {
@@ -335,55 +344,57 @@ public class CadastroPopup {
 			matricula.setFocus(true);
 	}
 
-	private void setCpf(final TextBoxBase cpfText) {
-		cpfText.addKeyPressHandler(new KeyPressHandler() {
+	private void setCpf() {
+		cpf.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				System.out.println("teclado: " + event.getNativeEvent().getKeyCode());
 				if (verificaTecla(event)) {
 					if (event.getNativeEvent().getKeyCode() != 8) {
-						if (cpfText.getValue().length() == 3
-								|| cpfText.getValue().length() == 7) {
-							cpfText.setValue(cpfText.getValue() + ".");
+						if (cpf.getValue().length() == 3
+								|| cpf.getValue().length() == 7) {
+							cpf.setValue(cpf.getValue() + ".");
 						}
-						if (cpfText.getValue().length() == 11) {
-							cpfText.setValue(cpfText.getValue() + "-");
+						if (cpf.getValue().length() == 11) {
+							cpf.setValue(cpf.getValue() + "-");
 						}
 					}
 				} else {
-					cpfText.cancelKey();
+					cpf.cancelKey();
 				}
 			}
 		});
-		cpfText.addBlurHandler(new BlurHandler() {
+		cpf.addBlurHandler(new BlurHandler() {
 			@Override
 			public void onBlur(BlurEvent event) {
-				if(!CPF.isCPF(cpfText.getValue()) && !cpfText.getValue().equals("")){
+				if(!CPF.isCPF(cpf.getValue()) && !cpf.getValue().equals("")){
 					vCpf.setText("*CPF inválido!");
 					vCpf.setVisible(true);
 					cpf.setText("");
 					cpf.setFocus(true);
 				}
 				else{
-					rpcService.getCpf(cpfText.getValue(), new AsyncCallback<Boolean>() {
-
-						@Override
-						public void onFailure(Throwable caught) {
-						}
-
-						@Override
-						public void onSuccess(Boolean result) {
-							//se true, cpf disponível
-							if(result){
-								vCpf.setVisible(false);
+					if(!cpf.getText().isEmpty()){
+						rpcService.getCpf(cpf.getValue(), new AsyncCallback<Boolean>() {
+	
+							@Override
+							public void onFailure(Throwable caught) {
 							}
-							else{
-								vCpf.setText("*CPF já cadastrado!");
-								vCpf.setVisible(true);
-								cpf.setText("");
-								cpf.setFocus(true);
+	
+							@Override
+							public void onSuccess(Boolean result) {
+								//se true, cpf disponível
+								if(result){
+									vCpf.setVisible(false);
+								}
+								else{
+									vCpf.setText("*CPF já cadastrado!");
+									vCpf.setVisible(true);
+									cpf.setText("");
+									cpf.setFocus(true);
+								}
 							}
-						}
-					});
+						});
+					}
 
 				}
 			}
@@ -402,39 +413,41 @@ public class CadastroPopup {
 			return false;
 	}
 	
-	private void setEmail(final TextBoxBase tbEmail){
-		tbEmail.addBlurHandler(new BlurHandler() {
+	private void setEmail(){
+		email.addBlurHandler(new BlurHandler() {
 			
 			@Override
 			public void onBlur(BlurEvent event) {
-				if(!verificaEmail(tbEmail.getValue()) && !tbEmail.getValue().equals("")){
+				if(!verificaEmail(email.getValue()) && !email.getValue().equals("")){
 					vEmail.setText("*Email inválido!");
 					vEmail.setVisible(true);
 					email.setText("");
 					email.setFocus(true);
 				}
 				else{
-					rpcService.getEmail(tbEmail.getValue(), new AsyncCallback<Boolean>() {
-
-						@Override
-						public void onFailure(Throwable caught) {
-						}
-
-						@Override
-						public void onSuccess(Boolean result) {
-							//se true, cpf disponível
-							System.out.println("result email: "+result);
-							if(result){
-								vEmail.setVisible(false);
+					if(!email.getText().isEmpty()){
+						rpcService.getEmail(email.getValue(), new AsyncCallback<Boolean>() {
+	
+							@Override
+							public void onFailure(Throwable caught) {
 							}
-							else{
-								vEmail.setText("*Email já cadastrado!");
-								vEmail.setVisible(true);
-								email.setText("");
-								email.setFocus(true);
+	
+							@Override
+							public void onSuccess(Boolean result) {
+								//se true, cpf disponível
+								System.out.println("result email: "+result);
+								if(result){
+									vEmail.setVisible(false);
+								}
+								else{
+									vEmail.setText("*Email já cadastrado!");
+									vEmail.setVisible(true);
+									email.setText("");
+									email.setFocus(true);
+								}
 							}
-						}
-					});
+						});
+					}
 
 				}
 				
@@ -446,12 +459,12 @@ public class CadastroPopup {
 			}
 		});
 		
-		tbEmail.addKeyUpHandler(new KeyUpHandler() {
+		email.addKeyUpHandler(new KeyUpHandler() {
 			
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				if(event.getNativeEvent().getKeyCode() != 9)
-				tbEmail.setValue(tbEmail.getValue().toLowerCase());				
+					email.setValue(email.getValue().toLowerCase());				
 			}
 		});
 	}

@@ -11,6 +11,7 @@ public class User implements Serializable{
 	private String senha_partic;
 	private String matr_aluno_partic;
 	private boolean logado;
+	private int ativo;
 	
 	public int getId_partic() {
 		return id_partic;
@@ -60,4 +61,12 @@ public class User implements Serializable{
 	public void setLogado(boolean logado) {
 		this.logado = logado;
 	}
+	public int getAtivo() {
+		return ativo;
+	}
+	public void setAtivo(int ativo) {
+		this.ativo = ativo;
+	}
+	
+	
 }

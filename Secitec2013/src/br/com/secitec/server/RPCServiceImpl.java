@@ -1,13 +1,7 @@
 package br.com.secitec.server;
 
 import java.util.List;
-import java.util.Properties;
 
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import br.com.secitec.client.RPCService;
@@ -15,7 +9,8 @@ import br.com.secitec.server.dao.AtividadeDAO;
 import br.com.secitec.server.dao.InscricaoDAO;
 import br.com.secitec.server.dao.LoginDAO;
 import br.com.secitec.server.dao.ParticipanteDAO;
-import br.com.secitec.server.mail.MailUtil;
+import br.com.secitec.server.util.ConfirmacaoCadastro;
+import br.com.secitec.server.util.MailUtil;
 import br.com.secitec.shared.model.Atividade;
 import br.com.secitec.shared.model.User;
 
@@ -36,21 +31,31 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	public boolean cadastraUsuario(User user) {
 		if (ParticipanteDAO.loginDisponivel(user.getLogin_partic())) {
 			ParticipanteDAO.cadastraParticipante(user);
-//			MailUtil.confirmacaoDeCadastro(user);
+			ConfirmacaoCadastro.enviaConfirmacaoCadastro(user);
 			return true;
 		} else
 			return false;
 	}
 
 	@Override
-	public boolean login(String login, String senha) {
+	public int login(String login, String senha) {
+		//0 erro no login
+		//1 inativo cadastro
+		//2 login ok
 		// TODO Auto-generated method stub
 		User user = LoginDAO.loginUsuario(login, senha);
-		if (user.isLogado()) {
+		if(user.getAtivo()==0){
+			return 1;
+		}
+		else if (user.isLogado()) {
 			HttpSession session = getThreadLocalRequest().getSession();
 			session.setAttribute("user", user);
+			return 2;
 		}
-		return user.isLogado();
+		else{
+			return 0;
+		}
+		
 	}
 
 	@Override
@@ -179,6 +184,11 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 				.getAttribute("user");
 		
 		return AtividadeDAO.getMinicursosDoAluno(user.getId_partic());
+	}
+
+	@Override
+	public boolean faleConosco(String name, String email, String msg) {
+		return MailUtil.faleConosco(name, email, msg);
 	}
 
 }

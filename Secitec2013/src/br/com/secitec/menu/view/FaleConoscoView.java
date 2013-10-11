@@ -25,10 +25,9 @@ FaleConoscoPresenter.Display{
 	private VerticalPanel vp;
 	private FlexTable tabela;
 	private Button enviar;
-	private Anchor cadastro;
 	
 	public FaleConoscoView() {
-		tela = new PopupPanel(true);
+		tela = new PopupPanel(false);
 		tela.setStyleName("demo-popup");
 
 		vp = new VerticalPanel();
@@ -36,18 +35,18 @@ FaleConoscoPresenter.Display{
 		vp.setSpacing(0);
 		vp.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 		vp.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
-		vp.setWidth("700px");
+		vp.setWidth("450px");
 		
 		HorizontalPanel hpTop = new HorizontalPanel();
 		hpTop.setSpacing(0);
-		hpTop.setWidth("545px");
+		hpTop.setWidth("450px");
 		hpTop.setHeight("10px");
 		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
 		hpTop.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
 
 		HorizontalPanel hpTitulo = new HorizontalPanel();
 		hpTitulo.setSpacing(0);
-		hpTitulo.setWidth("600px");
+		hpTitulo.setWidth("450px");
 		hpTitulo.setHeight("40px");
 		hpTitulo.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 		hpTitulo.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
@@ -72,22 +71,24 @@ FaleConoscoPresenter.Display{
 				tela.hide();
 			}
 		});
-		hpFechar.add(imgFechar);
-		hpTop.add(hpFechar);
+		//hpFechar.add(imgFechar);
+		hpTop.add(imgFechar);
 		
 		tabela = new FlexTable();
 		tabela = tabela(tabela);
 		preencheTabela(tabela);
 		
 		HorizontalPanel hpRodape = new HorizontalPanel();
-		hpRodape.setHeight("40px");
-		hpRodape.setWidth("600px");
+		hpRodape.setHeight("60px");
+		hpRodape.setWidth("450px");
 		hpRodape.setSpacing(0);
 		hpRodape.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
 		
 		HorizontalPanel hpFaleConosco = new HorizontalPanel();
 		hpFaleConosco.setSpacing(0);
 		hpFaleConosco.setHeight("40px");
+		hpFaleConosco.setWidth("79px");
+		hpFaleConosco.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
 		
 		enviar = new Button();
 		enviar.setText("Enviar");
@@ -110,34 +111,38 @@ FaleConoscoPresenter.Display{
 		hNome.addStyleName("alignDir");
 		tb.setWidget(0, 0, hNome);
 		TextBox nome = new TextBox();
-		nome.setWidth("240px");
+		nome.setWidth("336px");
 		tb.setWidget(0, 1, nome);
 
 		HTML hEmail = new HTML("E-mail: ");
 		hEmail.addStyleName("alignDir");
 		tb.setWidget(1, 0, hEmail);
 		TextBox email = new TextBox();
-		email.setWidth("240px");
+		email.setWidth("336px");
 		tb.setWidget(1, 1, email);
 		
 		HTML hAssunto = new HTML("Assunto: ");
 		hAssunto.addStyleName("alignDir");
 		tb.setWidget(2, 0, hAssunto);
 		TextBox assunto = new TextBox();
-		assunto.setWidth("240px");
+		assunto.setWidth("336px");
 		tb.setWidget(2, 1, assunto);
 		
 		HTML hMensagem = new HTML("Mensagem: ");
 		hMensagem.addStyleName("alignDir");
 		tb.setWidget(3, 0, hMensagem);
 		TextArea mensagem = new TextArea();
+		mensagem.getElement().getStyle().setProperty("maxWidth","340px");
+		mensagem.getElement().getStyle().setProperty("maxHeight","300px");
+		mensagem.getElement().getStyle().setProperty("minWidth","340px");
+		mensagem.getElement().getStyle().setProperty("minHeight","300px");
 		mensagem.setWidth("340px");
 		mensagem.setHeight("300px");
 		tb.setWidget(3, 1, mensagem);
 	}
 
 	private FlexTable tabela(FlexTable tb) {
-		tb.setWidth("600px");
+		tb.setWidth("450px");
 		tb.setHeight("80px");
 		tb.getColumnFormatter().setWidth(0, "50px");
 //		tb.getColumnFormatter().addStyleName(0, "alignDir");
@@ -217,8 +222,8 @@ FaleConoscoPresenter.Display{
 		return (TextBox) tabela.getWidget(2, 1);
 	}
 	
-	public TextBox getTbMensagem(){
-		return (TextBox) tabela.getWidget(3, 1);
+	public TextArea getTbMensagem(){
+		return (TextArea) tabela.getWidget(3, 1);
 	}
 	
 	public PopupPanel getPopup(){

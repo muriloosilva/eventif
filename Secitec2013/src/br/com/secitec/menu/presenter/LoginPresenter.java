@@ -91,13 +91,13 @@ public class LoginPresenter implements Presenter {
 		user.setSenha_partic(senha.getText());
 
 		if (!login.getText().equals("") && !senha.getText().equals("")) {
-			rpcService.login(login.getText(), senha.getText(), new AsyncCallback<Boolean>() {
+			rpcService.login(login.getText(), senha.getText(), new AsyncCallback<Integer>() {
 						@Override
 						public void onFailure(Throwable caught) {
 						}
 						@Override
-						public void onSuccess(Boolean b) {
-							if (b) {
+						public void onSuccess(Integer b) {
+							if (b == 2) {
 								display.getPopup().hide();
 								if (History.getToken().equals("login")) {
 									Presenter presenter = new UsuarioPresenter(rpcService, eventBus, new UsuarioView());
@@ -105,9 +105,29 @@ public class LoginPresenter implements Presenter {
 										presenter.go(RootPanel.get("corpoEsq"));
 								} else
 									eventBus.fireEvent(new LoginEvent("login"));
-							} else {
+							} else if(b==0){
 								display.getPopup().hide();
 								ip = new InformacaoPopup("Login ou senha inválidos!");
+								ip.getTela().center();
+								ClickHandler ch = new ClickHandler() {
+									@Override
+									public void onClick(ClickEvent event) {
+										display.getPopup().center();
+										display.getTbLogin().setText("");
+										display.getTbSenha().setText("");
+										display.getTbLogin().setFocus(true);
+										ip.getTela().hide();
+									}
+								};
+								ip.getOk().addClickHandler(ch);
+								ip.getFechar().addClickHandler(ch);
+								//LOGIN DANDO PROBLEMA
+							}
+							
+							else if(b==1){
+								display.getPopup().hide();
+								ip = new InformacaoPopup("Você ainda não confirmou o seu cadastro. Caso não tenha recebido o e-mail" +
+										", na tela de login, clique em reenviar e-mail para confirmação!");
 								ip.getTela().center();
 								ClickHandler ch = new ClickHandler() {
 									@Override

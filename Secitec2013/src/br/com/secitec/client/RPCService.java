@@ -14,8 +14,9 @@ public interface RPCService extends RemoteService {
 	List<Atividade> getAtividades();
 	List<Atividade> getAtividadesUsuario();
 	boolean cadastraUsuario(User user);
-	boolean login(String login, String senha);
+	int login(String login, String senha);
 	User getSession();
+	boolean faleConosco(String name, String email, String msg);
 	boolean getSessao();
 	boolean inscrever(int codAtividade);
 	boolean cancelar(int codAtividade);

@@ -16,10 +16,12 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -38,7 +40,7 @@ public class FaleConoscoPresenter implements Presenter {
 		
 		TextBox getTbAssunto();
 		
-		TextBox getTbMensagem();
+		TextArea getTbMensagem();
 
 		PopupPanel getPopup();
 	}
@@ -66,32 +68,56 @@ public class FaleConoscoPresenter implements Presenter {
 				String mensagem = display.getTbMensagem().getText();
 
 
-				/*if (!nome.equals("") && !email.equals("")&& !assunto.equals("")&& !mensagem.equals("")) {
-					rpcService.login(user.getLogin_partic(), user.getSenha_partic(), new AsyncCallback<Boolean>() {
+				if (!nome.equals("") && !email.equals("")&& !assunto.equals("")&& !mensagem.equals("")) {
+					display.getPopup().hide();
+					final PopupPanel pp = new PopupPanel(false);
+					pp.setGlassEnabled(true);
+					pp.add(new HTML("Sua mensagem est· sendo enviada, aguarde ..."));
+					pp.center();
+					rpcService.faleConosco(nome, email, mensagem, new AsyncCallback<Boolean>() {
 								@Override
 								public void onFailure(Throwable caught) {
+									pp.hide();
+									ip = new InformacaoPopup("A mensagem n„o foi enviada. Tente novamente.");
+									ip.getTela().center();
+									ClickHandler ch = new ClickHandler() {
+										@Override
+										public void onClick(ClickEvent event) {
+											display.getPopup().center();
+											ip.getTela().hide();
+										}
+									};
 								}
 								@Override
 								public void onSuccess(Boolean b) {
 									if (b) {
+										pp.hide();
 										display.getPopup().hide();
-										if (History.getToken().equals("login")) {
-											Presenter presenter = new UsuarioPresenter(rpcService, eventBus, new UsuarioView());
-											if (presenter != null)
-												presenter.go(RootPanel.get("corpoEsq"));
-										} else
-											eventBus.fireEvent(new LoginEvent("login"));
+										//ip = new InformacaoPopup("A mensagem foi enviada.");
+										//ip.getTela().center();
+										ClickHandler ch = new ClickHandler() {
+											@Override
+											public void onClick(ClickEvent event) {
+												display.getPopup().center();
+												display.getTbNome().setText("");
+												display.getTbEmail().setText("");
+												display.getTbAssunto().setText("");
+												display.getTbMensagem().setText("");
+												display.getTbNome().setFocus(true);
+												ip.getTela().hide();
+											}
+										};
+										ip.getOk().addClickHandler(ch);
+										ip.getFechar().addClickHandler(ch);
 									} else {
-										display.getPopup().hide();
-										ip = new InformacaoPopup("Login ou senha inv√°lidos!");
+										//display.getPopup().hide();
+										pp.hide();
+										ip = new InformacaoPopup("A mensagem n„o foi enviada. Tente novamente.");
 										ip.getTela().center();
 										ClickHandler ch = new ClickHandler() {
 											@Override
 											public void onClick(ClickEvent event) {
 												display.getPopup().center();
-//												display.getTbLogin().setText("");
-//												display.getTbSenha().setText("");
-//												display.getTbLogin().setFocus(true);
 												ip.getTela().hide();
 											}
 										};
@@ -101,22 +127,21 @@ public class FaleConoscoPresenter implements Presenter {
 								}
 							});
 				} else {
-					display.getPopup().hide();
-					ip = new InformacaoPopup("Preencha os campos corretamente!");
+					//display.getPopup().hide();
+					ip = new InformacaoPopup("Preencha os campos corretamente.");
 					ip.getTela().center();
 					ClickHandler ch = new ClickHandler() {
 						@Override
-						public void onClick(ClickEvent event) {									
+						public void onClick(ClickEvent event) {
+							ip.getTela().hide();
 							display.getPopup().center();
-//							display.getTbLogin().setText("");
-//							display.getTbSenha().setText("");
-//							display.getTbLogin().setFocus(true);
+							//display.getTbNome().setFocus(true);
 							ip.getTela().hide();
 						}
 					};
 					ip.getOk().addClickHandler(ch);
 					ip.getFechar().addClickHandler(ch);
-				}*/
+				}
 
 			}
 		});

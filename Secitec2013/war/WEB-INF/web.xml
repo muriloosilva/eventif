@@ -11,6 +11,16 @@
     <url-pattern>/secitec2013/RPCService</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>ConfirmRegistration</servlet-name>
+    <servlet-class>br.com.secitec.server.ConfirmRegistration</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>ConfirmRegistration</servlet-name>
+    <url-pattern>/confirmRegistration</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Secitec2013.html</welcome-file>
