@@ -94,6 +94,21 @@ public class LoginPresenter implements Presenter {
 			rpcService.login(login.getText(), senha.getText(), new AsyncCallback<Integer>() {
 						@Override
 						public void onFailure(Throwable caught) {
+							display.getPopup().hide();
+							ip = new InformacaoPopup("Houve um erro na sua solicitação. Tente novamente.");
+							ip.getTela().center();
+							ClickHandler ch = new ClickHandler() {
+								@Override
+								public void onClick(ClickEvent event) {
+									display.getPopup().center();
+									display.getTbLogin().setText("");
+									display.getTbSenha().setText("");
+									display.getTbLogin().setFocus(true);
+									ip.getTela().hide();
+								}
+							};
+							ip.getOk().addClickHandler(ch);
+							ip.getFechar().addClickHandler(ch);
 						}
 						@Override
 						public void onSuccess(Integer b) {
