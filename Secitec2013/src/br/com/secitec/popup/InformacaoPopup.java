@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class InformacaoPopup{
 
@@ -13,6 +14,10 @@ public class InformacaoPopup{
 	private VerticalPanel vp;
 	private Button bt;
 	private Image imgFechar;
+	private HorizontalPanel hpMsg;
+	private HorizontalPanel hpBt;
+	private HorizontalPanel hpTop;
+	
 	
 	public InformacaoPopup(String msg){
 		tela = new PopupPanel(false);
@@ -25,7 +30,7 @@ public class InformacaoPopup{
 		vp.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 		vp.setWidth("300px");
 		
-		HorizontalPanel hpTop = new HorizontalPanel();
+		hpTop = new HorizontalPanel();
 		hpTop.setSpacing(0);
 		hpTop.setWidth("300px");
 		hpTop.addStyleName("botaoFechar");
@@ -36,7 +41,7 @@ public class InformacaoPopup{
 		imgFechar.setSize("20px", "20px");
 		hpTop.add(imgFechar);
 		
-		HorizontalPanel hpMsg = new HorizontalPanel();
+		hpMsg = new HorizontalPanel();
 		hpMsg.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 		hpMsg.setWidth("300px");
 		hpMsg.addStyleName("hpMsg");
@@ -44,7 +49,7 @@ public class InformacaoPopup{
 		HTML h = new HTML(msg);
 		hpMsg.add(h);
 		
-		HorizontalPanel hpBt = new HorizontalPanel();
+		hpBt = new HorizontalPanel();
 		hpBt.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 		hpBt.setWidth("300px");
 		hpBt.addStyleName("hpBt");
@@ -58,6 +63,15 @@ public class InformacaoPopup{
 		vp.add(hpBt);		
 		tela.add(vp);
 		tela.setGlassEnabled(true);
+	}
+	
+	public void setOtherWidget(Widget w){
+		vp.clear();
+		vp.add(hpTop);
+		vp.add(hpMsg);
+		vp.add(w);
+		vp.add(hpBt);	
+		
 	}
 	
 	public PopupPanel getTela(){

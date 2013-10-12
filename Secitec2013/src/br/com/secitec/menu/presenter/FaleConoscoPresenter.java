@@ -72,13 +72,13 @@ public class FaleConoscoPresenter implements Presenter {
 					display.getPopup().hide();
 					final PopupPanel pp = new PopupPanel(false);
 					pp.setGlassEnabled(true);
-					pp.add(new HTML("Sua mensagem est· sendo enviada, aguarde ..."));
+					pp.add(new HTML("Sua mensagem est√° sendo enviada, aguarde ..."));
 					pp.center();
 					rpcService.faleConosco(nome, email, mensagem, new AsyncCallback<Boolean>() {
 								@Override
 								public void onFailure(Throwable caught) {
 									pp.hide();
-									ip = new InformacaoPopup("A mensagem n„o foi enviada. Tente novamente.");
+									ip = new InformacaoPopup("A mensagem n√£o foi enviada. Tente novamente.");
 									ip.getTela().center();
 									ClickHandler ch = new ClickHandler() {
 										@Override
@@ -112,7 +112,7 @@ public class FaleConoscoPresenter implements Presenter {
 									} else {
 										//display.getPopup().hide();
 										pp.hide();
-										ip = new InformacaoPopup("A mensagem n„o foi enviada. Tente novamente.");
+										ip = new InformacaoPopup("A mensagem n√£o foi enviada. Tente novamente.");
 										ip.getTela().center();
 										ClickHandler ch = new ClickHandler() {
 											@Override

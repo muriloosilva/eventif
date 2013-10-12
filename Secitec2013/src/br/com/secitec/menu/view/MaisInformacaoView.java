@@ -101,7 +101,7 @@ public class MaisInformacaoView extends Composite implements MaisInformacaoPrese
 		nome = new HTML();
 		tb.setWidget(0, 1, nome);
 
-		HTML h1 = new HTML("Descrição:");
+		HTML h1 = new HTML("DescriÃ§Ã£o:");
 		h1.addStyleName("alignDir");
 		tb.setWidget(1, 0, h1);
 		desc = new HTML();
@@ -113,13 +113,13 @@ public class MaisInformacaoView extends Composite implements MaisInformacaoPrese
 		data = new HTML();
 		tb.setWidget(2, 1, data);
 
-		HTML h3 = new HTML("Hora de início:");
+		HTML h3 = new HTML("Hora de inÃ­cio:");
 		h3.addStyleName("alignDir");
 		tb.setWidget(3, 0, h3);
 		hrIni = new HTML();
 		tb.setWidget(3, 1, hrIni);
 
-		HTML h4 = new HTML("Hora de término:");
+		HTML h4 = new HTML("Hora de tÃ©rmino:");
 		h4.addStyleName("alignDir");
 		tb.setWidget(4, 0, h4);
 		hrFim = new HTML();
@@ -131,7 +131,7 @@ public class MaisInformacaoView extends Composite implements MaisInformacaoPrese
 		vagas = new HTML();
 		tb.setWidget(5, 1, vagas);
 		
-		HTML h6 = new HTML("Vagas disponíveis:");
+		HTML h6 = new HTML("Vagas disponÃ­veis:");
 		h6.addStyleName("alignDir");
 		tb.setWidget(6, 0, h6);
 		vagasDispo = new HTML();

@@ -16,6 +16,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -53,6 +54,9 @@ public class LoginPresenter implements Presenter {
 	}
 
 	public void bind() {
+		
+		//LOGIN DANDO PROBLEMA
+		
 		display.getLogin().addClickHandler(new ClickHandler() {
 
 			@Override
@@ -79,7 +83,7 @@ public class LoginPresenter implements Presenter {
 	}
 
 	private void login(){
-		User user = new User();
+		final User user = new User();
 
 		TextBox login = display.getTbLogin();
 		PasswordTextBox senha = display.getTbSenha();
@@ -91,9 +95,16 @@ public class LoginPresenter implements Presenter {
 		user.setSenha_partic(senha.getText());
 
 		if (!login.getText().equals("") && !senha.getText().equals("")) {
+			
+			final PopupPanel pp = new PopupPanel(false);
+			pp.setGlassEnabled(true);
+			pp.add(new HTML("Aguarde ..."));
+			pp.center();
+			
 			rpcService.login(login.getText(), senha.getText(), new AsyncCallback<Integer>() {
 						@Override
 						public void onFailure(Throwable caught) {
+							pp.hide();
 							display.getPopup().hide();
 							ip = new InformacaoPopup("Houve um erro na sua solicitação. Tente novamente.");
 							ip.getTela().center();
@@ -112,6 +123,7 @@ public class LoginPresenter implements Presenter {
 						}
 						@Override
 						public void onSuccess(Integer b) {
+							pp.hide();
 							if (b == 2) {
 								display.getPopup().hide();
 								if (History.getToken().equals("login")) {
@@ -141,9 +153,13 @@ public class LoginPresenter implements Presenter {
 							
 							else if(b==1){
 								display.getPopup().hide();
-								ip = new InformacaoPopup("Você ainda não confirmou o seu cadastro. Caso não tenha recebido o e-mail" +
-										", na tela de login, clique em reenviar e-mail para confirmação!");
+								
+								Anchor a = new Anchor("clique aqui");
+								
+								ip = new InformacaoPopup("Você ainda não confirmou o seu cadastro. Caso não tenha recebido o e-mail clique no link abaixo");
+								ip.setOtherWidget(a);
 								ip.getTela().center();
+
 								ClickHandler ch = new ClickHandler() {
 									@Override
 									public void onClick(ClickEvent event) {
@@ -156,7 +172,82 @@ public class LoginPresenter implements Presenter {
 								};
 								ip.getOk().addClickHandler(ch);
 								ip.getFechar().addClickHandler(ch);
-								//LOGIN DANDO PROBLEMA
+								
+								a.addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent event) {
+										ip.getTela().hide();
+										final PopupPanel pp = new PopupPanel(false);
+										pp.setGlassEnabled(true);
+										pp.add(new HTML("Aguarde ..."));
+										pp.center();
+										rpcService.reenviaConfirmacaoCadastro(user, new AsyncCallback<Boolean>() {
+											@Override
+											public void onSuccess(Boolean result) {
+												pp.hide();
+												if(result){
+													ip = new InformacaoPopup("Foi reenviado para o seu e-mail a confirmação de cadastro. Verifique em" +
+															" sua caixa de SPAM ou no LIXO.");
+													ip.getTela().center();
+													ClickHandler ch = new ClickHandler() {
+														@Override
+														public void onClick(ClickEvent event) {
+															display.getPopup().center();
+															display.getTbLogin().setText("");
+															display.getTbSenha().setText("");
+															display.getTbLogin().setFocus(true);
+															ip.getTela().hide();
+														}
+													};
+													ip.getOk().addClickHandler(ch);
+													ip.getFechar().addClickHandler(ch);
+													
+												}
+												else{
+													ip = new InformacaoPopup("Não foi possível reenviar o e-mail para confirmação de cadastro. Tente" +
+															" mais tarde.");
+													ip.getTela().center();
+													ClickHandler ch = new ClickHandler() {
+														@Override
+														public void onClick(ClickEvent event) {
+															display.getPopup().center();
+															display.getTbLogin().setText("");
+															display.getTbSenha().setText("");
+															display.getTbLogin().setFocus(true);
+															ip.getTela().hide();
+														}
+													};
+													ip.getOk().addClickHandler(ch);
+													ip.getFechar().addClickHandler(ch);
+												}
+												
+											}
+											@Override
+											public void onFailure(
+													Throwable caught) {
+												pp.hide();
+												ip = new InformacaoPopup("Não foi possível reenviar o e-mail para confirmação de cadastro. Tente" +
+														" mais tarde.");
+												ip.getTela().center();
+												ClickHandler ch = new ClickHandler() {
+													@Override
+													public void onClick(ClickEvent event) {
+														display.getPopup().center();
+														display.getTbLogin().setText("");
+														display.getTbSenha().setText("");
+														display.getTbLogin().setFocus(true);
+														ip.getTela().hide();
+													}
+												};
+												ip.getOk().addClickHandler(ch);
+												ip.getFechar().addClickHandler(ch);
+												
+											}
+										});
+										
+									}
+								});
 							}
 						}
 					});
