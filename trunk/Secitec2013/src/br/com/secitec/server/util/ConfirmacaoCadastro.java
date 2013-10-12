@@ -1,6 +1,5 @@
 package br.com.secitec.server.util;
 
-import br.com.secitec.server.dao.ParticipanteDAO;
 import br.com.secitec.shared.model.User;
 
 public class ConfirmacaoCadastro {

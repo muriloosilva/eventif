@@ -4,9 +4,9 @@ import java.util.List;
 
 import br.com.secitec.menu.presenter.UsuarioPresenter;
 import br.com.secitec.shared.model.Atividade;
+import br.com.secitec.shared.model.Data;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -31,6 +31,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 	private FlexTable tabelaOficinas;
 	private FlexTable tabelaMinicursos;
 	private FlexTable tabelaPalestras;
+	private Button btInsc, btM;
 
 	public UsuarioView() {
 		// String value = Window.Location.getParameter("param");
@@ -52,7 +53,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		hpTop.setWidth("100%");
 		hpTop.setHeight("24px");
 
-		HTML titlePage = new HTML("�rea do Participante");
+		HTML titlePage = new HTML("�rea do Participante");
 		titlePage.setStyleName("lbTitle");
 		hpTop.add(titlePage);
 
@@ -153,25 +154,25 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 	}
 
 	@Override
-	public HasClickHandlers getListaOficina() {
+	public FlexTable getListaOficina() {
 		// TODO Auto-generated method stub
 		return tabelaOficinas;
 	}
 
 	@Override
-	public HasClickHandlers getListaMinicurso() {
+	public FlexTable getListaMinicurso() {
 		// TODO Auto-generated method stub
 		return tabelaMinicursos;
 	}
 
 	@Override
-	public HasClickHandlers getListaPalestra() {
+	public FlexTable getListaPalestra() {
 		// TODO Auto-generated method stub
 		return tabelaPalestras;
 	}
 
 	@Override
-	public HasClickHandlers getListaUsuario() {
+	public FlexTable getListaUsuario() {
 		// TODO Auto-generated method stub
 		return tabelaUsuario;
 	}
@@ -202,53 +203,71 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			HTML nome = new HTML();
 			nome.setText(a.getNomeAtiv());
 			nome.removeStyleName("gwt-HTML");
-			nome.addStyleName("tbAtividadesCol1");
+//			nome.addStyleName("tbAtividadesCol1");
 
-			HTML data = new HTML();
-			data.setText(formataData(String.valueOf(a.getDtAtiv())));
-			data.removeStyleName("gwt-HTML");
-			data.addStyleName("tbAtividadesCol2");
+			VerticalPanel vpDatas = new VerticalPanel();
+			vpDatas.addStyleName("vpDatas");
+			for (int j = 0; j < a.getDatas().size(); j++) {
+				Data d = a.getDatas().get(j);
+				HTML htData = new HTML();
+				htData.setText(formataData(String.valueOf(d.getData())));
+				htData.removeStyleName("gwt-HTML");
+				htData.addStyleName("tbAtividadesCol2");
+				vpDatas.add(htData);
+			}
+			
+//			HTML data = new HTML();
+//			data.setText(formataData(String.valueOf(a.getDtAtiv())));
+//			data.removeStyleName("gwt-HTML");
+//			data.addStyleName("tbAtividadesCol2");
 
-			HTML horario = new HTML();
-			horario.setText(""
-					+ String.valueOf(a.getHrInicio()).substring(0, 5) + "h - "
-					+ String.valueOf(a.getHrFim()).substring(0, 5) + "h");
-			horario.removeStyleName("gwt-HTML");
-			horario.addStyleName("tbAtividadesCol3");
+			VerticalPanel vpHorario = new VerticalPanel();
+			vpHorario.addStyleName("vpHorario");
+			for (int j = 0; j < a.getDatas().size(); j++) {
+				Data d = a.getDatas().get(j);
+				HTML horario = new HTML();
+				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
+				horario.removeStyleName("gwt-HTML");
+				horario.addStyleName("tbAtividadesCol3");
+				vpHorario.add(horario);
+			}
 
 			HTML vagas = new HTML();
-			vagas.setText("Vagas: " + a.getVagasDisponiveis());
+			vagas.setText("Vagas: "+a.getVagasDisponiveis());
 			vagas.removeStyleName("gwt-HTML");
-			vagas.addStyleName("tbAtividadesCol4");
-
+//			vagas.addStyleName("tbAtividadesCol4");
+						
 			ftb.setWidget(i, 0, nome);
-			ftb.setWidget(i, 1, data);
-			ftb.setWidget(i, 2, horario);
+			ftb.setWidget(i, 1, vpDatas);
+			ftb.setWidget(i, 2, vpHorario);
 			ftb.setWidget(i, 3, vagas);
-
-			Button btM = new Button("Mais Informações");
+			
+			btM = new Button("Mais Informações");
 			btM.removeStyleName("gwt-Button");
 			btM.addStyleName("btn-info");
 			ftb.setWidget(i, 4, btM);
-
-			Button btInsc = new Button("Inscrever");
-			btInsc.addStyleName("btn-info");
-			btInsc.removeStyleName("gwt-Button");
-			ftb.setWidget(i, 5, btInsc);
-			ftb.getRowFormatter().getElement(i)
-					.setAttribute("id", String.valueOf(a.getIdAtiv()));
+			
+			if(!a.getTipoAtiv().equals("Palestra")){
+				btInsc = new Button("Inscrever");
+				btInsc.removeStyleName("gwt-Button");
+				btInsc.addStyleName("btn-info");
+				ftb.getCellFormatter().addStyleName(i, 4, "col5");
+				ftb.getCellFormatter().addStyleName(i, 5, "col6");
+				ftb.setWidget(i, 5, btInsc);
+				ftb.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(a.getIdAtiv()));
+			}
+			else {
+				ftb.getCellFormatter().addStyleName(i, 4, "col4Palestra");
+				ftb.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(a.getIdAtiv()));
+			}
+			ftb.getCellFormatter().addStyleName(i, 0, "col1");
+			ftb.getCellFormatter().addStyleName(i, 1, "col2");
+			ftb.getCellFormatter().addStyleName(i, 2, "col3");
+			ftb.getCellFormatter().addStyleName(i, 3, "col4");
 		}
 	}
 
 	private String formataData(String data) {
-		// String dataString = "dd/MM/yy";
-		// SimpleDateFormat spd = new SimpleDateFormat(dataString);
-		// System.out.println("Data de hoje: "+spd.format(data));
-		// return String.valueOf(spd.format(data));
-		// aa/mm/dd
-		// String[] split = data.split("/");
-		// System.out.println("split: "+split.length);
-		// String dataFormatada = split[2] + "/" + split[1] + "/" + split[0];
 		String dataFormatada;
 		dataFormatada = data.substring(8, 10) + "/" + data.substring(5, 7)
 				+ "/" + data.substring(2, 4);
@@ -260,32 +279,43 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		ftb.removeAllRows();
 		for (int i = 0; i < lista.size(); ++i) {
 			Atividade a = lista.get(i);
+			
 			HTML nome = new HTML();
 			nome.setText(a.getNomeAtiv());
 			nome.removeStyleName("gwt-HTML");
-			nome.addStyleName("tbAtividadesCol1");
+//			nome.addStyleName("tbAtividadesCol1");
 
-			HTML data = new HTML();
-			data.setText(formataData(String.valueOf(a.getDtAtiv())));
-			data.removeStyleName("gwt-HTML");
-			data.addStyleName("tbAtividadesCol2");
+			VerticalPanel vpDatas = new VerticalPanel();
+			vpDatas.addStyleName("vpDatas");
+			for (int j = 0; j < a.getDatas().size(); j++) {
+				Data d = a.getDatas().get(j);
+				HTML htData = new HTML();
+				htData.setText(formataData(String.valueOf(d.getData())));
+				htData.removeStyleName("gwt-HTML");
+				htData.addStyleName("tbAtividadesCol2");
+				vpDatas.add(htData);
+			}
 
-			HTML horario = new HTML();
-			horario.setText(""
-					+ String.valueOf(a.getHrInicio()).substring(0, 5) + "h - "
-					+ String.valueOf(a.getHrFim()).substring(0, 5) + "h");
-			horario.removeStyleName("gwt-HTML");
-			horario.addStyleName("tbAtividadesCol3");
+			VerticalPanel vpHorario = new VerticalPanel();
+			vpHorario.addStyleName("vpHorario");
+			for (int j = 0; j < a.getDatas().size(); j++) {
+				Data d = a.getDatas().get(j);
+				HTML horario = new HTML();
+				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
+				horario.removeStyleName("gwt-HTML");
+				horario.addStyleName("tbAtividadesCol3");
+				vpHorario.add(horario);
+			}
 
 			HTML vagas = new HTML();
 			vagas.setText("Vagas: " + a.getVagasDisponiveis());
 			vagas.removeStyleName("gwt-HTML");
-			vagas.addStyleName("tbAtividadesCol4");
+//			vagas.addStyleName("tbAtividadesCol4");
 
 			ftb.setWidget(i, 0, nome);
-			ftb.setWidget(i, 1, data);
-			ftb.setWidget(i, 2, horario);
-//			ftb.setWidget(i, 3, vagas);
+			ftb.setWidget(i, 1, vpDatas);
+			ftb.setWidget(i, 2, vpHorario);
+			ftb.setWidget(i, 3, vagas);
 
 			Button btM = new Button("Mais Informações");
 			btM.removeStyleName("gwt-Button");
@@ -296,6 +326,13 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			btInsc.addStyleName("btn-info");
 			btInsc.removeStyleName("gwt-Button");
 			ftb.setWidget(i, 5, btInsc);
+			
+			ftb.getCellFormatter().addStyleName(i, 0, "col1");
+			ftb.getCellFormatter().addStyleName(i, 1, "col2");
+			ftb.getCellFormatter().addStyleName(i, 2, "col3");
+			ftb.getCellFormatter().addStyleName(i, 3, "col4");
+			ftb.getCellFormatter().addStyleName(i, 4, "col5");
+			ftb.getCellFormatter().addStyleName(i, 5, "col6");
 			
 			ftb.getRowFormatter().getElement(i)
 					.setAttribute("id", String.valueOf(a.getIdAtiv()));
@@ -338,14 +375,17 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		tb.setCellSpacing(0);
 		tb.setCellPadding(0);
 		tb.setWidth("100%");
-		tb.getColumnFormatter().setWidth(0, "230px");
-		tb.getColumnFormatter().setWidth(1, "70px");
-		tb.getColumnFormatter().setWidth(2, "100px");
-		tb.getColumnFormatter().setWidth(3, "70px");
-		tb.getColumnFormatter().setWidth(4, "115px");
-		tb.getColumnFormatter().setWidth(5, "60px");
+//		tb.getColumnFormatter().addStyleName(1, "col1");
+//		tb.getColumnFormatter().addStyleName(2, "col2");
+//		tb.getColumnFormatter().addStyleName(3, "col3");
+//		tb.getColumnFormatter().addStyleName(4, "col4");
+//		tb.getColumnFormatter().setWidth(0, "230px");
+//		tb.getColumnFormatter().setWidth(1, "50px");
+//		tb.getColumnFormatter().setWidth(2, "100px");
+//		tb.getColumnFormatter().setWidth(3, "70px");
+//		tb.getColumnFormatter().setWidth(4, "115px");
 		tb.addStyleName("tbAtividades");
-//		tb.setBorderWidth(0);
+		tb.setBorderWidth(0);
 
 		return tb;
 	}

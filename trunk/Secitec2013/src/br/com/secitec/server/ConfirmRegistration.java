@@ -36,7 +36,7 @@ public class ConfirmRegistration extends HttpServlet {
 		if(user!=null){
 			if(user.getAtivo() == 1){
 				res = 0;
-				//cadastro j· ativado
+				//cadastro j√° ativado
 			}
 			else if(HashUtil.stringHexa(HashUtil.gerarHash(user.getCpf_partic()+user.getLogin_partic()+user.getSenha_partic(), "SHA-1")).equals(key)){
 				res = 1;
@@ -46,12 +46,12 @@ public class ConfirmRegistration extends HttpServlet {
 			}
 			else{
 				res = 2;
-				//Cadastro inv·lido
+				//Cadastro inv√°lido
 			}
 			
 		}
 		else{
-			//usu·rio inexistente
+			//usu√°rio inexistente
 		}
 		RequestDispatcher view = request.getRequestDispatcher("confirmRegistration.jsp?res="+res);
 		view.forward(request, response);

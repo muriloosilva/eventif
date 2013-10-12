@@ -12,6 +12,7 @@ import br.com.secitec.server.dao.ParticipanteDAO;
 import br.com.secitec.server.util.ConfirmacaoCadastro;
 import br.com.secitec.server.util.MailUtil;
 import br.com.secitec.shared.model.Atividade;
+import br.com.secitec.shared.model.Data;
 import br.com.secitec.shared.model.User;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -108,25 +109,59 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		boolean b = false;
 
 		if (atividades != null) {
+			
 			for (int i = 0; i < atividades.size(); i++) {
-				double hora_ini = formataHora(atividade.getHrInicio().toString());
-				double hora_fim = formataHora(atividade.getHrFim().toString());
-				double hr_ini = formataHora(atividades.get(i).getHrInicio().toString());
-				double hr_fim = formataHora(atividades.get(i).getHrFim().toString());
-
-				if (atividade.getDtAtiv().equals(atividades.get(i).getDtAtiv())) {
-					if (hora_ini > hr_ini) {
-						if (hora_ini < hr_fim) {
-							b = true;
-							break;
+				//verificar se já está inscrito na atividade
+				List<Data> datas = atividades.get(i).getDatas();
+				
+				for (int j = 0; j < datas.size(); j++) {
+					double hr_ini_data = formataHora(datas.get(j).getHrInicio().toString());
+					double hr_fim_data = formataHora(datas.get(j).getHrFim().toString());
+					List<Data> datasAtividadesInteresse = atividade.getDatas();
+					
+					for (int k = 0; k < datasAtividadesInteresse.size(); k++) {
+						double hora_ini_interesse = formataHora(datasAtividadesInteresse.get(k).getHrInicio().toString());
+						double hora_fim_interesse = formataHora(datasAtividadesInteresse.get(k).getHrFim().toString());
+						
+						if (datasAtividadesInteresse.get(k).getData().equals(datas.get(j).getData())) {
+							if (hora_ini_interesse > hr_ini_data) {
+								if (hora_ini_interesse < hr_fim_data) {
+									b = true;
+									break;
+								}
+							} else {
+								if (hora_fim_interesse > hr_ini_data) {
+									b = true;
+									break;
+								}
+							}
 						}
-					} else {
-						if (hora_fim > hr_ini) {
-							b = true;
-							break;
-						}
+						
 					}
+					
+//					double hr_ini = formataHora(atividades.get(i).getHrInicio().toString());
+//					double hr_fim = formataHora(atividades.get(i).getHrFim().toString());
+					
 				}
+//				double hora_ini = formataHora(atividade.getHrInicio().toString());
+//				double hora_fim = formataHora(atividade.getHrFim().toString());
+//				
+//				double hr_ini = formataHora(atividades.get(i).getHrInicio().toString());
+//				double hr_fim = formataHora(atividades.get(i).getHrFim().toString());
+
+//				if (atividade.getDtAtiv().equals(atividades.get(i).getDtAtiv())) {
+//					if (hora_ini > hr_ini) {
+//						if (hora_ini < hr_fim) {
+//							b = true;
+//							break;
+//						}
+//					} else {
+//						if (hora_fim > hr_ini) {
+//							b = true;
+//							break;
+//						}
+//					}
+//				}
 
 			}
 		}
