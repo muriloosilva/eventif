@@ -254,10 +254,7 @@ public class CadastroPopup {
 					user.setMatr_aluno_partic(matricula.getText());
 
 					tela.hide();
-					final PopupPanel pp = new PopupPanel(false);
-					pp.setGlassEnabled(true);
-					pp.add(new HTML("Realizando cadastro, aguarde..."));
-					pp.center();
+					final LoadingPopup pp = new LoadingPopup("Realizando cadastro, aguarde...");
 					rpcService.cadastraUsuario(user,
 							new AsyncCallback<Boolean>() {
 								@Override
