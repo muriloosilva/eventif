@@ -99,7 +99,8 @@ public class LoginPopup {
 
 				user.setLogin_partic(login.getText());
 				user.setSenha_partic(senha.getText());
-
+				
+				
 				rpcService.login(user.getLogin_partic(),
 						user.getSenha_partic(), new AsyncCallback<Integer>() {
 

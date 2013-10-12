@@ -13,6 +13,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -70,15 +71,34 @@ public class MaisInformacaoPresenter implements Presenter {
 			@Override
 			public void onSuccess(Boolean result) {
 				if (result) {
+					final PopupPanel pp = new PopupPanel(false);
+					pp.setGlassEnabled(true);
+					pp.add(new HTML("Aguarde ..."));
+					pp.center();
 					rpcService.inscrever(idAtividade,
 							new AsyncCallback<Boolean>() {
 								@Override
 								public void onFailure(Throwable caught) {
-
+									pp.hide();
+									ip = new InformacaoPopup("Não foi possível realizar esta ação. Tente novamente mais tarde.");
+									ip.getTela().center();
+									ip.getOk().addClickHandler(new ClickHandler() {
+										@Override
+										public void onClick(ClickEvent event) {
+											ip.getTela().hide();
+										}
+									});
+									ip.getFechar().addClickHandler(new ClickHandler() {
+										@Override
+										public void onClick(ClickEvent event) {
+											ip.getTela().hide();
+										}
+									});
 								}
 
 								@Override
 								public void onSuccess(Boolean result) {
+									pp.hide();
 									if (result) {
 										display.getPopup().hide();
 										ip = new InformacaoPopup(
@@ -133,19 +153,45 @@ public class MaisInformacaoPresenter implements Presenter {
 	}
 
 	public void cancelar() {
+		final PopupPanel pp = new PopupPanel(false);
+		pp.setGlassEnabled(true);
+		pp.add(new HTML("Aguarde ..."));
+		pp.center();
 		rpcService.cancelar(idAtividade, new AsyncCallback<Boolean>() {
 			@Override
 			public void onFailure(Throwable caught) {
-
+				pp.hide();
+				ip = new InformacaoPopup("Não foi possível realizar esta ação. Tente novamente mais tarde.");
+				ip.getTela().center();
+				ip.getOk().addClickHandler(new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						ip.getTela().hide();
+					}
+				});
+				ip.getFechar().addClickHandler(new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						ip.getTela().hide();
+					}
+				});
 			}
 
 			@Override
 			public void onSuccess(Boolean result) {
+				pp.hide();
 				if (result) {
 					display.getPopup().hide();
 					ip = new InformacaoPopup("Inscrição cancelada com sucesso!");
 					ip.getTela().center();
 					ip.getOk().addClickHandler(new ClickHandler() {
+						@Override
+						public void onClick(ClickEvent event) {
+							ip.getTela().hide();
+							usuario.setDadosUsuario();
+						}
+					});
+					ip.getFechar().addClickHandler(new ClickHandler() {
 						@Override
 						public void onClick(ClickEvent event) {
 							ip.getTela().hide();
@@ -163,6 +209,13 @@ public class MaisInformacaoPresenter implements Presenter {
 							ip.getTela().hide();
 						}
 					});
+					ip.getFechar().addClickHandler(new ClickHandler() {
+						@Override
+						public void onClick(ClickEvent event) {
+							usuario.setDadosUsuario();
+						}
+					});
+					
 				}
 			}
 		});
@@ -171,15 +224,20 @@ public class MaisInformacaoPresenter implements Presenter {
 	public void go() {
 		bind();
 		display.getPopup().center();
+		final PopupPanel pp = new PopupPanel(false);
+		pp.setGlassEnabled(true);
+		pp.add(new HTML("Aguarde ..."));
+		pp.center();
 		rpcService.getAtividade(idAtividade, new AsyncCallback<Atividade>() {
 			@Override
 			public void onSuccess(Atividade result) {
+				pp.hide();
 				display.setData(result);
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-
+				pp.hide();
 			}
 		});
 	}

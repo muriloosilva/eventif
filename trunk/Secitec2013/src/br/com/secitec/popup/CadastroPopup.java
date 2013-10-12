@@ -131,7 +131,7 @@ public class CadastroPopup {
 		cpf.setWidth("260px");		
 //		tb.setWidget(1, 1, cpf);
 		
-		vCpf = new HTML("*CPF inv�lido!");
+		vCpf = new HTML("*CPF inválido!");
 		vCpf.setVisible(false);
 		vCpf.addStyleName("vCPF");
 //		vCpf.setWidth("100px");
@@ -153,7 +153,7 @@ public class CadastroPopup {
 		setEmail();
 //		tb.setWidget(2, 1, email);
 
-		vEmail = new HTML("*Email inv�lido!");
+		vEmail = new HTML("*Email inválido!");
 		vEmail.setVisible(false);
 		vEmail.addStyleName("vCPF");
 		
@@ -180,7 +180,7 @@ public class CadastroPopup {
 		confirmaSenha.setWidth("260px");
 		setConfirmaSenha(confirmaSenha);
 		
-		vConfirmaSenha = new HTML("* Confirma��o de senha incorreta!");
+		vConfirmaSenha = new HTML("* Confirmação de senha incorreta!");
 		vConfirmaSenha.setVisible(false);
 		vConfirmaSenha.addStyleName("vCPF");
 		
@@ -200,7 +200,7 @@ public class CadastroPopup {
 		matricula.setWidth("260px");
 		setMatricula(matricula);
 		
-		vMatricula = new HTML("* Matr�cula inv�lida!");
+		vMatricula = new HTML("* Matrícula inválida!");
 		vMatricula.setVisible(false);
 		vMatricula.addStyleName("vCPF");
 		
@@ -258,8 +258,6 @@ public class CadastroPopup {
 					pp.setGlassEnabled(true);
 					pp.add(new HTML("Realizando cadastro, aguarde..."));
 					pp.center();
-					
-					//ip.getTela().center();
 					rpcService.cadastraUsuario(user,
 							new AsyncCallback<Boolean>() {
 								@Override
@@ -268,7 +266,8 @@ public class CadastroPopup {
 										tela.hide();
 										pp.hide();
 										ip = new InformacaoPopup(
-												"Foi enviado para o seu e-mail o link para a confirmação do cadastro. Antes de fazer login, ative o seu cadastro.");
+												"Foi enviado para o seu e-mail o link para a confirmação do cadastro. Antes de fazer login, ative o seu cadastro clicando" +
+												" no link que foi enviado. Se não encontrar, verifique em sua caixa de SPAM ou no LIXO de se e-mail.");
 										ip.getTela().center();
 										ClickHandler ch = new ClickHandler() {
 											@Override
@@ -367,7 +366,7 @@ public class CadastroPopup {
 			@Override
 			public void onBlur(BlurEvent event) {
 				if(!CPF.isCPF(cpf.getValue()) && !cpf.getValue().equals("")){
-					vCpf.setText("*CPF inv�lido!");
+					vCpf.setText("*CPF inválido!");
 					vCpf.setVisible(true);
 					cpf.setText("");
 					cpf.setFocus(true);
@@ -387,7 +386,7 @@ public class CadastroPopup {
 									vCpf.setVisible(false);
 								}
 								else{
-									vCpf.setText("*CPF j� cadastrado!");
+									vCpf.setText("*CPF já cadastrado!");
 									vCpf.setVisible(true);
 									cpf.setText("");
 									cpf.setFocus(true);
@@ -419,7 +418,7 @@ public class CadastroPopup {
 			@Override
 			public void onBlur(BlurEvent event) {
 				if(!verificaEmail(email.getValue()) && !email.getValue().equals("")){
-					vEmail.setText("*Email inv�lido!");
+					vEmail.setText("*Email inválido!");
 					vEmail.setVisible(true);
 					email.setText("");
 					email.setFocus(true);
@@ -440,7 +439,7 @@ public class CadastroPopup {
 									vEmail.setVisible(false);
 								}
 								else{
-									vEmail.setText("*Email j� cadastrado!");
+									vEmail.setText("*Email já cadastrado!");
 									vEmail.setVisible(true);
 									email.setText("");
 									email.setFocus(true);

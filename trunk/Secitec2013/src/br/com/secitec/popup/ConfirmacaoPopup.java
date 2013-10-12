@@ -54,7 +54,7 @@ public class ConfirmacaoPopup {
 		hpBt.add(btSim);
 		
 		btNao = new Button();
-		btNao.setText("Não");
+		btNao.setText("NÃ£o");
 		hpBt.add(btNao);
 		
 		vp.add(hpTop);

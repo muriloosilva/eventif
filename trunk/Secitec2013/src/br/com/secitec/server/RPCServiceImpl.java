@@ -32,10 +32,14 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	public boolean cadastraUsuario(User user) {
 		if (ParticipanteDAO.loginDisponivel(user.getLogin_partic())) {
 			ParticipanteDAO.cadastraParticipante(user);
-			ConfirmacaoCadastro.enviaConfirmacaoCadastro(user);
-			return true;
+			return ConfirmacaoCadastro.enviaConfirmacaoCadastro(user);
 		} else
 			return false;
+	}
+	
+	@Override
+	public Boolean reenviaConfirmacaoCadastro(User user) {
+		return ConfirmacaoCadastro.enviaConfirmacaoCadastro(user);
 	}
 
 	@Override

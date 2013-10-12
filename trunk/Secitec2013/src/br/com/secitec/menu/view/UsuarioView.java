@@ -53,7 +53,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		hpTop.setWidth("100%");
 		hpTop.setHeight("24px");
 
-		HTML titlePage = new HTML("�rea do Participante");
+		HTML titlePage = new HTML("Área do Participante");
 		titlePage.setStyleName("lbTitle");
 		hpTop.add(titlePage);
 

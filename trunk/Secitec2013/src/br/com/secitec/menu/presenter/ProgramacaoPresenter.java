@@ -17,7 +17,9 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ProgramacaoPresenter implements Presenter {
@@ -66,13 +68,20 @@ public class ProgramacaoPresenter implements Presenter {
 	}
 	
 	private void eventoInscrever(final int idAtividade){
+		
+		final PopupPanel pp = new PopupPanel(false);
+		pp.setGlassEnabled(true);
+		pp.add(new HTML("Aguarde ..."));
+		pp.center();
+		
 		rpcService.getSessao(new AsyncCallback<Boolean>() {
 			@Override
 			public void onFailure(Throwable caught) {
-
+				pp.hide();
 			}
 			@Override
 			public void onSuccess(Boolean result) {
+				pp.hide();
 				//se estiver logado
 				if (result) {
 					inscrever(idAtividade);
@@ -87,10 +96,15 @@ public class ProgramacaoPresenter implements Presenter {
 	}
 	
 	private void eventoInscreverMinicurso(final int idAtividade){
+		
+		final PopupPanel pp = new PopupPanel(false);
+		pp.setGlassEnabled(true);
+		pp.add(new HTML("Aguarde ..."));
+		pp.center();
+		
 		rpcService.getSessao(new AsyncCallback<Boolean>() {
 			@Override
 			public void onFailure(Throwable caught) {
-
 			}
 			@Override
 			public void onSuccess(Boolean result) {
@@ -101,12 +115,12 @@ public class ProgramacaoPresenter implements Presenter {
 
 						@Override
 						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
-							
+							pp.hide();
 						}
 
 						@Override
 						public void onSuccess(Boolean result) {
+							pp.hide();
 							// TODO Auto-generated method stub
 							if(result)
 								inscrever(idAtividade);
@@ -334,9 +348,14 @@ public class ProgramacaoPresenter implements Presenter {
 	public void go(HasWidgets container) {
 		container.clear();
 		container.add(display.asWidget());
+		final PopupPanel pp = new PopupPanel(false);
+		pp.setGlassEnabled(true);
+		pp.add(new HTML("Aguarde ..."));
+		pp.center();
 		rpcService.getAtividades(new AsyncCallback<List<Atividade>>() {
 			@Override
 			public void onSuccess(List<Atividade> result) {
+				pp.hide();
 				oficinas = new ArrayList<Atividade>();
 				palestras = new ArrayList<Atividade>();
 				minicursos = new ArrayList<Atividade>();
@@ -357,7 +376,7 @@ public class ProgramacaoPresenter implements Presenter {
 			}
 			@Override
 			public void onFailure(Throwable caught) {
-
+				pp.hide();
 			}
 		});
 	}
@@ -368,14 +387,19 @@ public class ProgramacaoPresenter implements Presenter {
 	}
 	
 	private void inscrever(int e){
+		final PopupPanel pp = new PopupPanel(false);
+		pp.setGlassEnabled(true);
+		pp.add(new HTML("Aguarde ..."));
+		pp.center();
 		rpcService.inscrever(e,
 				new AsyncCallback<Boolean>() {
 					@Override
 					public void onFailure(Throwable caught) {
-					
+						pp.hide();
 					}
 					@Override
 					public void onSuccess(Boolean result) {
+						pp.hide();
 						if(result){
 							ip = new InformacaoPopup("Inscrição efetuada com sucesso!");
 							ip.getTela().center();

@@ -81,7 +81,7 @@ public class MailUtil {
 			message.setSubject("FALE CONOSCO - SECITEC IFG FORMOSA");
 			//message.setText(msg);
 			// alternately, to send HTML mail:
-			message.setContent("Usu�rio: " + name + "<br> Email: "+ email + "<br> Mensagem: " + mesg, "text/html");
+			message.setContent("Usuário: " + name + "<br> Email: "+ email + "<br> Mensagem: " + mesg, "text/html");
 			Transport transport = session.getTransport("smtps");
 			transport.connect(host, userName, passwd);
 			transport.sendMessage(message, message.getAllRecipients());
