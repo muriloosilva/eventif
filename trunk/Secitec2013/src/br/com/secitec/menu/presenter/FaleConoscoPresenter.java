@@ -8,6 +8,7 @@ import br.com.secitec.menu.view.UsuarioView;
 import br.com.secitec.popup.CadastroPopup;
 import br.com.secitec.popup.InformacaoPopup;
 import br.com.secitec.shared.model.User;
+import br.com.secitec.popup.LoadingPopup;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -70,10 +71,7 @@ public class FaleConoscoPresenter implements Presenter {
 
 				if (!nome.equals("") && !email.equals("")&& !assunto.equals("")&& !mensagem.equals("")) {
 					display.getPopup().hide();
-					final PopupPanel pp = new PopupPanel(false);
-					pp.setGlassEnabled(true);
-					pp.add(new HTML("Sua mensagem está sendo enviada, aguarde ..."));
-					pp.center();
+					final LoadingPopup pp = new LoadingPopup("Sua mensagem está sendo enviada, aguarde ...");
 					rpcService.faleConosco(nome, email, mensagem, new AsyncCallback<Boolean>() {
 								@Override
 								public void onFailure(Throwable caught) {

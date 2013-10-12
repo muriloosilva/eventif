@@ -5,6 +5,7 @@ import br.com.secitec.menu.event.LoginEvent;
 import br.com.secitec.menu.event.ProgramacaoEvent;
 import br.com.secitec.menu.view.LoginView;
 import br.com.secitec.popup.InformacaoPopup;
+import br.com.secitec.popup.LoadingPopup;
 import br.com.secitec.shared.model.Atividade;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -71,10 +72,7 @@ public class MaisInformacaoPresenter implements Presenter {
 			@Override
 			public void onSuccess(Boolean result) {
 				if (result) {
-					final PopupPanel pp = new PopupPanel(false);
-					pp.setGlassEnabled(true);
-					pp.add(new HTML("Aguarde ..."));
-					pp.center();
+					final LoadingPopup pp = new LoadingPopup("Aguarde ...");
 					rpcService.inscrever(idAtividade,
 							new AsyncCallback<Boolean>() {
 								@Override
@@ -153,10 +151,7 @@ public class MaisInformacaoPresenter implements Presenter {
 	}
 
 	public void cancelar() {
-		final PopupPanel pp = new PopupPanel(false);
-		pp.setGlassEnabled(true);
-		pp.add(new HTML("Aguarde ..."));
-		pp.center();
+		final LoadingPopup pp = new LoadingPopup("Aguarde ...");
 		rpcService.cancelar(idAtividade, new AsyncCallback<Boolean>() {
 			@Override
 			public void onFailure(Throwable caught) {
@@ -224,10 +219,7 @@ public class MaisInformacaoPresenter implements Presenter {
 	public void go() {
 		bind();
 		display.getPopup().center();
-		final PopupPanel pp = new PopupPanel(false);
-		pp.setGlassEnabled(true);
-		pp.add(new HTML("Aguarde ..."));
-		pp.center();
+		final LoadingPopup pp = new LoadingPopup("Aguarde ...");
 		rpcService.getAtividade(idAtividade, new AsyncCallback<Atividade>() {
 			@Override
 			public void onSuccess(Atividade result) {

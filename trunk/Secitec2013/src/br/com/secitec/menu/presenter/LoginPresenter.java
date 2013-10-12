@@ -7,6 +7,7 @@ import br.com.secitec.menu.event.LoginEvent;
 import br.com.secitec.menu.view.UsuarioView;
 import br.com.secitec.popup.CadastroPopup;
 import br.com.secitec.popup.InformacaoPopup;
+import br.com.secitec.popup.LoadingPopup;
 import br.com.secitec.shared.model.User;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -16,7 +17,6 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -96,10 +96,7 @@ public class LoginPresenter implements Presenter {
 
 		if (!login.getText().equals("") && !senha.getText().equals("")) {
 			
-			final PopupPanel pp = new PopupPanel(false);
-			pp.setGlassEnabled(true);
-			pp.add(new HTML("Aguarde ..."));
-			pp.center();
+			final LoadingPopup pp = new LoadingPopup("Aguarde ...");
 			
 			rpcService.login(login.getText(), senha.getText(), new AsyncCallback<Integer>() {
 						@Override
@@ -178,10 +175,7 @@ public class LoginPresenter implements Presenter {
 									@Override
 									public void onClick(ClickEvent event) {
 										ip.getTela().hide();
-										final PopupPanel pp = new PopupPanel(false);
-										pp.setGlassEnabled(true);
-										pp.add(new HTML("Aguarde ..."));
-										pp.center();
+										final LoadingPopup pp = new LoadingPopup("Aguarde ...");
 										rpcService.reenviaConfirmacaoCadastro(user, new AsyncCallback<Boolean>() {
 											@Override
 											public void onSuccess(Boolean result) {

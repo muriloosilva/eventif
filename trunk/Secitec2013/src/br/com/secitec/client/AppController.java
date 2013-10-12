@@ -27,6 +27,7 @@ import br.com.secitec.menu.view.MenuView;
 import br.com.secitec.menu.view.ProgramacaoView;
 import br.com.secitec.menu.view.SobreView;
 import br.com.secitec.menu.view.UsuarioView;
+import br.com.secitec.popup.LoadingPopup;
 import br.com.secitec.shared.model.User;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -211,6 +212,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 					}
 				} else {
 					if(token.equals("apresentacao")){
+						//new LoadingPopup("Aguarde ...");
 						loadMenu();
 						presenterMenu.getHpUsuario().setVisible(false);
 						presenterMenu.getLogin().setVisible(true);
