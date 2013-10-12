@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class Atividade implements Serializable{
+public class Atividade implements Serializable, Comparable<Atividade>{
 	private int idAtiv;
 	private int idEvento;
 	private Date dtAtiv;
@@ -87,8 +87,8 @@ public class Atividade implements Serializable{
 		this.hrFim = hrFim;
 	}
 	
-//	@Override
-//	public int compareTo(Atividade a) {
+	@Override
+	public int compareTo(Atividade a) {
 //		for (int i = 0; i < this.datas.size(); i++) {
 //			if(String.valueOf(this.dtAtiv).compareToIgnoreCase(String.valueOf(a.getDtAtiv())) < 0)
 //				return -1;
@@ -96,10 +96,17 @@ public class Atividade implements Serializable{
 //				return 1;
 //			return String.valueOf(this.hrInicio).compareToIgnoreCase(String.valueOf(a.getHrInicio()));
 //		}
-////		if(String.valueOf(this.dtAtiv).compareToIgnoreCase(String.valueOf(a.getDtAtiv())) < 0)
-////			return -1;
-////		else if(String.valueOf(this.dtAtiv).compareToIgnoreCase(String.valueOf(a.getDtAtiv())) > 0)
-////			return 1;
-////		return String.valueOf(this.hrInicio).compareToIgnoreCase(String.valueOf(a.getHrInicio()));
-//	}
+		
+		if(String.valueOf(this.datas.get(0).getData()).compareToIgnoreCase(String.valueOf(a.getDatas().get(0).getData())) < 0)
+			return -1;
+		else if(String.valueOf(this.datas.get(0).getData()).compareToIgnoreCase(String.valueOf(a.getDatas().get(0).getData())) > 0)
+			return 1;
+		return String.valueOf(this.datas.get(0).getHrInicio()).compareToIgnoreCase(String.valueOf(a.getDatas().get(0).getHrInicio()));
+		
+//		if(String.valueOf(this.dtAtiv).compareToIgnoreCase(String.valueOf(a.getDtAtiv())) < 0)
+//			return -1;
+//		else if(String.valueOf(this.dtAtiv).compareToIgnoreCase(String.valueOf(a.getDtAtiv())) > 0)
+//			return 1;
+//		return String.valueOf(this.hrInicio).compareToIgnoreCase(String.valueOf(a.getHrInicio()));
+	}
 }
