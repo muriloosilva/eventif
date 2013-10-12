@@ -3,6 +3,8 @@ package br.com.secitec.shared.model;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Atividade implements Serializable{
@@ -16,7 +18,14 @@ public class Atividade implements Serializable{
 	private Time hrInicio;
 	private Time hrFim;
 	private int vagasDisponiveis;
+	private List<Data> datas = new ArrayList<Data>();
 	
+	public List<Data> getDatas() {
+		return datas;
+	}
+	public void setDatas(List<Data> datas) {
+		this.datas = datas;
+	}
 	public int getVagasDisponiveis() {
 		return vagasDisponiveis;
 	}
@@ -77,4 +86,20 @@ public class Atividade implements Serializable{
 	public void setHrFim(Time hrFim) {
 		this.hrFim = hrFim;
 	}
+	
+//	@Override
+//	public int compareTo(Atividade a) {
+//		for (int i = 0; i < this.datas.size(); i++) {
+//			if(String.valueOf(this.dtAtiv).compareToIgnoreCase(String.valueOf(a.getDtAtiv())) < 0)
+//				return -1;
+//			else if(String.valueOf(this.dtAtiv).compareToIgnoreCase(String.valueOf(a.getDtAtiv())) > 0)
+//				return 1;
+//			return String.valueOf(this.hrInicio).compareToIgnoreCase(String.valueOf(a.getHrInicio()));
+//		}
+////		if(String.valueOf(this.dtAtiv).compareToIgnoreCase(String.valueOf(a.getDtAtiv())) < 0)
+////			return -1;
+////		else if(String.valueOf(this.dtAtiv).compareToIgnoreCase(String.valueOf(a.getDtAtiv())) > 0)
+////			return 1;
+////		return String.valueOf(this.hrInicio).compareToIgnoreCase(String.valueOf(a.getHrInicio()));
+//	}
 }

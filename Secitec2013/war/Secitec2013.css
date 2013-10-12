@@ -20,10 +20,12 @@
 	margin-top: 10px;
 }
 
-.tbAtividades{
+.tbAtividades {
 	border-bottom-color: red;
 }
 
+/* .tbAtividades td{ */
+/* } */
 .tbAtividadesCol1 {
 	padding-left: 7px;
 	padding-bottom: 15px;
@@ -32,11 +34,75 @@
 	margin-right: 20px;
 }
 
-.tbAtividadesCol2{}
+.col1 {
+	text-align: justify;
+	padding-left: 7px;
+	width: 280px;
+}
 
-.tbAtividadesCol3{}
+.col2 {
+	padding-bottom: 15px;
+	padding-top: 15px;
+}
 
-.tbAtividadesCol4{}
+.col3 {
+	padding-bottom: 15px;
+padding-top: 15px;
+}
+
+.col4 {
+	width: 64px;
+text-align: center;
+}
+
+.col4Palestra{
+	text-align: center;
+width: 215px;
+}
+
+.col5 {
+	width: 130px;
+	text-align: center;
+}
+
+.col6 {
+	width: 80px;
+	text-align: center;
+}
+
+.vpDatas {
+	
+}
+
+.vpHorario {
+	
+}
+
+.tbLinha {
+	
+}
+
+.tbACol2 {
+	
+}
+
+.tbCol2 {
+	
+}
+
+.tbAtividadesCol2 {
+	text-align: center;
+	width: 80px;
+}
+
+.tbAtividadesCol3 {
+	text-align: center;
+width: 130px;
+}
+
+.tbAtividadesCol4 {
+	
+}
 
 .tabelaLogin {
 	margin-top: 10px;

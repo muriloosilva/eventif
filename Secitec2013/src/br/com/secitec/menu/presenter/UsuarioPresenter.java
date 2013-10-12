@@ -13,10 +13,11 @@ import br.com.secitec.shared.model.Atividade;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -36,13 +37,13 @@ public class UsuarioPresenter implements Presenter {
 
 		int[] getPalestra(ClickEvent event);
 
-		HasClickHandlers getListaUsuario();
+		FlexTable getListaUsuario();
 
-		HasClickHandlers getListaOficina();
+		FlexTable getListaOficina();
 
-		HasClickHandlers getListaMinicurso();
+		FlexTable getListaMinicurso();
 
-		HasClickHandlers getListaPalestra();
+		FlexTable getListaPalestra();
 
 		Widget asWidget();
 	}
@@ -64,89 +65,286 @@ public class UsuarioPresenter implements Presenter {
 		this.display = view;
 	}
 
-	public void bind() {
-		display.getListaUsuario().addClickHandler(new ClickHandler() {
+	private void eventoMaisInformacao(int idAtividade, String msg){
+		Presenter presenter = new MaisInformacaoPresenter(
+				rpcService, eventBus, new MaisInformacaoView(msg),
+				idAtividade);
+		if (presenter != null)
+			presenter.go();
+	}
+	
+	private void eventoCancelarInscricao(final int idAtividade){
+		rpcService.getSessao(new AsyncCallback<Boolean>() {
 			@Override
-			public void onClick(ClickEvent event) {
-				int e[] = display.getUsuario(event);
-				eventoBotoesUsuario(e);
+			public void onFailure(Throwable caught) {
+
 			}
-		});
-		display.getListaOficina().addClickHandler(new ClickHandler() {
+
 			@Override
-			public void onClick(ClickEvent event) {
-				int e[] = display.getOficina(event);
-				eventoBotoesAtividades(e);
-			}
-		});
-		display.getListaMinicurso().addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				int e[] = display.getMinicurso(event);
-				eventoBotoesMinicursos(e);
-			}
-		});
-		display.getListaPalestra().addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				int e[] = display.getPalestra(event);
-				eventoBotoesAtividades(e);
+			public void onSuccess(Boolean result) {
+				if (result) {
+					cp = new ConfirmacaoPopup("Deseja realmente cancelar a inscrição?");
+					cp.getTela().center();
+					
+					ClickHandler chNao = new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							cp.getTela().hide();
+						}
+					};
+					ClickHandler chSim = new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							cp.getTela().hide();
+							cancelarInscricao(idAtividade);
+						}
+					};		
+					
+					cp.getBtNao().addClickHandler(chNao);
+					cp.getFechar().addClickHandler(chNao);
+					cp.getSim().addClickHandler(chSim);
+				} else {
+					Presenter presenter = new LoginPresenter(rpcService,
+							eventBus, new LoginView());
+					if (presenter != null)
+						presenter.go();
+				}
 			}
 		});
 	}
+	
+	private void eventoInscrever(final int idAtividade){
+		rpcService.getSessao(new AsyncCallback<Boolean>() {
+			@Override
+			public void onFailure(Throwable caught) {
 
-	public void eventoBotoesUsuario(final int[] e) {
-		if (e[1] == 4) {
-			Presenter presenter = new MaisInformacaoPresenter(rpcService,
-					eventBus, new MaisInformacaoView("Cancelar inscrição"),
-					e[0], this);
-			if (presenter != null)
-				presenter.go();
-		} else if (e[1] == 5) {
-			rpcService.getSessao(new AsyncCallback<Boolean>() {
-				@Override
-				public void onFailure(Throwable caught) {
+			}
 
+			@Override
+			public void onSuccess(Boolean result) {
+				if (result) {
+					rpcService.inscrever(idAtividade,
+							new AsyncCallback<Boolean>() {
+								@Override
+								public void onFailure(Throwable caught) {
+
+								}
+
+								@Override
+								public void onSuccess(Boolean result) {
+									if (result) {
+										ip = new InformacaoPopup(
+												"Inscrição efetuada com sucesso!");
+										ip.getTela().center();
+										ip.getOk().addClickHandler(
+												new ClickHandler() {
+													@Override
+													public void onClick(
+															ClickEvent event) {
+														ip.getTela().hide();
+														setDadosUsuario();
+													}
+												});
+										ip.getFechar().addClickHandler(
+												new ClickHandler() {
+													@Override
+													public void onClick(
+															ClickEvent event) {
+														ip.getTela().hide();
+														setDadosUsuario();
+													}
+												});
+									} else {
+										ip = new InformacaoPopup(
+												"Você está inscrito em outra(s) atividade(s) no mesmo"
+														+ " horário!");
+										ip.getTela().center();
+										ip.getOk().addClickHandler(
+												new ClickHandler() {
+													@Override
+													public void onClick(
+															ClickEvent event) {
+														ip.getTela().hide();
+													}
+												});
+										ip.getFechar().addClickHandler(
+												new ClickHandler() {
+													@Override
+													public void onClick(
+															ClickEvent event) {
+														ip.getTela().hide();
+													}
+												});
+									}
+								}
+							});
+				} else {
+					Presenter presenter = new LoginPresenter(rpcService,
+							eventBus, new LoginView());
+					if (presenter != null)
+						presenter.go();
 				}
+			}
+		});
+	}
+	
+	private void eventoInscreverMinicurso(final int idAtividade){
+		rpcService.getSessao(new AsyncCallback<Boolean>() {
+			@Override
+			public void onFailure(Throwable caught) {
 
+			}
+			@Override
+			public void onSuccess(Boolean result) {
+				//se estiver logado
+				if (result) {
+					//verificar minicurso
+					rpcService.getMinicursosDoAluno(new AsyncCallback<Boolean>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void onSuccess(Boolean result) {
+							// TODO Auto-generated method stub
+							if(result)
+								inscrever(idAtividade);
+							else{
+								//n�o pode ser inscrito
+								ip = new InformacaoPopup("Você já está inscrito em um Minicurso!");
+								ip.getTela().center();
+								ip.getOk().addClickHandler(new ClickHandler() {													
+									@Override
+									public void onClick(ClickEvent event) {
+										ip.getTela().hide();
+									}
+								});
+								ip.getFechar().addClickHandler(new ClickHandler() {													
+									@Override
+									public void onClick(ClickEvent event) {
+										ip.getTela().hide();
+									}
+								});
+							}
+								
+						}
+					});
+				} else {
+					Presenter presenter = new LoginPresenter(
+							rpcService, eventBus, new LoginView());
+					if (presenter != null)
+						presenter.go();
+				}
+			}
+		});
+	}
+	
+	public void bindUsuario(){
+		//Eventos tabela USUÁRIO
+		//Mais Informação
+		for (int i = 0; i < display.getListaUsuario().getRowCount(); i++) {
+			final int j = i;
+			((Button)display.getListaUsuario().getWidget(i, 4)).addClickHandler(new ClickHandler() {
+				
 				@Override
-				public void onSuccess(Boolean result) {
-					if (result) {
-						cp = new ConfirmacaoPopup("Deseja realmente cancelar a inscri��o?");
-						cp.getTela().center();
-						
-						ClickHandler chNao = new ClickHandler() {
-							
-							@Override
-							public void onClick(ClickEvent event) {
-								cp.getTela().hide();
-							}
-						};
-						ClickHandler chSim = new ClickHandler() {
-							
-							@Override
-							public void onClick(ClickEvent event) {
-								cp.getTela().hide();
-								cancelarInscricao(e);
-							}
-						};		
-						
-						cp.getBtNao().addClickHandler(chNao);
-						cp.getFechar().addClickHandler(chNao);
-						cp.getSim().addClickHandler(chSim);
-					} else {
-						Presenter presenter = new LoginPresenter(rpcService,
-								eventBus, new LoginView());
-						if (presenter != null)
-							presenter.go();
-					}
+				public void onClick(ClickEvent event) {
+					int idAtividade = Integer.parseInt(display.getListaUsuario().getRowFormatter().getElement(j).getAttribute("id"));
+					eventoMaisInformacao(idAtividade, "Cancelar inscrição");
 				}
 			});
 		}
+		//Cancelar
+		for (int i = 0; i < display.getListaUsuario().getRowCount(); i++) {
+			final int j = i;
+			((Button)display.getListaUsuario().getWidget(i, 5)).addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					int idAtividade = Integer.parseInt(display.getListaUsuario().getRowFormatter().getElement(j).getAttribute("id"));
+					eventoCancelarInscricao(idAtividade);
+				}
+			});
+		}	
+	}
+	
+	public void bind() {
+		
+		//Eventos tabela OFICINAS
+		//Mais Informação
+		for (int i = 0; i < display.getListaOficina().getRowCount(); i++) {
+			final int j = i;
+			((Button)display.getListaOficina().getWidget(i, 4)).addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					int idAtividade = Integer.parseInt(display.getListaOficina().getRowFormatter().getElement(j).getAttribute("id"));
+					eventoMaisInformacao(idAtividade, "Inscrever");
+				}
+			});
+		}
+		//Inscrever
+		for (int i = 0; i < display.getListaOficina().getRowCount(); i++) {
+			final int j = i;
+			((Button)display.getListaOficina().getWidget(i, 5)).addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					int idAtividade = Integer.parseInt(display.getListaOficina().getRowFormatter().getElement(j).getAttribute("id"));
+							eventoInscrever(idAtividade);
+				}
+			});
+		}
+		
+		//Eventos tabela MINICURSOS
+		//Mais Informação
+		for (int i = 0; i < display.getListaMinicurso().getRowCount(); i++) {
+			final int j = i;
+			((Button)display.getListaMinicurso().getWidget(i, 4)).addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					int idAtividade = Integer.parseInt(display.getListaMinicurso().getRowFormatter().getElement(j).getAttribute("id"));
+					eventoMaisInformacao(idAtividade, "Inscrever");
+				}
+			});
+		}
+		//Inscrever
+		for (int i = 0; i < display.getListaMinicurso().getRowCount(); i++) {
+			final int j = i;
+			((Button)display.getListaMinicurso().getWidget(i, 5)).addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					int idAtividade = Integer.parseInt(display.getListaMinicurso().getRowFormatter().getElement(j).getAttribute("id"));
+							eventoInscreverMinicurso(idAtividade);
+				}
+			});
+		}
+		
+		//Eventos tabela PALESTRAS
+		//Mais Informação
+		for (int i = 0; i < display.getListaPalestra().getRowCount(); i++) {
+			final int j = i;
+			((Button)display.getListaPalestra().getWidget(i, 4)).addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					int idAtividade = Integer.parseInt(display.getListaPalestra().getRowFormatter().getElement(j).getAttribute("id"));
+					eventoMaisInformacao(idAtividade, "Inscrever");
+				}
+			});
+		}
+		
+		
 	}
 
-	private void cancelarInscricao(int e[]){
-		rpcService.cancelar(e[0],
+	private void cancelarInscricao(int e){
+		rpcService.cancelar(e,
 				new AsyncCallback<Boolean>() {
 					@Override
 					public void onFailure(Throwable caught) {
@@ -192,92 +390,9 @@ public class UsuarioPresenter implements Presenter {
 					}
 				});
 	}
-	
-	public void eventoBotoesAtividades(final int[] e) {
-		if (e[1] == 4) {
-			Presenter presenter = new MaisInformacaoPresenter(rpcService,
-					eventBus, new MaisInformacaoView("Inscrever"), e[0], this);
-			if (presenter != null)
-				presenter.go();
-		} else if (e[1] == 5) {
-			rpcService.getSessao(new AsyncCallback<Boolean>() {
-				@Override
-				public void onFailure(Throwable caught) {
-
-				}
-
-				@Override
-				public void onSuccess(Boolean result) {
-					if (result) {
-						rpcService.inscrever(e[0],
-								new AsyncCallback<Boolean>() {
-									@Override
-									public void onFailure(Throwable caught) {
-
-									}
-
-									@Override
-									public void onSuccess(Boolean result) {
-										if (result) {
-											ip = new InformacaoPopup(
-													"Inscrição efetuada com sucesso!");
-											ip.getTela().center();
-											ip.getOk().addClickHandler(
-													new ClickHandler() {
-														@Override
-														public void onClick(
-																ClickEvent event) {
-															ip.getTela().hide();
-															setDadosUsuario();
-														}
-													});
-											ip.getFechar().addClickHandler(
-													new ClickHandler() {
-														@Override
-														public void onClick(
-																ClickEvent event) {
-															ip.getTela().hide();
-															setDadosUsuario();
-														}
-													});
-										} else {
-											ip = new InformacaoPopup(
-													"Você está inscrito em outra(s) atividade(s) no mesmo"
-															+ " horário!");
-											ip.getTela().center();
-											ip.getOk().addClickHandler(
-													new ClickHandler() {
-														@Override
-														public void onClick(
-																ClickEvent event) {
-															ip.getTela().hide();
-														}
-													});
-											ip.getFechar().addClickHandler(
-													new ClickHandler() {
-														@Override
-														public void onClick(
-																ClickEvent event) {
-															ip.getTela().hide();
-														}
-													});
-										}
-									}
-								});
-					} else {
-						Presenter presenter = new LoginPresenter(rpcService,
-								eventBus, new LoginView());
-						if (presenter != null)
-							presenter.go();
-					}
-				}
-			});
-		}
-	}
 
 	@Override
 	public void go(HasWidgets container) {
-		bind();
 		container.clear();
 		container.add(display.asWidget());
 		rpcService.getAtividades(new AsyncCallback<List<Atividade>>() {
@@ -296,6 +411,7 @@ public class UsuarioPresenter implements Presenter {
 						minicursos.add(a);
 				}
 				display.setData(oficinas, minicursos, palestras);
+				bind();
 			}
 
 			@Override
@@ -323,6 +439,7 @@ public class UsuarioPresenter implements Presenter {
 					}
 				}
 				display.setDataUsuario(atividades);
+				bindUsuario();
 			}
 		});
 	}
@@ -332,70 +449,8 @@ public class UsuarioPresenter implements Presenter {
 
 	}
 	
-	public void eventoBotoesMinicursos(final int[] e){
-		if (e[1] == 4) {
-			Presenter presenter = new MaisInformacaoPresenter(
-					rpcService, eventBus, new MaisInformacaoView("Inscrever"),
-					e[0]);
-			if (presenter != null)
-				presenter.go();
-		} else if (e[1] == 5) {
-			rpcService.getSessao(new AsyncCallback<Boolean>() {
-				@Override
-				public void onFailure(Throwable caught) {
-
-				}
-				@Override
-				public void onSuccess(Boolean result) {
-					//se estiver logado
-					if (result) {
-						//verificar minicurso
-						rpcService.getMinicursosDoAluno(new AsyncCallback<Boolean>() {
-
-							@Override
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-								
-							}
-
-							@Override
-							public void onSuccess(Boolean result) {
-								// TODO Auto-generated method stub
-								if(result)
-									inscrever(e);
-								else{
-									//n�o pode ser inscrito
-									ip = new InformacaoPopup("Você j� est� inscrito em um Minicurso!");
-									ip.getTela().center();
-									ip.getOk().addClickHandler(new ClickHandler() {													
-										@Override
-										public void onClick(ClickEvent event) {
-											ip.getTela().hide();
-										}
-									});
-									ip.getFechar().addClickHandler(new ClickHandler() {													
-										@Override
-										public void onClick(ClickEvent event) {
-											ip.getTela().hide();
-										}
-									});
-								}
-									
-							}
-						});
-					} else {
-						Presenter presenter = new LoginPresenter(
-								rpcService, eventBus, new LoginView());
-						if (presenter != null)
-							presenter.go();
-					}
-				}
-			});
-		}
-	}
-	
-	private void inscrever(int[] e){
-		rpcService.inscrever(e[0],
+	private void inscrever(int e){
+		rpcService.inscrever(e,
 				new AsyncCallback<Boolean>() {
 					@Override
 					public void onFailure(Throwable caught) {
@@ -411,6 +466,7 @@ public class UsuarioPresenter implements Presenter {
 								public void onClick(ClickEvent event) {
 									ip.getTela().hide();
 									eventBus.fireEvent(new LoginEvent("login"));
+									setDadosUsuario();
 								}
 							});
 							ip.getFechar().addClickHandler(new ClickHandler() {														
@@ -418,6 +474,7 @@ public class UsuarioPresenter implements Presenter {
 								public void onClick(ClickEvent event) {
 									ip.getTela().hide();
 									eventBus.fireEvent(new LoginEvent("login"));
+									setDadosUsuario();
 								}
 							});
 							
