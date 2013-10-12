@@ -65,7 +65,7 @@
 			%>
 		
 			<div id="corpoEsq"><table cellspacing="5" cellpadding="0" border="0" class="vpMainPageContent" style="width: 100%; height: 100%;"><tbody><tr><td align="left" style="vertical-align: middle;"><table cellspacing="0" cellpadding="0" border="0" style="width: 100%; height: 24px;"><tbody><tr><td align="center" style="vertical-align: middle;"><div class="lbTitle">Confirmação de Cadastro</div></td></tr></tbody></table></td></tr><tr><td align="left" style="vertical-align: middle;"><table cellspacing="0" cellpadding="0" border="0" class="conteudoApresentacao" style="width: auto;"><tbody><tr><td align="left" style="vertical-align: middle;"><div><div class="gwt-HTML">
-			<p><%=msg %></p></div></div></td></tr></tbody></table></td></tr></tbody></table></div>
+			<p><%=msg %></p><a href="http://secitecifgformosa.com.br">Clique aqui para voltar ao site</a></div></div></td></tr></tbody></table></td></tr></tbody></table></div>
 			<div id="corpoDir"><table cellspacing="5" cellpadding="0" border="0" class="vpMainPageContent" style="width: 100%; height: 100%;"><tbody><tr><td align="center" style="vertical-align: middle;"><div style="width: auto; height: auto;"></div></td></tr></tbody></table></div>
 		</div>
 	</div>
