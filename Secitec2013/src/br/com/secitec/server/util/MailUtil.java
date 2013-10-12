@@ -39,12 +39,12 @@ public class MailUtil {
 			message.setFrom(new InternetAddress(userName));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail_partic()));
 
-			message.setSubject("SECITEC IFG FORMOSA - Confirmação de Cadastro");
+			message.setSubject("SECITEC IFG FORMOSA - ConfirmaÃ§Ã£o de Cadastro");
 			//message.setText(msg);
 			// alternately, to send HTML mail:
-			 message.setContent("<p>SECITEC IFG FORMOSA - Confirmação de Cadastro</p><br><br>" +
+			 message.setContent("<p>SECITEC IFG FORMOSA - ConfirmaÃ§Ã£o de Cadastro</p><br><br>" +
 			 		"Para confirmar seu cadastro clique no link abaixo:<br>" +
-					 msg, "text/html");
+					 "<a href='"+msg+"'>Confirme seu cadastro clicando aqui.</a>", "text/html");
 			Transport transport = session.getTransport("smtps");
 			transport.connect(host, userName, passwd);
 			transport.sendMessage(message, message.getAllRecipients());
@@ -81,7 +81,7 @@ public class MailUtil {
 			message.setSubject("FALE CONOSCO - SECITEC IFG FORMOSA");
 			//message.setText(msg);
 			// alternately, to send HTML mail:
-			message.setContent("Usuário: " + name + "<br> Email: "+ email + "<br> Mensagem: " + mesg, "text/html");
+			message.setContent("Usuï¿½rio: " + name + "<br> Email: "+ email + "<br> Mensagem: " + mesg, "text/html");
 			Transport transport = session.getTransport("smtps");
 			transport.connect(host, userName, passwd);
 			transport.sendMessage(message, message.getAllRecipients());

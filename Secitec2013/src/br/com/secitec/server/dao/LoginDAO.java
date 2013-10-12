@@ -43,25 +43,24 @@ public class LoginDAO {
 			e.printStackTrace();
 		}
 		
-		System.out.println("email: " + user.getEmail_partic().trim());
-		System.out.println("senha: " + user.getSenha_partic());
-		System.out.println("email1: " + login);
-		System.out.println("senha1: " + senha);
-		
 		if (user != null) {
+			System.out.println("email: " + user.getEmail_partic().trim());
+			System.out.println("senha: " + user.getSenha_partic());
+			System.out.println("email1: " + login);
+			System.out.println("senha1: " + senha);
 			System.out.println("usuario existe");
 			if (user.getEmail_partic().trim().equals(login)
 					&& user.getSenha_partic().equals(
-							senha)) {	
+							senha)) {
+				System.out.println("Usuário autenticado");
 				user.setLogado(true);
 			} else {
-				System.out.println("null");;
+				System.out.println("Usuário não autenticado");
 				user.setLogado(false);
 			}
 		}
 		else{
-			user = new User();
-			user.setLogado(false);
+			System.out.println("User null");
 		}
 		return user;
 	}

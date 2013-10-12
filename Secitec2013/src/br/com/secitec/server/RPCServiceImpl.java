@@ -44,15 +44,26 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		//2 login ok
 		// TODO Auto-generated method stub
 		User user = LoginDAO.loginUsuario(login, senha);
-		if(user.getAtivo()==0){
-			return 1;
+		if(user != null){
+			System.out.println("user logado:" +user.isLogado());
+			if(user.isLogado()){
+				if(user.getAtivo()==0){
+					return 1;
+				}
+				else if (user.getAtivo()==1) {
+					HttpSession session = getThreadLocalRequest().getSession();
+					session.setAttribute("user", user);
+					return 2;
+				}
+				else{
+					return 0;
+				}
+			}
+			else{
+				return 0;
+			}
 		}
-		else if (user.isLogado()) {
-			HttpSession session = getThreadLocalRequest().getSession();
-			session.setAttribute("user", user);
-			return 2;
-		}
-		else{
+		else {
 			return 0;
 		}
 		

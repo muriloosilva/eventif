@@ -8,6 +8,7 @@ import br.com.secitec.menu.event.LoginEvent;
 import br.com.secitec.menu.event.ProgramacaoEvent;
 import br.com.secitec.menu.view.FaleConoscoView;
 import br.com.secitec.menu.view.LoginView;
+import br.com.secitec.menu.view.SobreView;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -35,6 +36,8 @@ public class MenuPresenter implements Presenter {
 		HorizontalPanel getHpUsuario();
 		
 		HasClickHandlers getFaleConosco();
+		
+		HasClickHandlers getSobre();
 
 		Anchor getSair();
 		
@@ -89,12 +92,23 @@ public class MenuPresenter implements Presenter {
 			}
 		});
 		
-display.getFaleConosco().addClickHandler(new ClickHandler(){
+		display.getFaleConosco().addClickHandler(new ClickHandler(){
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				Presenter presenter = new FaleConoscoPresenter(rpcService, eventBus,
 						new FaleConoscoView());
+				if (presenter != null)
+					presenter.go();
+				
+			}
+		});
+		
+		display.getSobre().addClickHandler(new ClickHandler(){
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Presenter presenter = new SobrePresenter(new SobreView());
 				if (presenter != null)
 					presenter.go();
 				
