@@ -1,6 +1,7 @@
 package br.com.secitec.menu.presenter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.secitec.client.RPCServiceAsync;
@@ -348,6 +349,9 @@ public class ProgramacaoPresenter implements Presenter {
 					else
 						minicursos.add(a);
 				}
+				Collections.sort(oficinas);
+				Collections.sort(minicursos);
+				Collections.sort(palestras);
 				display.setData(oficinas, minicursos, palestras);
 				bind();
 			}
