@@ -95,6 +95,44 @@ public static boolean recuperarSenha(User user){
 		return true;
 	}
 	
+	public static boolean confirmacaoAlteracaoDados(User user, String msg){
+		
+		Properties props = System.getProperties();
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.user", userName);
+		props.put("mail.smtp.password", passwd);
+		props.put("mail.smtp.port", "465"); // 587 is the port number of yahoo mail
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.socketFactory.port", "465");    
+		props.put("mail.smtp.socketFactory.fallback", "false");    
+		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");  
+		
+		Session session = Session.getDefaultInstance(props);
+		MimeMessage message = new MimeMessage(session);
+		try {
+			message.setFrom(new InternetAddress(userName));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail_partic()));
+
+			message.setSubject("SECITEC IFG FORMOSA - Confirmação de alteração dos dados");
+			//message.setText(msg);
+			// alternately, to send HTML mail:
+			 message.setContent("<p>SECITEC IFG FORMOSA - Confirmação de alteração dos dados</p><br><br>" +
+			 		"Para confirmar as alterações de seus dados clique no link abaixo:<br>" +
+					 "<a href='"+msg+"'>Confirme seu novos dados clicando aqui.</a>", "text/html");
+			Transport transport = session.getTransport("smtps");
+			transport.connect(host, userName, passwd);
+			transport.sendMessage(message, message.getAllRecipients());
+			
+			transport.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	public static boolean faleConosco(String name, String email, String mesg){
 		
 		

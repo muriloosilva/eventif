@@ -11,5 +11,13 @@ public class ConfirmacaoCadastro {
 		//Gerar hash
 		//
 	}
+	
+	public static boolean enviaConfirmacaoAlteracaoDados(User user){
+		
+		String hash = HashUtil.stringHexa(HashUtil.gerarHash(user.getCpf_partic()+user.getLogin_partic()+user.getSenha_partic(), "SHA-1"));
+		return MailUtil.confirmacaoAlteracaoDados(user, "http://secitecifgformosa.com.br/confirmRegistration?id="+user.getEmail_partic()+"&key="+hash+"&cad=1");
+		//Gerar hash
+		//
+	}
 
 }

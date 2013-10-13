@@ -50,16 +50,31 @@
 			<% 
 			
 				int res = Integer.parseInt(request.getParameter("res"));
+				String cad = request.getParameter("cad");
 				String msg;
-				if(res == 0){
-					msg = "O seu cadastro já está confirmado.";
+				if(cad==null){
+					if(res == 0){
+						msg = "O seu cadastro já está confirmado.";
+					}
+					else if(res == 1){
+						msg = "O seu cadastro foi confirmado.";
+					}
+					
+					else{
+						msg="Não poi possivel confirmar o cadastro.";
+					}
 				}
-				else if(res == 1){
-					msg = "O seu cadastro foi confirmado.";
-				}
-				
 				else{
-					msg="Não poi possivel confirmar o cadastro.";
+					if(res == 0){
+						msg = "Você já confirmou as alterações de seus dados.";
+					}
+					else if(res == 1){
+						msg = "Você confirmou as alterações de seus dados.";
+					}
+					
+					else{
+						msg="Não poi possivel confirmar as alterações de seus dados.";
+					}
 				}
 			
 			%>

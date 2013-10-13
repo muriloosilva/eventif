@@ -9,6 +9,8 @@ import br.com.secitec.menu.event.ProgramacaoEvent;
 import br.com.secitec.menu.view.FaleConoscoView;
 import br.com.secitec.menu.view.LoginView;
 import br.com.secitec.menu.view.SobreView;
+import br.com.secitec.popup.LoadingPopup;
+import br.com.secitec.popup.VisualizarAlterarDadosPopup;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -41,7 +43,7 @@ public class MenuPresenter implements Presenter {
 
 		Anchor getSair();
 		
-		Label getNomeUsuario();
+		Anchor getNomeUsuario();
 
 		void setData(List<String> data);
 
@@ -60,6 +62,23 @@ public class MenuPresenter implements Presenter {
 	}
 
 	public void bind() {
+		
+		display.getNomeUsuario().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				final VisualizarAlterarDadosPopup vadp =new VisualizarAlterarDadosPopup(rpcService, eventBus);
+				vadp.getTela().center();
+				vadp.getFechar().addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						vadp.getTela().hide();
+					}
+				});
+			}
+		});
+		
 		display.getApresentationLabel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				eventBus.fireEvent(new ApresentationEvent("apresentacao"));
@@ -120,16 +139,18 @@ public class MenuPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
+				final LoadingPopup lp = new LoadingPopup("Aguarde ...");
 				rpcService.removeSessao(new AsyncCallback<Void>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
+						lp.hide();
 
 					}
 
 					@Override
 					public void onSuccess(Void result) {
+						lp.hide();
 						// TODO Auto-generated method stub
 //						RootPanel.get("menuDir").setVisible(false);
 						String s = History.getToken();
@@ -175,7 +196,7 @@ public class MenuPresenter implements Presenter {
 		return (Anchor) display.getAtividadesLabel();
 	}
 	
-	public Label getNomeUsuario(){
+	public Anchor getNomeUsuario(){
 		return display.getNomeUsuario();
 	}
 }

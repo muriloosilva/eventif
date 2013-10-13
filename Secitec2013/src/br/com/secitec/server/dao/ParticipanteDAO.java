@@ -104,6 +104,34 @@ public class ParticipanteDAO {
 		}
 	}
 	
+	public static boolean alterarDados(String email, User user, boolean confirmar){
+		Connection con = ConnectionMannager.getConnetion();
+		try {
+			PreparedStatement stmt;
+			if(confirmar){
+				stmt = con.prepareStatement("update participantes set nome_partic=?,cpf_partic=?,email_partic=?,"
+					+ "senha_partic=?,matr_aluno_partic=?,ativo='0' where email_partic=?");
+			}
+			else{
+				stmt = con.prepareStatement("update participantes set nome_partic=?,cpf_partic=?,email_partic=?,"
+					+ "senha_partic=?,matr_aluno_partic=?,ativo='1' where email_partic=?");
+			}
+			stmt.setString(1, user.getNome_partic());
+			stmt.setString(2, user.getCpf_partic());
+			stmt.setString(3, user.getEmail_partic().trim());
+			stmt.setString(4, user.getSenha_partic());
+			stmt.setString(5, user.getMatr_aluno_partic());
+			stmt.setString(6, email);
+			stmt.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	public static User getParticipante(String login){
 		Connection con = ConnectionMannager.getConnetion();
 		try {
