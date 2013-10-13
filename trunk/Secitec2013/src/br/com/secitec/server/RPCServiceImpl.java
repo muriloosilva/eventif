@@ -258,4 +258,33 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
+	public int alterarDados(User user) {
+		//0 erro
+		//1 alerado, mas com confirmação
+		//2 alterado, sem confirmação
+		User userSession = getSession();
+		if(userSession!= null && user != null){
+			if(!user.getEmail_partic().equals(userSession.getEmail_partic())){
+				//confirmar alteração por e-mail
+				ParticipanteDAO.alterarDados(userSession.getEmail_partic(), user, true);
+				if(ConfirmacaoCadastro.enviaConfirmacaoAlteracaoDados(user)){
+					return 1;
+				}
+				else{
+					return 0;
+				}	
+			}
+			else{
+				//alterar dados apenas
+				if(ParticipanteDAO.alterarDados(userSession.getEmail_partic(), user, false)){
+					return 2;
+				}
+				else{
+					return 0;
+				}
+			}
+		}
+		return 0;
+	}
 }

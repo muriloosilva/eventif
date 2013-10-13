@@ -21,7 +21,7 @@ public class MenuView extends Composite implements MenuPresenter.Display {
 	private HorizontalPanel menuHorizontal, hpUsuario;
 	
 	private Anchor sair;
-	private Label nomeUsuario;
+	private Anchor nomeUsuario;
 	private Label lbNomeUsuario;
 	
 	public MenuView() {
@@ -55,12 +55,14 @@ public class MenuView extends Composite implements MenuPresenter.Display {
 		
 		sair = new Anchor("Sair");
 		sair.addStyleName("aMenuUsuario");
+		sair.setTitle("clique aqui para sair");
 		
 		lbNomeUsuario = new Label("Usuário:");
 		lbNomeUsuario.addStyleName("aMenuUsuario");
 	
-		nomeUsuario = new Label();
+		nomeUsuario = new Anchor();
 		nomeUsuario.addStyleName("nomeUsuario");
+		nomeUsuario.setTitle("Clique aqui para visulizar ou altera seus dados");
 		
 		hpUsuario.add(lbNomeUsuario);
 		hpUsuario.add(nomeUsuario);
@@ -115,7 +117,7 @@ public class MenuView extends Composite implements MenuPresenter.Display {
 	}
 	
 	@Override
-	public Label getNomeUsuario() {
+	public Anchor getNomeUsuario() {
 		// TODO Auto-generated method stub
 		return this.nomeUsuario;
 	}

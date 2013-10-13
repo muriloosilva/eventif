@@ -27,6 +27,7 @@ public class ConfirmRegistration extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		String key = request.getParameter("key");
+		String cad = request.getParameter("cad");
 		System.out.println("id: "+id);
 		User user = ParticipanteDAO.getParticipante(id);
 		
@@ -53,7 +54,13 @@ public class ConfirmRegistration extends HttpServlet {
 		else{
 			//usuário inexistente
 		}
-		RequestDispatcher view = request.getRequestDispatcher("confirmRegistration.jsp?res="+res);
+		RequestDispatcher view;
+		if(cad != null){
+			view = request.getRequestDispatcher("confirmRegistration.jsp?res="+res+"&cad=1");
+		}
+		else{
+			view = request.getRequestDispatcher("confirmRegistration.jsp?res="+res);
+		}
 		view.forward(request, response);
 		System.out.println("ahhhhhhhhhhhh");
 	}

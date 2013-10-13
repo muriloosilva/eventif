@@ -30,11 +30,14 @@ import br.com.secitec.menu.view.UsuarioView;
 import br.com.secitec.popup.LoadingPopup;
 import br.com.secitec.shared.model.User;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -135,7 +138,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			@Override
 			public void onSuccess(User result) {
 				presenterMenu.getHpUsuario().setVisible(true);
-				presenterMenu.getNomeUsuario().setText(result.getNome_partic());
+				String nome = result.getNome_partic().split(" ")[0];
+				if(nome.length()>21){
+					nome = nome.subSequence(0, 19).toString();
+					nome += "...";
+				}
+				presenterMenu.getNomeUsuario().setText(nome);
 				presenterMenu.getLogin().setVisible(false);
 				presenterMenu.getAtividades().setVisible(true);
 			}
