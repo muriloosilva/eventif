@@ -38,7 +38,7 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	}
 	
 	@Override
-	public Boolean reenviaConfirmacaoCadastro(User user) {
+	public boolean reenviaConfirmacaoCadastro(User user) {
 		return ConfirmacaoCadastro.enviaConfirmacaoCadastro(user);
 	}
 
@@ -239,6 +239,23 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	@Override
 	public boolean faleConosco(String name, String email, String msg) {
 		return MailUtil.faleConosco(name, email, msg);
+	}
+
+	@Override
+	public boolean recuperarSenha(User user) {
+		User userBD = ParticipanteDAO.getParticipante(user.getEmail_partic());
+		if(userBD != null){
+			if(user.getCpf_partic().equals(userBD.getCpf_partic())){
+				return MailUtil.recuperarSenha(userBD);
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+		// TODO Auto-generated method stub
 	}
 
 }

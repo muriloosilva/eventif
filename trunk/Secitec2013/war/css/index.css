@@ -204,5 +204,15 @@ p{
 	
 	padding: 10px;
 	
+}
+
+.passwd{
+	
+	line-height: 0px;
+	
+}
+
+.gwt-Anchor{
+	cursor:pointer;
 	
 }
