@@ -10,6 +10,7 @@ import br.com.secitec.menu.view.LoginView;
 import br.com.secitec.menu.view.MaisInformacaoView;
 import br.com.secitec.popup.ConfirmacaoPopup;
 import br.com.secitec.popup.InformacaoPopup;
+import br.com.secitec.popup.LoadingPopup;
 import br.com.secitec.shared.model.Atividade;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -75,14 +76,16 @@ public class UsuarioPresenter implements Presenter {
 	}
 	
 	private void eventoCancelarInscricao(final int idAtividade){
+		final LoadingPopup pp = new LoadingPopup("Aguarde...");
 		rpcService.getSessao(new AsyncCallback<Boolean>() {
 			@Override
 			public void onFailure(Throwable caught) {
-
+				pp.hide();
 			}
 
 			@Override
 			public void onSuccess(Boolean result) {
+				pp.hide();
 				if (result) {
 					cp = new ConfirmacaoPopup("Deseja realmente cancelar a inscrição?");
 					cp.getTela().center();
@@ -117,24 +120,27 @@ public class UsuarioPresenter implements Presenter {
 	}
 	
 	private void eventoInscrever(final int idAtividade){
+		final LoadingPopup pp = new LoadingPopup("Aguarde...");
 		rpcService.getSessao(new AsyncCallback<Boolean>() {
 			@Override
 			public void onFailure(Throwable caught) {
-
+				pp.hide();
 			}
 
 			@Override
 			public void onSuccess(Boolean result) {
+				
 				if (result) {
 					rpcService.inscrever(idAtividade,
 							new AsyncCallback<Boolean>() {
 								@Override
 								public void onFailure(Throwable caught) {
-
+									pp.hide();
 								}
 
 								@Override
 								public void onSuccess(Boolean result) {
+									pp.hide();
 									if (result) {
 										ip = new InformacaoPopup(
 												"Inscrição efetuada com sucesso!");
@@ -192,10 +198,11 @@ public class UsuarioPresenter implements Presenter {
 	}
 	
 	private void eventoInscreverMinicurso(final int idAtividade){
+		final LoadingPopup pp = new LoadingPopup("Aguarde...");
 		rpcService.getSessao(new AsyncCallback<Boolean>() {
 			@Override
 			public void onFailure(Throwable caught) {
-
+				pp.hide();
 			}
 			@Override
 			public void onSuccess(Boolean result) {
@@ -207,11 +214,12 @@ public class UsuarioPresenter implements Presenter {
 						@Override
 						public void onFailure(Throwable caught) {
 							// TODO Auto-generated method stub
-							
+							pp.hide();
 						}
 
 						@Override
 						public void onSuccess(Boolean result) {
+							pp.hide();
 							// TODO Auto-generated method stub
 							if(result)
 								inscrever(idAtividade);
@@ -345,15 +353,17 @@ public class UsuarioPresenter implements Presenter {
 	}
 
 	private void cancelarInscricao(int e){
+		final LoadingPopup pp = new LoadingPopup("Aguarde...");
 		rpcService.cancelar(e,
 				new AsyncCallback<Boolean>() {
 					@Override
 					public void onFailure(Throwable caught) {
-
+						pp.hide();
 					}
 
 					@Override
 					public void onSuccess(Boolean result) {
+						pp.hide();
 						if (result) {
 							ip = new InformacaoPopup("Inscrição cancelada com sucesso!");
 							ip.getTela().center();
@@ -396,9 +406,11 @@ public class UsuarioPresenter implements Presenter {
 	public void go(HasWidgets container) {
 		container.clear();
 		container.add(display.asWidget());
+		final LoadingPopup pp = new LoadingPopup("Aguarde...");
 		rpcService.getAtividades(new AsyncCallback<List<Atividade>>() {
 			@Override
 			public void onSuccess(List<Atividade> result) {
+				
 				oficinas = new ArrayList<Atividade>();
 				palestras = new ArrayList<Atividade>();
 				minicursos = new ArrayList<Atividade>();
@@ -415,11 +427,13 @@ public class UsuarioPresenter implements Presenter {
 				Collections.sort(minicursos);
 				Collections.sort(palestras);
 				display.setData(oficinas, minicursos, palestras);
+				pp.hide();
 				bind();
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
+				pp.hide();
 				Window.alert("Erro: " + caught.getMessage());
 			}
 		});
@@ -427,14 +441,16 @@ public class UsuarioPresenter implements Presenter {
 	}
 
 	public void setDadosUsuario() {
+		final LoadingPopup pp = new LoadingPopup("Aguarde...");
 		rpcService.getAtividadesUsuario(new AsyncCallback<List<Atividade>>() {
 			@Override
 			public void onFailure(Throwable caught) {
-
+				pp.hide();
 			}
 
 			@Override
 			public void onSuccess(List<Atividade> result) {
+				pp.hide();
 				atividades = new ArrayList<Atividade>();
 				if (result != null) {
 					for (int i = 0; i < result.size(); i++) {
@@ -455,14 +471,16 @@ public class UsuarioPresenter implements Presenter {
 	}
 	
 	private void inscrever(int e){
+		final LoadingPopup pp = new LoadingPopup("Aguarde...");
 		rpcService.inscrever(e,
 				new AsyncCallback<Boolean>() {
 					@Override
 					public void onFailure(Throwable caught) {
-					
+						pp.hide();
 					}
 					@Override
 					public void onSuccess(Boolean result) {
+						pp.hide();
 						if(result){
 							ip = new InformacaoPopup("Inscrição efetuada com sucesso!");
 							ip.getTela().center();

@@ -18,6 +18,8 @@ public interface RPCServiceAsync {
 	public void faleConosco(String name, String email, String msg, AsyncCallback<Boolean> callback);
 	
 	public void reenviaConfirmacaoCadastro(User user, AsyncCallback<Boolean> callback);
+	
+	public void recuperarSenha(User user, AsyncCallback<Boolean> callback);
 
 	public void getSession(AsyncCallback<User> callback);
 

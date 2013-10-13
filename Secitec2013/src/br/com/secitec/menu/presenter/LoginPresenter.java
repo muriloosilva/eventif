@@ -8,6 +8,7 @@ import br.com.secitec.menu.view.UsuarioView;
 import br.com.secitec.popup.CadastroPopup;
 import br.com.secitec.popup.InformacaoPopup;
 import br.com.secitec.popup.LoadingPopup;
+import br.com.secitec.popup.RecuperarSenhaPopup;
 import br.com.secitec.shared.model.User;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -32,6 +33,8 @@ public class LoginPresenter implements Presenter {
 		Widget asWidget();
 
 		Anchor getCadastrar();
+		
+		Anchor getRecuperarSenha();
 
 		Button getLogin();
 
@@ -56,6 +59,23 @@ public class LoginPresenter implements Presenter {
 	public void bind() {
 		
 		//LOGIN DANDO PROBLEMA
+		
+		display.getRecuperarSenha().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				display.getPopup().hide();
+				final RecuperarSenhaPopup recuperarSenhaPopup = new RecuperarSenhaPopup(rpcService, eventBus);
+				recuperarSenhaPopup.getFechar().addClickHandler(new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						recuperarSenhaPopup.getTela().hide();
+						//display.getPopup().center();
+					}
+				});
+				
+			}
+		});
 		
 		display.getLogin().addClickHandler(new ClickHandler() {
 

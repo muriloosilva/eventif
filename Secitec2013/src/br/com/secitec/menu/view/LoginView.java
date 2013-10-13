@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 
 public class LoginView extends Composite implements
 LoginPresenter.Display{
@@ -26,6 +27,7 @@ LoginPresenter.Display{
 	private FlexTable tabela;
 	private Button login;
 	private Anchor cadastro;
+	private Anchor esqueceuSenha;
 	
 	public LoginView() {
 		tela = new PopupPanel(true);
@@ -114,56 +116,67 @@ LoginPresenter.Display{
 		hLogin.addStyleName("alignDir");
 		tb.setWidget(0, 0, hLogin);
 		TextBox login = new TextBox();
-		login.setWidth("140px");
+		login.setWidth("250px");
 		tb.setWidget(0, 1, login);
 
 		HTML hSenha = new HTML("Senha: ");
 		hSenha.addStyleName("alignDir");
 		tb.setWidget(1, 0, hSenha);
+		tb.getRowFormatter().getElement(1).addClassName("passwd");
+		
 		PasswordTextBox senha = new PasswordTextBox();
-		senha.setWidth("140px");
-		tb.setWidget(1, 1, senha);
+		senha.setWidth("250px");
+		//tb.setWidget(1, 1, senha);
 		
-		HorizontalPanel hpRodape = new HorizontalPanel();
-//		hpRodape.setHeight("40px");
-//		hpRodape.setWidth("300px");
-		hpRodape.setSpacing(0);
-//		hpRodape.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+		VerticalPanel vpEsqueceuSenha = new VerticalPanel();
+		vpEsqueceuSenha.setSpacing(0);
+		vpEsqueceuSenha.setHeight("20px");
+		vpEsqueceuSenha.setVerticalAlignment(VerticalPanel.ALIGN_BOTTOM);
 		
-		HorizontalPanel hpLogin = new HorizontalPanel();
-		hpLogin.setSpacing(0);
-		hpLogin.setHeight("40px");
+		vpEsqueceuSenha.add(senha);
+		
+		HorizontalPanel hpEsqueceuSenha = new HorizontalPanel();
+		hpEsqueceuSenha.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+		hpEsqueceuSenha.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
+		hpEsqueceuSenha.setWidth("264px");
+		
+		esqueceuSenha = new Anchor();
+		esqueceuSenha.setText("esqueceu sua senha?");
+		esqueceuSenha.setHeight("80px");
+
+		hpEsqueceuSenha.add(esqueceuSenha);
+		vpEsqueceuSenha.add(hpEsqueceuSenha);
+		
+		tb.setWidget(1, 1, vpEsqueceuSenha);
+		
+		
+		
+		HorizontalPanel hpAction = new HorizontalPanel();
+		hpAction.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+		hpAction.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
+		hpAction.setHeight("50px");
+		hpAction.setWidth("200px");
+		hpAction.setSpacing(10);
 		
 		this.login = new Button();
 		this.login.setText("Login");
 		this.login.setHeight("40px");
 		
-		hpLogin.add(this.login);
-		
-		HorizontalPanel hpOu = new HorizontalPanel();
-		hpOu.setHeight("40px");
-		hpOu.addStyleName("ou");
+		hpAction.add(this.login);
 		
 		HTML ou = new HTML("ou");
+		ou.setWidth("40px");
 		
-		hpOu.add(ou);
-		
-		HorizontalPanel hpCadastrar = new HorizontalPanel();
-		hpCadastrar.addStyleName("botaoCadastrar");
-		hpCadastrar.setSpacing(8);
-		hpCadastrar.setHeight("40px");
+		hpAction.add(ou);
 		
 		cadastro = new Anchor();
 		cadastro.setText("Cadastre-se");
 		cadastro.setHeight("40px");
+		cadastro.setWidth("80px");
 
-		hpCadastrar.add(cadastro);
+		hpAction.add(cadastro);
 		
-		hpRodape.add(hpLogin);
-		hpRodape.add(hpOu);
-		hpRodape.add(hpCadastrar);
-		
-		tb.setWidget(2, 1, hpRodape);
+		tb.setWidget(2, 1, hpAction);
 	}
 
 	private FlexTable tabela(FlexTable tb) {
@@ -224,6 +237,10 @@ LoginPresenter.Display{
 //		});
 //	}
 	
+	public Anchor getRecuperarSenha(){
+		return this.esqueceuSenha;
+	}
+	
 	public Anchor getCadastrar(){
 		return this.cadastro;
 	}
@@ -239,12 +256,11 @@ LoginPresenter.Display{
 	}
 	
 	public TextBox getTbLogin(){
-		return (TextBox) tabela.getWidget(0, 1);
+		return (TextBox)tabela.getWidget(0, 1);
 	}
 	
 	public PasswordTextBox getTbSenha(){
-		return (PasswordTextBox) tabela
-				.getWidget(1, 1);
+		return (PasswordTextBox) ((VerticalPanel)tabela.getWidget(1, 1)).getWidget(0);
 	}
 	
 	public PopupPanel getPopup(){

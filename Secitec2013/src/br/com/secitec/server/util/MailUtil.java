@@ -20,6 +20,43 @@ public class MailUtil {
 	static String userName = "secitecifgformosa@secitecifgformosa.com.br";
 	static String passwd = "12323556111122";
 	
+public static boolean recuperarSenha(User user){
+		
+		Properties props = System.getProperties();
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.user", userName);
+		props.put("mail.smtp.password", passwd);
+		props.put("mail.smtp.port", "465"); // 587 is the port number of yahoo mail
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.socketFactory.port", "465");    
+		props.put("mail.smtp.socketFactory.fallback", "false");    
+		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");  
+		
+		Session session = Session.getDefaultInstance(props);
+		MimeMessage message = new MimeMessage(session);
+		try {
+			message.setFrom(new InternetAddress(userName));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail_partic()));
+
+			message.setSubject("SECITEC IFG FORMOSA - Recuperar Senha");
+			//message.setText(msg);
+			// alternately, to send HTML mail:
+			 message.setContent("<p>SECITEC IFG FORMOSA - Recuperar Senha</p><br><br>" +
+			 		"Senha: " + user.getSenha_partic(), "text/html");
+			Transport transport = session.getTransport("smtps");
+			transport.connect(host, userName, passwd);
+			transport.sendMessage(message, message.getAllRecipients());
+			
+			transport.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	public static boolean confirmacaoDeCadastro(User user, String msg){
 		
 		Properties props = System.getProperties();
