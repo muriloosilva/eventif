@@ -47,6 +47,7 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		//0 erro no login
 		//1 inativo cadastro
 		//2 login ok
+		//3 não confirmou alteração dados
 		// TODO Auto-generated method stub
 		User user = LoginDAO.loginUsuario(login, senha);
 		if(user != null){
@@ -59,6 +60,9 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 					HttpSession session = getThreadLocalRequest().getSession();
 					session.setAttribute("user", user);
 					return 2;
+				}
+				else if(user.getAtivo()==2){
+					return 3;
 				}
 				else{
 					return 0;
@@ -257,31 +261,49 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		}
 		// TODO Auto-generated method stub
 	}
+	
+	@Override
+	public boolean reenviaConfirmacaoAlteracaoDados(User user) {
+		return ConfirmacaoCadastro.enviaConfirmacaoAlteracaoDados(user);
+	}
 
 	@Override
 	public int alterarDados(User user) {
 		//0 erro
 		//1 alerado, mas com confirmação
 		//2 alterado, sem confirmação
+		//3 já existe um usuário com este cpf
+		//4 já ... com este email
 		User userSession = getSession();
 		if(userSession!= null && user != null){
-			if(!user.getEmail_partic().equals(userSession.getEmail_partic())){
-				//confirmar alteração por e-mail
-				ParticipanteDAO.alterarDados(userSession.getEmail_partic(), user, true);
-				if(ConfirmacaoCadastro.enviaConfirmacaoAlteracaoDados(user)){
-					return 1;
-				}
-				else{
-					return 0;
-				}	
+			if(!user.getCpf_partic().equals(userSession.getCpf_partic())){
+				if(ParticipanteDAO.getCPF(user.getCpf_partic()))
+					return 3;
 			}
 			else{
-				//alterar dados apenas
-				if(ParticipanteDAO.alterarDados(userSession.getEmail_partic(), user, false)){
-					return 2;
+				if(!user.getEmail_partic().trim().equals(userSession.getEmail_partic().trim())){
+					if(ParticipanteDAO.getParticipante(user.getEmail_partic())!= null){
+						return 4;
+					}
+					else{
+						//confirmar alteração por e-mail
+						ParticipanteDAO.alterarDados(userSession.getEmail_partic(), user, true);
+						if(ConfirmacaoCadastro.enviaConfirmacaoAlteracaoDados(user)){
+							return 1;
+						}
+						else{
+							return 0;
+						}
+					}
 				}
 				else{
-					return 0;
+					//alterar dados apenas
+					if(ParticipanteDAO.alterarDados(userSession.getEmail_partic(), user, false)){
+						return 2;
+					}
+					else{
+						return 0;
+					}
 				}
 			}
 		}

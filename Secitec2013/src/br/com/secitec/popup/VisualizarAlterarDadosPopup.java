@@ -353,7 +353,43 @@ public class VisualizarAlterarDadosPopup {
 											ip.getOk().addClickHandler(ch);
 											ip.getFechar().addClickHandler(ch);
 										}
-										else{
+									 else if(result == 3){
+										//tela.hide();
+										pp.hide();
+										ip = new InformacaoPopup(
+												"Não foi possível realizar as alterações. O CPF informado já está cadastrado.");
+										ip.getTela().center();
+										ClickHandler ch = new ClickHandler() {
+											@Override
+											public void onClick(ClickEvent event) {
+												ip.getTela().hide();
+												tela.center();
+												cpf.setText("");
+												cpf.setFocus(true);
+											}
+										};
+										ip.getOk().addClickHandler(ch);
+										ip.getFechar().addClickHandler(ch);
+									}
+									 else if(result == 4){
+											//tela.hide();
+											pp.hide();
+											ip = new InformacaoPopup(
+													"Não foi possível realizar as alterações. O email informado já está cadastrado.");
+											ip.getTela().center();
+											ClickHandler ch = new ClickHandler() {
+												@Override
+												public void onClick(ClickEvent event) {
+													ip.getTela().hide();
+													tela.center();
+													email.setText("");
+													email.setFocus(true);
+												}
+											};
+											ip.getOk().addClickHandler(ch);
+											ip.getFechar().addClickHandler(ch);
+										}
+										else if(result ==2){
 											tela.hide();
 											pp.hide();
 											ip = new InformacaoPopup(
