@@ -263,6 +263,101 @@ public class LoginPresenter implements Presenter {
 									}
 								});
 							}
+							else if(b==3){
+								display.getPopup().hide();
+								
+								Anchor a = new Anchor("clique aqui");
+								
+								ip = new InformacaoPopup("Você ainda não confirmou as alterações de seus dados. Caso não tenha recebido o e-mail clique no link abaixo");
+								ip.setOtherWidget(a);
+								ip.getTela().center();
+
+								ClickHandler ch = new ClickHandler() {
+									@Override
+									public void onClick(ClickEvent event) {
+										display.getPopup().center();
+										display.getTbLogin().setText("");
+										display.getTbSenha().setText("");
+										display.getTbLogin().setFocus(true);
+										ip.getTela().hide();
+									}
+								};
+								ip.getOk().addClickHandler(ch);
+								ip.getFechar().addClickHandler(ch);
+								
+								a.addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent event) {
+										ip.getTela().hide();
+										final LoadingPopup pp = new LoadingPopup("Aguarde ...");
+										rpcService.reenviaConfirmacaoAlteracaoDados(user, new AsyncCallback<Boolean>() {
+											@Override
+											public void onSuccess(Boolean result) {
+												pp.hide();
+												if(result){
+													ip = new InformacaoPopup("Foi reenviado para o seu e-mail a confirmação para alteração de seus dados. Verifique em" +
+															" sua caixa de SPAM ou no LIXO.");
+													ip.getTela().center();
+													ClickHandler ch = new ClickHandler() {
+														@Override
+														public void onClick(ClickEvent event) {
+															display.getPopup().center();
+															display.getTbLogin().setText("");
+															display.getTbSenha().setText("");
+															display.getTbLogin().setFocus(true);
+															ip.getTela().hide();
+														}
+													};
+													ip.getOk().addClickHandler(ch);
+													ip.getFechar().addClickHandler(ch);
+													
+												}
+												else{
+													ip = new InformacaoPopup("Não foi possível reenviar o e-mail para confirmação de cadastro. Tente" +
+															" mais tarde.");
+													ip.getTela().center();
+													ClickHandler ch = new ClickHandler() {
+														@Override
+														public void onClick(ClickEvent event) {
+															display.getPopup().center();
+															display.getTbLogin().setText("");
+															display.getTbSenha().setText("");
+															display.getTbLogin().setFocus(true);
+															ip.getTela().hide();
+														}
+													};
+													ip.getOk().addClickHandler(ch);
+													ip.getFechar().addClickHandler(ch);
+												}
+												
+											}
+											@Override
+											public void onFailure(
+													Throwable caught) {
+												pp.hide();
+												ip = new InformacaoPopup("Não foi possível reenviar o e-mail para confirmação de cadastro. Tente" +
+														" mais tarde.");
+												ip.getTela().center();
+												ClickHandler ch = new ClickHandler() {
+													@Override
+													public void onClick(ClickEvent event) {
+														display.getPopup().center();
+														display.getTbLogin().setText("");
+														display.getTbSenha().setText("");
+														display.getTbLogin().setFocus(true);
+														ip.getTela().hide();
+													}
+												};
+												ip.getOk().addClickHandler(ch);
+												ip.getFechar().addClickHandler(ch);
+												
+											}
+										});
+										
+									}
+								});
+							}
 						}
 					});
 		} else {

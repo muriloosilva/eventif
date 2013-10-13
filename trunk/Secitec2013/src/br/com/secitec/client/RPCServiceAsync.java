@@ -19,6 +19,8 @@ public interface RPCServiceAsync {
 	
 	public void reenviaConfirmacaoCadastro(User user, AsyncCallback<Boolean> callback);
 	
+	public void reenviaConfirmacaoAlteracaoDados(User user, AsyncCallback<Boolean> callback);
+	
 	public void recuperarSenha(User user, AsyncCallback<Boolean> callback);
 	
 	public void alterarDados(User user, AsyncCallback<Integer> callback);

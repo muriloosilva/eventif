@@ -110,7 +110,7 @@ public class ParticipanteDAO {
 			PreparedStatement stmt;
 			if(confirmar){
 				stmt = con.prepareStatement("update participantes set nome_partic=?,cpf_partic=?,email_partic=?,"
-					+ "senha_partic=?,matr_aluno_partic=?,ativo='0' where email_partic=?");
+					+ "senha_partic=?,matr_aluno_partic=?,ativo='2' where email_partic=?");
 			}
 			else{
 				stmt = con.prepareStatement("update participantes set nome_partic=?,cpf_partic=?,email_partic=?,"
