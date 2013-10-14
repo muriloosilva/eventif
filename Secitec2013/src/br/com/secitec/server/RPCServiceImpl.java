@@ -277,7 +277,7 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		User userSession = getSession();
 		if(userSession!= null && user != null){
 			if(!user.getCpf_partic().equals(userSession.getCpf_partic())){
-				if(ParticipanteDAO.getCPF(user.getCpf_partic()))
+				if(ParticipanteDAO.getCPF(user.getCpf_partic()) == false)
 					return 3;
 			}
 			else{
