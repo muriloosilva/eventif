@@ -180,8 +180,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 //						RootPanel.get("menuDir").setVisible(true);
 //						infoUsuario();
 						configurarMenu();
-						Presenter presenter = new ProgramacaoPresenter(rpcService, eventBus,
-								new ProgramacaoView());
+						Presenter presenter = new UsuarioPresenter(rpcService, eventBus,
+								new UsuarioView());
 						if (presenter != null)
 							presenter.go(container);
 					}

@@ -85,7 +85,7 @@ public class SobreView extends Composite implements SobrePresenter.Display{
 		HorizontalPanel hpFaleConosco = new HorizontalPanel();
 		hpFaleConosco.setSpacing(0);
 		hpFaleConosco.setHeight("40px");
-		hpFaleConosco.setWidth("60px");
+		hpFaleConosco.setWidth("57px");
 		hpFaleConosco.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
 		hpFaleConosco.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 		

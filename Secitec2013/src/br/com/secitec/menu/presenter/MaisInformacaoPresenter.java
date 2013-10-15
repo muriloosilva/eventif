@@ -59,10 +59,11 @@ public class MaisInformacaoPresenter implements Presenter {
 		display.getInscrever().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				if (display.getInscrever().getText().equals("Inscrever"))
-					inscrever();
-				else
-					cancelar();
+//				if (display.getInscrever().getText().equals("Inscrever"))
+//					inscrever();
+//				else
+//					cancelar();
+				display.getPopup().hide();
 			}
 		});
 	}

@@ -415,6 +415,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 	@Override
 	public void setTabelaOficina(List<Atividade> oficinas,
 			List<Atividade> atividadesUsuario) {
+		this.tabelaOficinas.clear();
 		for (int i = 0; i < oficinas.size(); ++i) {
 			Atividade oficina = oficinas.get(i);
 
@@ -503,6 +504,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 	@Override
 	public void setTabelaMinicurso(List<Atividade> minicursos,
 			List<Atividade> atividadesUsuario) {
+		this.tabelaMinicursos.clear();
 		for (int i = 0; i < minicursos.size(); ++i) {
 			Atividade minicurso = minicursos.get(i);
 
@@ -590,6 +592,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 	@Override
 	public void setTabelaPalestras(List<Atividade> palestras,
 			List<Atividade> atividadesUsuario) {
+		this.tabelaPalestras.clear();
 		for (int i = 0; i < palestras.size(); ++i) {
 			Atividade a = palestras.get(i);
 
