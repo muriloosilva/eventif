@@ -69,26 +69,28 @@ public class CadastroPopup {
 
 		HorizontalPanel hpTop = new HorizontalPanel();
 		hpTop.setSpacing(0);
-		hpTop.setWidth("300px");
-		hpTop.setHeight("30px");
-		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
+		hpTop.setWidth("500px");
+		hpTop.setHeight("10px");
+		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+		hpTop.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
+		
+		HorizontalPanel hpTitulo = new HorizontalPanel();
+		hpTitulo.setSpacing(0);
+		hpTitulo.setWidth("500px");
+		hpTitulo.setHeight("40px");
+		hpTitulo.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
+		hpTitulo.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 
 		HTML titulo = new HTML("Cadastro");
 		titulo.addStyleName("titulo");
-		hpTop.add(titulo);
+		hpTitulo.add(titulo);
 
-		HorizontalPanel hpFechar = new HorizontalPanel();
-		hpFechar.setSpacing(0);
-		hpFechar.setWidth("20px");
-		hpFechar.addStyleName("botaoFecharCadastro");
-		hpFechar.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
 
 		imgFechar = new Image();
 		imgFechar.setUrl("images/fechar.png");
 		imgFechar.setSize("20px", "20px");
 
-		hpFechar.add(imgFechar);
-		hpTop.add(hpFechar);
+		hpTop.add(imgFechar);
 
 		tabela = new FlexTable();
 		tabela = tabela(tabela);
@@ -102,6 +104,7 @@ public class CadastroPopup {
 		hpRodape.add(cadastrar);
 
 		vp.add(hpTop);
+		vp.add(hpTitulo);
 		vp.add(tabela);
 		vp.add(hpRodape);
 		tela.add(vp);
@@ -111,6 +114,7 @@ public class CadastroPopup {
 	}
 
 	private void preencheTabela(FlexTable tb) {
+		tb.setWidth("400px");
 		HTML h = new HTML("Nome:");
 		h.addStyleName("alignDir");
 		tb.setWidget(0, 0, h);

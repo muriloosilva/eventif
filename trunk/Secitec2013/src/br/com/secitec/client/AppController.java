@@ -1,5 +1,8 @@
 package br.com.secitec.client;
 
+import sun.nio.ch.WindowsAsynchronousChannelProvider;
+import br.com.secitec.menu.event.AdminEvent;
+import br.com.secitec.menu.event.AdminEventHandler;
 import br.com.secitec.menu.event.ApresentationEvent;
 import br.com.secitec.menu.event.ApresentationEventHandler;
 import br.com.secitec.menu.event.FaleConoscoEvent;
@@ -10,6 +13,7 @@ import br.com.secitec.menu.event.ProgramacaoEvent;
 import br.com.secitec.menu.event.ProgramacaoEventHandler;
 import br.com.secitec.menu.event.SobreEvent;
 import br.com.secitec.menu.event.SobreEventHandler;
+import br.com.secitec.menu.presenter.AdminPresenter;
 import br.com.secitec.menu.presenter.ApresentationPresenter;
 import br.com.secitec.menu.presenter.FaleConoscoPresenter;
 import br.com.secitec.menu.presenter.InfoUsuarioPresenter;
@@ -19,6 +23,7 @@ import br.com.secitec.menu.presenter.Presenter;
 import br.com.secitec.menu.presenter.ProgramacaoPresenter;
 import br.com.secitec.menu.presenter.SobrePresenter;
 import br.com.secitec.menu.presenter.UsuarioPresenter;
+import br.com.secitec.menu.view.AdminView;
 import br.com.secitec.menu.view.ApresentationView;
 import br.com.secitec.menu.view.FaleConoscoView;
 import br.com.secitec.menu.view.InfoUsuarioView;
@@ -27,17 +32,14 @@ import br.com.secitec.menu.view.MenuView;
 import br.com.secitec.menu.view.ProgramacaoView;
 import br.com.secitec.menu.view.SobreView;
 import br.com.secitec.menu.view.UsuarioView;
-import br.com.secitec.popup.LoadingPopup;
 import br.com.secitec.shared.model.User;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -90,15 +92,21 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				History.newItem("sobre");
 			}
 		});
+		eventBus.addHandler(AdminEvent.TYPE, new AdminEventHandler() {
+			public void onAdmin(AdminEvent event) {
+				History.newItem("admineventifsecitecifgformosa");
+			}
+		});
 	}
 
 	@Override
 	public void go(HasWidgets container) {
 		this.container = container;
-
+		
 		if ("".equals(History.getToken())) {
 			History.newItem("apresentacao");
-		} else {
+		} 
+		else {
 			History.fireCurrentHistoryState();
 		}
 	}
@@ -218,6 +226,16 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 						if (presenter != null)
 							presenter.go(container);
 					}
+					else if(token.equals("admineventifsecitecifgformosa")){
+						presenterMenu.getHpUsuario().setVisible(false);
+						presenterMenu.getLogin().setVisible(true);
+						presenterMenu.getAtividades().setVisible(false);
+//						RootPanel.get("menuDir").setVisible(true);
+						//infoUsuario();
+						Presenter presenter = new AdminPresenter(rpcService, eventBus,new AdminView());
+						if (presenter != null)
+							presenter.go(container);
+					}
 				} else {
 					if(token.equals("apresentacao")){
 						//new LoadingPopup("Aguarde ...");
@@ -271,6 +289,16 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 //						RootPanel.get("menuDir").setVisible(true);
 						//infoUsuario();
 						Presenter presenter = new SobrePresenter(new SobreView());
+						if (presenter != null)
+							presenter.go(container);
+					}
+					else if(token.equals("admineventifsecitecifgformosa")){
+						presenterMenu.getHpUsuario().setVisible(false);
+						presenterMenu.getLogin().setVisible(true);
+						presenterMenu.getAtividades().setVisible(false);
+//						RootPanel.get("menuDir").setVisible(true);
+						//infoUsuario();
+						Presenter presenter = new AdminPresenter(rpcService, eventBus,new AdminView());
 						if (presenter != null)
 							presenter.go(container);
 					}

@@ -10,30 +10,23 @@ import java.util.List;
 
 import br.com.secitec.shared.model.Data;
 
-public class DataDAO {
+public class AtiDataDAO {
 	
-	public static int addData(Data d) {
+	public static void addAtiData(int idData, int idAtividade) {
 		PreparedStatement stmt;
-		String sql = "insert into datas(data, hr_ini, hr_fim) values (?,?,?)";
-		int id = 0;	
+		String sql = "insert into ati_data(fk_id_data, fk_id_ativid) values (?,?)";
 		try {
 			Connection con = ConnectionMannager.getConnetion();
-			stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setDate(1, d.getData());
-			stmt.setTime(2, d.getHrInicio());
-			stmt.setTime(3, d.getHrFim());
+			stmt = con.prepareStatement(sql);
+			stmt.setInt(1, idData);
+			stmt.setInt(2, idAtividade);
 			
 			stmt.executeUpdate();
-			ResultSet rs = stmt.getGeneratedKeys(); 
-			 if(rs.next()){  
-			        id = rs.getInt(1); 
-			    }  
 			stmt.close();
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return id;
 	}
 
 	public static List<Data> getData(int idAtivi) {

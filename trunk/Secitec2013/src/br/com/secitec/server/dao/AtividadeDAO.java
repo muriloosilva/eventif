@@ -13,6 +13,33 @@ import br.com.secitec.shared.model.Data;
 
 public class AtividadeDAO {
 	
+	public static int addAtividade(Atividade atividade) {
+		PreparedStatement stmt;
+		String sql = "insert into atividades(id_event, vagas_ativid, tipo_ativid, nome_ativid, desc_ativid, vagas_dispon) values (?,?,?,?,?,?)";
+		int id = 0;	
+		try {
+			Connection con = ConnectionMannager.getConnetion();
+			stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, 1);
+			stmt.setInt(2, atividade.getVagasAtiv());
+			stmt.setString(3, atividade.getTipoAtiv());
+			stmt.setString(4, atividade.getNomeAtiv());
+			stmt.setString(5, atividade.getDescAtiv());
+			stmt.setInt(6, atividade.getVagasAtiv());
+			
+			stmt.executeUpdate();
+			ResultSet rs = stmt.getGeneratedKeys(); 
+			 if(rs.next()){  
+			        id = rs.getInt(1); 
+			    }  
+			stmt.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
+	
 	public static void incrementaVagas(int idAtividade) {
 		PreparedStatement stmt;
 		String sql = "UPDATE atividades SET vagas_dispon=vagas_dispon+1 WHERE id_ativid = "+idAtividade;

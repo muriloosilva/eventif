@@ -1,11 +1,14 @@
 package br.com.secitec.server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import br.com.secitec.client.RPCService;
+import br.com.secitec.server.dao.AtiDataDAO;
 import br.com.secitec.server.dao.AtividadeDAO;
+import br.com.secitec.server.dao.DataDAO;
 import br.com.secitec.server.dao.InscricaoDAO;
 import br.com.secitec.server.dao.LoginDAO;
 import br.com.secitec.server.dao.ParticipanteDAO;
@@ -309,5 +312,22 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean insereAtividade(Atividade a,  List<Data> ld) {
+		
+		int idAtividade = AtividadeDAO.addAtividade(a);
+		if(idAtividade == 0)
+			return false;
+		for(int i = 0; i<ld.size(); i++){
+			int id = DataDAO.addData(ld.get(i));
+			if(id == 0)
+				return false;
+			else{
+				AtiDataDAO.addAtiData(id, idAtividade);
+			}
+		}
+		return true;
 	}
 }

@@ -42,19 +42,21 @@ LoginPresenter.Display{
 
 		HorizontalPanel hpTop = new HorizontalPanel();
 		hpTop.setSpacing(0);
-		hpTop.setWidth("300px");
-		hpTop.setHeight("30px");
-		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
+		hpTop.setWidth("400px");
+		hpTop.setHeight("10px");
+		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+		hpTop.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
+		
+		HorizontalPanel hpTitulo = new HorizontalPanel();
+		hpTitulo.setSpacing(0);
+		hpTitulo.setWidth("400px");
+		hpTitulo.setHeight("40px");
+		hpTitulo.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
+		hpTitulo.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 		
 		HTML titulo = new HTML("Login");
 		titulo.addStyleName("titulo");
-		hpTop.add(titulo);
-		
-		HorizontalPanel hpFechar = new HorizontalPanel();
-		hpFechar.setSpacing(0);
-		hpFechar.setWidth("20px");
-		hpFechar.addStyleName("botaoFecharLogin");
-		hpFechar.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+		hpTitulo.add(titulo);
 		
 		Image imgFechar = new Image();
 		imgFechar.setUrl("images/fechar.png");
@@ -66,8 +68,7 @@ LoginPresenter.Display{
 				tela.hide();
 			}
 		});
-		hpFechar.add(imgFechar);
-		hpTop.add(hpFechar);
+		hpTop.add(imgFechar);
 		
 		tabela = new FlexTable();
 		tabela = tabela(tabela);
@@ -105,6 +106,7 @@ LoginPresenter.Display{
 //		hpRodape.add(hpCadastrar);
 		
 		vp.add(hpTop);
+		vp.add(hpTitulo);
 		vp.add(tabela);
 //		vp.add(hpRodape);
 		tela.add(vp);
