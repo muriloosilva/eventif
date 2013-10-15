@@ -39,6 +39,9 @@ public class InscricaoDAO {
 			stmt.execute();
 			stmt.close();
 			con.close();
+			
+			AtividadeDAO.incrementaVagas(idAtividade);
+			
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

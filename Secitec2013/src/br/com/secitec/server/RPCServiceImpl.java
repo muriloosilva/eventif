@@ -51,7 +51,7 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		// TODO Auto-generated method stub
 		User user = LoginDAO.loginUsuario(login, senha);
 		if(user != null){
-			System.out.println("user logado:" +user.isLogado());
+//			System.out.println("user logado:" +user.isLogado());
 			if(user.isLogado()){
 				if(user.getAtivo()==0){
 					return 1;
@@ -177,6 +177,7 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 			return false;
 		} else {
 			InscricaoDAO.inscrever(codAtividade, user.getId_partic());
+			AtividadeDAO.decrementaVagas(codAtividade);
 			return true;
 		}
 	}

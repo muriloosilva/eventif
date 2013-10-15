@@ -177,15 +177,15 @@ public class ProgramacaoView extends Composite implements
 				vpHorario.add(horario);
 			}
 
-			HTML vagas = new HTML();
-			vagas.setText("Vagas: "+a.getVagasDisponiveis());
-			vagas.removeStyleName("gwt-HTML");
+//			HTML vagas = new HTML();
+//			vagas.setText("Vagas: "+a.getVagasDisponiveis());
+//			vagas.removeStyleName("gwt-HTML");
 //			vagas.addStyleName("tbAtividadesCol4");
 						
 			ftb.setWidget(i, 0, nome);
 			ftb.setWidget(i, 1, vpDatas);
 			ftb.setWidget(i, 2, vpHorario);
-			ftb.setWidget(i, 3, vagas);
+			
 			
 			btM = new Button("Mais Informações");
 			btM.removeStyleName("gwt-Button");
@@ -193,6 +193,11 @@ public class ProgramacaoView extends Composite implements
 			ftb.setWidget(i, 4, btM);
 			
 			if(!a.getTipoAtiv().equals("Palestra")){
+				HTML vagas = new HTML();
+				vagas.setText("Vagas: "+a.getVagasDisponiveis());
+				vagas.removeStyleName("gwt-HTML");
+				ftb.setWidget(i, 3, vagas);
+				
 				btInsc = new Button("Inscrever");
 				btInsc.removeStyleName("gwt-Button");
 				btInsc.addStyleName("btn-info");
@@ -202,9 +207,11 @@ public class ProgramacaoView extends Composite implements
 				ftb.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(a.getIdAtiv()));
 			}
 			else {
+//				btM.setWidth("199px");
 				ftb.getCellFormatter().addStyleName(i, 4, "col4Palestra");
 				ftb.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(a.getIdAtiv()));
 			}
+			
 			ftb.getCellFormatter().addStyleName(i, 0, "col1");
 			ftb.getCellFormatter().addStyleName(i, 1, "col2");
 			ftb.getCellFormatter().addStyleName(i, 2, "col3");
@@ -215,7 +222,7 @@ public class ProgramacaoView extends Composite implements
 	private String formataData(String data){
 		String dataFormatada;
 		dataFormatada = data.substring(8, 10) + "/" + data.substring(5, 7) + "/" + data.substring(2, 4);
-		System.out.println("DATA: "+dataFormatada);
+//		System.out.println("DATA: "+dataFormatada);
 		return dataFormatada;
 	}
 

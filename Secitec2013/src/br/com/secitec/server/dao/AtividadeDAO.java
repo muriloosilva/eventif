@@ -12,6 +12,37 @@ import br.com.secitec.shared.model.Atividade;
 import br.com.secitec.shared.model.Data;
 
 public class AtividadeDAO {
+	
+	public static void incrementaVagas(int idAtividade) {
+		PreparedStatement stmt;
+		String sql = "UPDATE atividades SET vagas_dispon=vagas_dispon+1 WHERE id_ativid = "+idAtividade;
+		
+		try {
+			Connection con = ConnectionMannager.getConnetion();
+			stmt = con.prepareStatement(sql);			
+			stmt.execute();
+			stmt.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void decrementaVagas(int idAtividade) {
+		PreparedStatement stmt;
+		String sql = "UPDATE atividades SET vagas_dispon=vagas_dispon-1 WHERE id_ativid = "+idAtividade;
+		
+		try {
+			Connection con = ConnectionMannager.getConnetion();
+			stmt = con.prepareStatement(sql);
+			stmt.execute();
+			stmt.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static boolean getMinicursosDoAluno(int idParticipante){
 		PreparedStatement stmt;
 		List<Atividade> atividades = new ArrayList<Atividade>();
@@ -27,6 +58,7 @@ public class AtividadeDAO {
 							+ "p.id_partic = "+idParticipante+" and a.tipo_ativid= 'Minicurso'");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
+				System.out.println("JÁ ESTÁ INSCRITO EM MINICURSO!!!");
 				Atividade atividade = new Atividade();
 				
 				int id = Integer.parseInt(rs.getString(1));
@@ -157,7 +189,7 @@ public class AtividadeDAO {
 				
 				atividades.add(atividade);
 			}
-			System.out.println("ATIVIDADES TAMANHO: "+atividades.size());
+//			System.out.println("ATIVIDADES TAMANHO: "+atividades.size());
 			rs.close();
 			stmt.close();
 			con.close();

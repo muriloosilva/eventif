@@ -32,9 +32,9 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 	private FlexTable tabelaMinicursos;
 	private FlexTable tabelaPalestras;
 	private Button btInsc, btM;
+	private HTML msg;
 
 	public UsuarioView() {
-		// String value = Window.Location.getParameter("param");
 		main = new VerticalPanel();
 		initWidget(main);
 		main.setBorderWidth(0);
@@ -53,13 +53,13 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		hpTop.setWidth("100%");
 		hpTop.setHeight("24px");
 
-		HTML titlePage = new HTML("Área do Participante");
+		HTML titlePage = new HTML("Minhas atividades");
 		titlePage.setStyleName("lbTitle");
 		hpTop.add(titlePage);
 
 		usuario = new VerticalPanel();
 		tabelaUsuario = new FlexTable();
-		montarPainel(usuario, conteudoUsuario, "Dados do Usuario",
+		montarPainel(usuario, conteudoUsuario, "Atividades Inscritas",
 				tabelaUsuario);
 
 		oficinas = new VerticalPanel();
@@ -83,9 +83,11 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		hpUsuario.setWidth("100%");
 		hpUsuario.setHeight("auto");
 
-		titlePage = new HTML("Atividades Inscritas");
-		titlePage.setStyleName("lbTitle");
-		hpUsuario.add(titlePage);
+		msg = new HTML();
+//		titlePage.setStyleName("lbTitle");
+		msg.removeStyleName("gwt-HTML");
+		msg.setVisible(false);
+		hpUsuario.add(msg);
 
 		hpUsuario.add(usuario);
 
@@ -108,30 +110,27 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		main.add(hpTop);
 		main.add(hpUsuario);
 		main.add(hpAtividades);
-		// main.add(usuario);
-		// main.add(oficinas);
-		// main.add(minicursos);
-		// main.add(palestras);
 	}
 
 	@Override
 	public Widget asWidget() {
-		// TODO Auto-generated method stub
 		return this;
 	}
 
 	@Override
 	public void setData(List<Atividade> oficinas, List<Atividade> minicursos,
-			List<Atividade> palestras) {
-		preencheTabela(tabelaOficinas, oficinas);
-		preencheTabela(tabelaMinicursos, minicursos);
-		preencheTabela(tabelaPalestras, palestras);
+			List<Atividade> palestras, List<Atividade> atividadesUsuario) {
+		System.out.println("Preenchenco oficinas...");
+		preencheTabela(tabelaOficinas, oficinas, atividadesUsuario);
+		System.out.println("Preenchenco minicursos...");
+		preencheTabela(tabelaMinicursos, minicursos, atividadesUsuario);
+		preencheTabela(tabelaPalestras, palestras, atividadesUsuario);
 	}
 
 	@Override
-	public void setDataUsuario(List<Atividade> atividades) {
-		// TODO Auto-generated method stub
-		preencheTabelaUsuario(tabelaUsuario, atividades);
+	public void setTabelaUsuario(List<Atividade> atividades) {
+		if(atividades != null)
+			preencheTabelaUsuario(tabelaUsuario, atividades);
 	}
 
 	public int[] getUsuario(ClickEvent event) {
@@ -155,25 +154,21 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 
 	@Override
 	public FlexTable getListaOficina() {
-		// TODO Auto-generated method stub
 		return tabelaOficinas;
 	}
 
 	@Override
 	public FlexTable getListaMinicurso() {
-		// TODO Auto-generated method stub
 		return tabelaMinicursos;
 	}
 
 	@Override
 	public FlexTable getListaPalestra() {
-		// TODO Auto-generated method stub
 		return tabelaPalestras;
 	}
 
 	@Override
 	public FlexTable getListaUsuario() {
-		// TODO Auto-generated method stub
 		return tabelaUsuario;
 	}
 
@@ -195,7 +190,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		return e;
 	}
 
-	private void preencheTabela(FlexTable ftb, List<Atividade> lista) {
+	private void preencheTabela(FlexTable ftb, List<Atividade> lista, List<Atividade> atividadesUsuario) {
 		ftb.removeAllRows();
 		for (int i = 0; i < lista.size(); ++i) {
 			Atividade a = lista.get(i);
@@ -203,7 +198,6 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			HTML nome = new HTML();
 			nome.setText(a.getNomeAtiv());
 			nome.removeStyleName("gwt-HTML");
-//			nome.addStyleName("tbAtividadesCol1");
 
 			VerticalPanel vpDatas = new VerticalPanel();
 			vpDatas.addStyleName("vpDatas");
@@ -215,11 +209,6 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 				htData.addStyleName("tbAtividadesCol2");
 				vpDatas.add(htData);
 			}
-			
-//			HTML data = new HTML();
-//			data.setText(formataData(String.valueOf(a.getDtAtiv())));
-//			data.removeStyleName("gwt-HTML");
-//			data.addStyleName("tbAtividadesCol2");
 
 			VerticalPanel vpHorario = new VerticalPanel();
 			vpHorario.addStyleName("vpHorario");
@@ -235,7 +224,6 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			HTML vagas = new HTML();
 			vagas.setText("Vagas: "+a.getVagasDisponiveis());
 			vagas.removeStyleName("gwt-HTML");
-//			vagas.addStyleName("tbAtividadesCol4");
 						
 			ftb.setWidget(i, 0, nome);
 			ftb.setWidget(i, 1, vpDatas);
@@ -247,16 +235,43 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			btM.addStyleName("btn-info");
 			ftb.setWidget(i, 4, btM);
 			
-			if(!a.getTipoAtiv().equals("Palestra")){
-				btInsc = new Button("Inscrever");
-				btInsc.removeStyleName("gwt-Button");
-				btInsc.addStyleName("btn-info");
+			if(a.getTipoAtiv().equals("Oficina") || a.getTipoAtiv().equals("Minicurso")){
+				if(!atividadesUsuario.isEmpty()){
+					System.out.println("Lista de atividades do usuario vazia? "+atividadesUsuario.isEmpty());
+					for (int j = 0; j < atividadesUsuario.size(); j++) {
+						Atividade aUsuario = atividadesUsuario.get(j);
+						btInsc = new Button("Inscrever");
+						btInsc.removeStyleName("gwt-Button");
+						btInsc.addStyleName("btn-info");
+//						ftb.setWidget(i, 5, btInsc);
+						if(a.getIdAtiv() == aUsuario.getIdAtiv()){
+							System.out.println("Atividade inscrito");
+							btInsc = new Button("Inscrito");
+							btInsc.removeStyleName("gwt-Button");
+							btInsc.addStyleName("btn-info");
+							btInsc.setEnabled(false);
+//							ftb.setWidget(i, 5, btInsc);
+						} //else if(a.getIdAtiv() != aUsuario.getIdAtiv()){
+//							System.out.println("Atividade nao inscrito");
+//							btInsc = new Button("Inscrever");
+//							btInsc.removeStyleName("gwt-Button");
+//							btInsc.addStyleName("btn-info");
+//							ftb.setWidget(i, 5, btInsc);
+//						}
+						ftb.setWidget(i, 5, btInsc);
+					}
+				} else{
+					System.out.println("Lista de atividade do usuario está VAZIA");
+					btInsc = new Button("Inscrever");
+					btInsc.removeStyleName("gwt-Button");
+					btInsc.addStyleName("btn-info");
+					ftb.setWidget(i, 5, btInsc);
+				}
 				ftb.getCellFormatter().addStyleName(i, 4, "col5");
 				ftb.getCellFormatter().addStyleName(i, 5, "col6");
-				ftb.setWidget(i, 5, btInsc);
 				ftb.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(a.getIdAtiv()));
 			}
-			else {
+			else {				
 				ftb.getCellFormatter().addStyleName(i, 4, "col4Palestra");
 				ftb.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(a.getIdAtiv()));
 			}
@@ -271,7 +286,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		String dataFormatada;
 		dataFormatada = data.substring(8, 10) + "/" + data.substring(5, 7)
 				+ "/" + data.substring(2, 4);
-		System.out.println("DATA: " + dataFormatada);
+//		System.out.println("DATA: " + dataFormatada);
 		return dataFormatada;
 	}
 
@@ -283,7 +298,6 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			HTML nome = new HTML();
 			nome.setText(a.getNomeAtiv());
 			nome.removeStyleName("gwt-HTML");
-//			nome.addStyleName("tbAtividadesCol1");
 
 			VerticalPanel vpDatas = new VerticalPanel();
 			vpDatas.addStyleName("vpDatas");
@@ -308,9 +322,8 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			}
 
 			HTML vagas = new HTML();
-			vagas.setText("Vagas: " + a.getVagasDisponiveis());
+//			vagas.setText("Vagas: " + a.getVagasDisponiveis());
 			vagas.removeStyleName("gwt-HTML");
-//			vagas.addStyleName("tbAtividadesCol4");
 
 			ftb.setWidget(i, 0, nome);
 			ftb.setWidget(i, 1, vpDatas);
@@ -344,7 +357,6 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		titulo.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 		titulo.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 		titulo.setWidth("100%");
-//		titulo.setHeight("auto");
 		HTML lbTitulo = new HTML(s);
 		lbTitulo.addStyleName("lbTituloAtividade");
 		titulo.addStyleName("backLabelAtividades");
@@ -375,15 +387,6 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		tb.setCellSpacing(0);
 		tb.setCellPadding(0);
 		tb.setWidth("100%");
-//		tb.getColumnFormatter().addStyleName(1, "col1");
-//		tb.getColumnFormatter().addStyleName(2, "col2");
-//		tb.getColumnFormatter().addStyleName(3, "col3");
-//		tb.getColumnFormatter().addStyleName(4, "col4");
-//		tb.getColumnFormatter().setWidth(0, "230px");
-//		tb.getColumnFormatter().setWidth(1, "50px");
-//		tb.getColumnFormatter().setWidth(2, "100px");
-//		tb.getColumnFormatter().setWidth(3, "70px");
-//		tb.getColumnFormatter().setWidth(4, "115px");
 		tb.addStyleName("tbAtividades");
 		tb.setBorderWidth(0);
 
@@ -397,5 +400,258 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		conteudo = vpConteudo();
 		conteudo.add(tabela(tb));
 		vp.add(conteudo);
+	}
+
+	@Override
+	public void setDataAtividades(List<Atividade> atividades,
+			List<Atividade> atividadesUsuario) {
+		
+		if(atividades.get(0).getTipoAtiv().equals("Oficina"))
+			setTabelaOficina(atividades, atividadesUsuario);
+		else
+			setTabelaMinicurso(atividades, atividadesUsuario);
+	}
+
+	@Override
+	public void setTabelaOficina(List<Atividade> oficinas,
+			List<Atividade> atividadesUsuario) {
+		for (int i = 0; i < oficinas.size(); ++i) {
+			Atividade oficina = oficinas.get(i);
+
+			HTML nome = new HTML();
+			nome.setText(oficina.getNomeAtiv());
+			nome.removeStyleName("gwt-HTML");
+
+			VerticalPanel vpDatas = new VerticalPanel();
+			vpDatas.addStyleName("vpDatas");
+			for (int j = 0; j < oficina.getDatas().size(); j++) {
+				Data d = oficina.getDatas().get(j);
+				HTML htData = new HTML();
+				htData.setText(formataData(String.valueOf(d.getData())));
+				htData.removeStyleName("gwt-HTML");
+				htData.addStyleName("tbAtividadesCol2");
+				vpDatas.add(htData);
+			}
+
+			VerticalPanel vpHorario = new VerticalPanel();
+			vpHorario.addStyleName("vpHorario");
+			for (int j = 0; j < oficina.getDatas().size(); j++) {
+				Data d = oficina.getDatas().get(j);
+				HTML horario = new HTML();
+				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
+				horario.removeStyleName("gwt-HTML");
+				horario.addStyleName("tbAtividadesCol3");
+				vpHorario.add(horario);
+			}
+
+			HTML vagas = new HTML();
+			vagas.setText("Vagas: "+oficina.getVagasDisponiveis());
+			vagas.removeStyleName("gwt-HTML");
+						
+			tabelaOficinas.setWidget(i, 0, nome);
+			tabelaOficinas.setWidget(i, 1, vpDatas);
+			tabelaOficinas.setWidget(i, 2, vpHorario);
+			tabelaOficinas.setWidget(i, 3, vagas);
+			
+			btM = new Button("Mais Informações");
+			btM.removeStyleName("gwt-Button");
+			btM.addStyleName("btn-info");
+			tabelaOficinas.setWidget(i, 4, btM);
+			
+			if(atividadesUsuario != null){
+				System.out.println("\nOFICINAS");
+				System.out.println("Lista de atividades do usuario cheia");				
+				for (int j = 0; j < atividadesUsuario.size(); j++) {
+					Atividade aUsuario = atividadesUsuario.get(j);
+//					btInsc = new Button("Inscrever");
+//					btInsc.removeStyleName("gwt-Button");
+//					btInsc.addStyleName("btn-info");
+					if(oficina.getIdAtiv() == aUsuario.getIdAtiv()){
+						System.out.println("Oficina inscrita");
+						btInsc = new Button("Inscrito");
+						btInsc.removeStyleName("gwt-Button");
+						btInsc.addStyleName("btn-info");
+						btInsc.setWidth("69px");
+						btInsc.setEnabled(false);
+						tabelaOficinas.setWidget(i, 5, btInsc);
+						break;
+					}
+					else{
+						System.out.println("Oficina não inscrita");
+						btInsc = new Button("Inscrever");
+						btInsc.removeStyleName("gwt-Button");
+						btInsc.addStyleName("btn-info");
+						tabelaOficinas.setWidget(i, 5, btInsc);
+					}
+				}
+			} else{
+				btInsc = new Button("Inscrever");
+				btInsc.removeStyleName("gwt-Button");
+				btInsc.addStyleName("btn-info");
+				tabelaOficinas.setWidget(i, 5, btInsc);
+			}
+			tabelaOficinas.getCellFormatter().addStyleName(i, 0, "col1");
+			tabelaOficinas.getCellFormatter().addStyleName(i, 1, "col2");
+			tabelaOficinas.getCellFormatter().addStyleName(i, 2, "col3");
+			tabelaOficinas.getCellFormatter().addStyleName(i, 3, "col4");
+			tabelaOficinas.getCellFormatter().addStyleName(i, 4, "col5");
+			tabelaOficinas.getCellFormatter().addStyleName(i, 5, "col6");
+			tabelaOficinas.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(oficina.getIdAtiv()));
+		}
+	}
+
+	@Override
+	public void setTabelaMinicurso(List<Atividade> minicursos,
+			List<Atividade> atividadesUsuario) {
+		for (int i = 0; i < minicursos.size(); ++i) {
+			Atividade minicurso = minicursos.get(i);
+
+			HTML nome = new HTML();
+			nome.setText(minicurso.getNomeAtiv());
+			nome.removeStyleName("gwt-HTML");
+
+			VerticalPanel vpDatas = new VerticalPanel();
+			vpDatas.addStyleName("vpDatas");
+			for (int j = 0; j < minicurso.getDatas().size(); j++) {
+				Data d = minicurso.getDatas().get(j);
+				HTML htData = new HTML();
+				htData.setText(formataData(String.valueOf(d.getData())));
+				htData.removeStyleName("gwt-HTML");
+				htData.addStyleName("tbAtividadesCol2");
+				vpDatas.add(htData);
+			}
+
+			VerticalPanel vpHorario = new VerticalPanel();
+			vpHorario.addStyleName("vpHorario");
+			for (int j = 0; j < minicurso.getDatas().size(); j++) {
+				Data d = minicurso.getDatas().get(j);
+				HTML horario = new HTML();
+				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
+				horario.removeStyleName("gwt-HTML");
+				horario.addStyleName("tbAtividadesCol3");
+				vpHorario.add(horario);
+			}
+
+			HTML vagas = new HTML();
+			vagas.setText("Vagas: "+minicurso.getVagasDisponiveis());
+			vagas.removeStyleName("gwt-HTML");
+						
+			tabelaMinicursos.setWidget(i, 0, nome);
+			tabelaMinicursos.setWidget(i, 1, vpDatas);
+			tabelaMinicursos.setWidget(i, 2, vpHorario);
+			tabelaMinicursos.setWidget(i, 3, vagas);
+			
+			btM = new Button("Mais Informações");
+			btM.removeStyleName("gwt-Button");
+			btM.addStyleName("btn-info");
+			tabelaMinicursos.setWidget(i, 4, btM);
+			
+			if(atividadesUsuario != null){
+				System.out.println("\nMINICURSOS");
+				System.out.println("Lista de atividades do usuario cheia");
+				for (int j = 0; j < atividadesUsuario.size(); j++) {
+					Atividade aUsuario = atividadesUsuario.get(j);
+//					btInsc = new Button();
+					if(minicurso.getIdAtiv() == aUsuario.getIdAtiv()){
+						System.out.println("Inscrito no Minicurso");
+						btInsc = new Button("Inscrito");
+						btInsc.removeStyleName("gwt-Button");
+						btInsc.addStyleName("btn-info");
+						btInsc.setWidth("69px");
+						btInsc.setEnabled(false);
+						tabelaMinicursos.setWidget(i, 5, btInsc);
+						break;
+					}
+					else{
+						System.out.println("Não inscrito no Minicurso");
+						btInsc = new Button("Inscrever");
+						btInsc.setText("Inscrever");
+						btInsc.removeStyleName("gwt-Button");
+						btInsc.addStyleName("btn-info");
+						tabelaMinicursos.setWidget(i, 5, btInsc);
+					}
+				}
+			} else{
+				btInsc = new Button("Inscrever");
+				btInsc.removeStyleName("gwt-Button");
+				btInsc.addStyleName("btn-info");
+				tabelaMinicursos.setWidget(i, 5, btInsc);
+			}
+			tabelaMinicursos.getCellFormatter().addStyleName(i, 0, "col1");
+			tabelaMinicursos.getCellFormatter().addStyleName(i, 1, "col2");
+			tabelaMinicursos.getCellFormatter().addStyleName(i, 2, "col3");
+			tabelaMinicursos.getCellFormatter().addStyleName(i, 3, "col4");
+			tabelaMinicursos.getCellFormatter().addStyleName(i, 4, "col5");
+			tabelaMinicursos.getCellFormatter().addStyleName(i, 5, "col6");
+			tabelaMinicursos.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(minicurso.getIdAtiv()));
+		}
+	}
+
+	@Override
+	public void setTabelaPalestras(List<Atividade> palestras,
+			List<Atividade> atividadesUsuario) {
+		for (int i = 0; i < palestras.size(); ++i) {
+			Atividade a = palestras.get(i);
+
+			HTML nome = new HTML();
+			nome.setText(a.getNomeAtiv());
+			nome.removeStyleName("gwt-HTML");
+
+			VerticalPanel vpDatas = new VerticalPanel();
+			vpDatas.addStyleName("vpDatas");
+			for (int j = 0; j < a.getDatas().size(); j++) {
+				Data d = a.getDatas().get(j);
+				HTML htData = new HTML();
+				htData.setText(formataData(String.valueOf(d.getData())));
+				htData.removeStyleName("gwt-HTML");
+				htData.addStyleName("tbAtividadesCol2");
+				vpDatas.add(htData);
+			}
+
+			VerticalPanel vpHorario = new VerticalPanel();
+			vpHorario.addStyleName("vpHorario");
+			for (int j = 0; j < a.getDatas().size(); j++) {
+				Data d = a.getDatas().get(j);
+				HTML horario = new HTML();
+				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
+				horario.removeStyleName("gwt-HTML");
+				horario.addStyleName("tbAtividadesCol3");
+				vpHorario.add(horario);
+			}
+
+			HTML vagas = new HTML();
+//			vagas.setText("Vagas: "+a.getVagasDisponiveis());
+			vagas.removeStyleName("gwt-HTML");
+						
+			tabelaPalestras.setWidget(i, 0, nome);
+			tabelaPalestras.setWidget(i, 1, vpDatas);
+			tabelaPalestras.setWidget(i, 2, vpHorario);
+			tabelaPalestras.setWidget(i, 3, vagas);
+			
+			btM = new Button("Mais Informações");
+			btM.removeStyleName("gwt-Button");
+			btM.addStyleName("btn-info");
+//			btM.setWidth("199px");
+			tabelaPalestras.setWidget(i, 4, btM);
+
+			tabelaPalestras.getCellFormatter().addStyleName(i, 0, "col1");
+			tabelaPalestras.getCellFormatter().addStyleName(i, 1, "col2");
+			tabelaPalestras.getCellFormatter().addStyleName(i, 2, "col3");
+			tabelaPalestras.getCellFormatter().addStyleName(i, 3, "col4");
+			tabelaPalestras.getCellFormatter().addStyleName(i, 4, "col4Palestra");
+			tabelaPalestras.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(a.getIdAtiv()));
+		}
+	}
+
+	@Override
+	public HTML getMsg() {
+		// TODO Auto-generated method stub
+		return this.msg;
+	}
+
+	@Override
+	public VerticalPanel getVpUsuario() {
+		// TODO Auto-generated method stub
+		return this.usuario;
 	}
 }
