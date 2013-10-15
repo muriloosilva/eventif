@@ -318,10 +318,12 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	public boolean insereAtividade(Atividade a,  List<Data> ld) {
 		
 		int idAtividade = AtividadeDAO.addAtividade(a);
+		System.out.println("Id Atividade: " + idAtividade);
 		if(idAtividade == 0)
 			return false;
 		for(int i = 0; i<ld.size(); i++){
 			int id = DataDAO.addData(ld.get(i));
+			System.out.println("Id Data: " + id);
 			if(id == 0)
 				return false;
 			else{

@@ -12,6 +12,7 @@ import br.com.secitec.shared.model.Data;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -21,6 +22,8 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+
+import java.sql.Date;
 
 public class AdminPresenter implements Presenter {
 
@@ -83,10 +86,14 @@ public class AdminPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				
+				Window.alert("entrou");
+				
 				String nome = display.getTbNome().getText();
 				String descricao = display.getTbDescricao().getText();
 				int vagas = Integer.parseInt(display.getTbVagas().getText());
 				String tipo = display.getLbTipo().getValue(display.getLbTipo().getSelectedIndex());
+				
+				Window.alert("entro1u");
 				
 				Atividade a = new Atividade();
 				a.setNomeAtiv(nome);
@@ -95,19 +102,21 @@ public class AdminPresenter implements Presenter {
 				a.setTipoAtiv(tipo);
 				
 				List<Data> ld = new ArrayList<Data>();
-				
+				Window.alert("entro2u");
 				for (int i = 0; i<display.getFlexTableDatas().getRowCount();i++){
 					Data d = new Data();
 					try {
 						d.setData(d.formataData(((TextBox)display.getFlexTableDatas().getWidget(i, 0)).getText()));
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Window.alert("" + e);
 					}
 					d.setHrInicio((d.formatTime(((TextBox)display.getFlexTableDatas().getWidget(i, 2)).getText())));
 					d.setHrFim((d.formatTime(((TextBox)display.getFlexTableDatas().getWidget(i, 4)).getText())));
 					ld.add(d);
 				}
+				
+				Window.alert("entrou1");
 				
 				final LoadingPopup lp = new LoadingPopup("Aguarde ...");
 				rpcService.insereAtividade(a, ld, new AsyncCallback<Boolean>() {
@@ -270,4 +279,6 @@ public class AdminPresenter implements Presenter {
 	public void go() {
 		
 	}
+	
+	
 }
