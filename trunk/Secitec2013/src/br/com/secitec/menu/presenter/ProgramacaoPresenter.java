@@ -115,11 +115,13 @@ public class ProgramacaoPresenter implements Presenter {
 
 						@Override
 						public void onSuccess(Boolean result) {
-							pp.hide();
 							// TODO Auto-generated method stub
-							if(result)
+							if(result){
+								pp.hide();
 								inscrever(idAtividade);
+							}
 							else{
+								pp.hide();
 								//n�o pode ser inscrito
 								ip = new InformacaoPopup("Você já está inscrito em um Minicurso!");
 								ip.getTela().center();
@@ -140,6 +142,7 @@ public class ProgramacaoPresenter implements Presenter {
 						}
 					});
 				} else {
+					pp.hide();
 					Presenter presenter = new LoginPresenter(
 							rpcService, eventBus, new LoginView());
 					if (presenter != null)

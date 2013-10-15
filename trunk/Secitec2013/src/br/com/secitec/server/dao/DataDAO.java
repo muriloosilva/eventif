@@ -12,7 +12,7 @@ import br.com.secitec.shared.model.Data;
 public class DataDAO {
 
 	public static List<Data> getData(int idAtivi) {
-		System.out.println("id: "+idAtivi);
+//		System.out.println("id: "+idAtivi);
 		PreparedStatement stmt;
 		List<Data> datas = new ArrayList<Data>();
 		try {

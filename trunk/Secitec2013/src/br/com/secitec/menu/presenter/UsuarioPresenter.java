@@ -20,16 +20,26 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class UsuarioPresenter implements Presenter {
 
 	public interface Display {
-		void setDataUsuario(List<Atividade> atividades);
+		void setTabelaUsuario(List<Atividade> atividades);
 
 		void setData(List<Atividade> oficinas, List<Atividade> minicursos,
-				List<Atividade> palestras);
+				List<Atividade> palestras, List<Atividade> atividadesUsuario);
+		
+		void setDataAtividades(List<Atividade> atividades, List<Atividade> atividadesUsuario);
+		
+		void setTabelaOficina(List<Atividade> oficinas, List<Atividade> atividadesUsuario);
+		
+		void setTabelaMinicurso(List<Atividade> minicursos, List<Atividade> atividadesUsuario);
+		
+		void setTabelaPalestras(List<Atividade> palestras, List<Atividade> atividadesUsuario);
 
 		int[] getUsuario(ClickEvent event);
 
@@ -38,6 +48,10 @@ public class UsuarioPresenter implements Presenter {
 		int[] getMinicurso(ClickEvent event);
 
 		int[] getPalestra(ClickEvent event);
+		
+		HTML getMsg();
+		
+		VerticalPanel getVpUsuario();
 
 		FlexTable getListaUsuario();
 
@@ -119,7 +133,7 @@ public class UsuarioPresenter implements Presenter {
 		});
 	}
 	
-	private void eventoInscrever(final int idAtividade){
+	private void eventoInscreverOficina(final int idAtividade){
 		final LoadingPopup pp = new LoadingPopup("Aguarde...");
 		rpcService.getSessao(new AsyncCallback<Boolean>() {
 			@Override
@@ -152,6 +166,8 @@ public class UsuarioPresenter implements Presenter {
 															ClickEvent event) {
 														ip.getTela().hide();
 														setDadosUsuario();
+														atualizaOficina();
+//														display.setDataAtividades(oficinas, atividades);
 													}
 												});
 										ip.getFechar().addClickHandler(
@@ -161,29 +177,12 @@ public class UsuarioPresenter implements Presenter {
 															ClickEvent event) {
 														ip.getTela().hide();
 														setDadosUsuario();
+														atualizaOficina();
+//														display.setDataAtividades(oficinas, atividades);
 													}
 												});
 									} else {
-										ip = new InformacaoPopup(
-												"Você está inscrito em outra(s) atividade(s) no mesmo"
-														+ " horário!");
-										ip.getTela().center();
-										ip.getOk().addClickHandler(
-												new ClickHandler() {
-													@Override
-													public void onClick(
-															ClickEvent event) {
-														ip.getTela().hide();
-													}
-												});
-										ip.getFechar().addClickHandler(
-												new ClickHandler() {
-													@Override
-													public void onClick(
-															ClickEvent event) {
-														ip.getTela().hide();
-													}
-												});
+										inscritoMesmoHorario();
 									}
 								}
 							});
@@ -304,7 +303,7 @@ public class UsuarioPresenter implements Presenter {
 				@Override
 				public void onClick(ClickEvent event) {
 					int idAtividade = Integer.parseInt(display.getListaOficina().getRowFormatter().getElement(j).getAttribute("id"));
-							eventoInscrever(idAtividade);
+							eventoInscreverOficina(idAtividade);
 				}
 			});
 		}
@@ -352,7 +351,7 @@ public class UsuarioPresenter implements Presenter {
 		
 	}
 
-	private void cancelarInscricao(int e){
+	private void cancelarInscricao(final int e){
 		final LoadingPopup pp = new LoadingPopup("Aguarde...");
 		rpcService.cancelar(e,
 				new AsyncCallback<Boolean>() {
@@ -371,14 +370,16 @@ public class UsuarioPresenter implements Presenter {
 								@Override
 								public void onClick(ClickEvent event) {
 									ip.getTela().hide();
-									setDadosUsuario();
+									atualizarCancelar(e);
+//									setDadosUsuario();
 								}
 							});
 							ip.getOk().addClickHandler(new ClickHandler() {
 								@Override
 								public void onClick(ClickEvent event) {
 									ip.getTela().hide();
-									setDadosUsuario();
+									atualizarCancelar(e);
+//									setDadosUsuario();
 								}
 							});
 						} else {
@@ -407,6 +408,7 @@ public class UsuarioPresenter implements Presenter {
 		container.clear();
 		container.add(display.asWidget());
 		final LoadingPopup pp = new LoadingPopup("Aguarde...");
+		setDadosUsuario();
 		rpcService.getAtividades(new AsyncCallback<List<Atividade>>() {
 			@Override
 			public void onSuccess(List<Atividade> result) {
@@ -420,13 +422,17 @@ public class UsuarioPresenter implements Presenter {
 						oficinas.add(a);
 					else if (a.getTipoAtiv().equalsIgnoreCase("Palestra"))
 						palestras.add(a);
-					else
+					else if (a.getTipoAtiv().equalsIgnoreCase("Minicurso"))
 						minicursos.add(a);
 				}
 				Collections.sort(oficinas);
+				display.setTabelaOficina(oficinas, atividades);
 				Collections.sort(minicursos);
+				display.setTabelaMinicurso(minicursos, atividades);
 				Collections.sort(palestras);
-				display.setData(oficinas, minicursos, palestras);
+				display.setTabelaPalestras(palestras, atividades);
+//				display.setData(oficinas, minicursos, palestras, atividades);
+				
 				pp.hide();
 				bind();
 			}
@@ -437,7 +443,6 @@ public class UsuarioPresenter implements Presenter {
 				Window.alert("Erro: " + caught.getMessage());
 			}
 		});
-		setDadosUsuario();
 	}
 
 	public void setDadosUsuario() {
@@ -451,20 +456,129 @@ public class UsuarioPresenter implements Presenter {
 			@Override
 			public void onSuccess(List<Atividade> result) {
 				pp.hide();
-				atividades = new ArrayList<Atividade>();
+				atividades = null;
 				if (result != null) {
+					atividades = new ArrayList<Atividade>();
 					for (int i = 0; i < result.size(); i++) {
 						Atividade a = result.get(i);
 						atividades.add(a);
 					}
 				}
-				Collections.sort(atividades);
-				display.setDataUsuario(atividades);
-				bindUsuario();
+				if(atividades != null){
+					Collections.sort(atividades);
+					display.setTabelaUsuario(atividades);
+					display.getMsg().setVisible(false);
+					display.getVpUsuario().setVisible(true);
+					bindUsuario();
+				}
+				else{
+					display.getMsg().setText("Você não está inscrito em nenhuma atividade.");
+					display.getMsg().setVisible(true);
+					display.getVpUsuario().setVisible(false);
+				}
 			}
 		});
 	}
+	
+	public void atualizarCancelar(int idAtividade){
+		for(int i = 0;i < oficinas.size();i++){
+			Atividade a = oficinas.get(i);
+			if(idAtividade == a.getIdAtiv()){
+				setDadosUsuario();
+				atualizaOficina();
+				return;
+			}
+		}
+		for (int i = 0; i < minicursos.size(); i++) {
+			Atividade a = minicursos.get(i);
+			if(idAtividade == a.getIdAtiv()){
+				setDadosUsuario();
+				atualizaMinicurso();
+				return;
+			}
+		}
+	}
 
+	public void atualizaOficina(){
+		final LoadingPopup pp = new LoadingPopup("Aguarde...");
+//		setDadosUsuario();
+		rpcService.getAtividades(new AsyncCallback<List<Atividade>>() {
+			@Override
+			public void onSuccess(List<Atividade> result) {
+				
+				oficinas = new ArrayList<Atividade>();
+//				palestras = new ArrayList<Atividade>();
+//				minicursos = new ArrayList<Atividade>();
+				for (int i = 0; i < result.size(); i++) {
+					Atividade a = result.get(i);
+					if (a.getTipoAtiv().equalsIgnoreCase("Oficina"))
+						oficinas.add(a);
+//					else if (a.getTipoAtiv().equalsIgnoreCase("Palestra"))
+//						palestras.add(a);
+//					else if (a.getTipoAtiv().equalsIgnoreCase("Minicurso"))
+//						minicursos.add(a);
+				}
+				Collections.sort(oficinas);
+				display.setTabelaOficina(oficinas, atividades);
+//				Collections.sort(minicursos);
+//				display.setTabelaMinicurso(minicursos, atividades);
+//				Collections.sort(palestras);
+//				display.setTabelaPalestras(palestras, atividades);
+//				display.setData(oficinas, minicursos, palestras, atividades);
+				
+				pp.hide();
+				bind();
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				pp.hide();
+				Window.alert("Erro: " + caught.getMessage());
+			}
+		});
+		
+//		display.setTabelaOficina(oficinas, atividades);
+	}
+	
+	public void atualizaMinicurso(){
+		final LoadingPopup pp = new LoadingPopup("Aguarde...");
+//		setDadosUsuario();
+		rpcService.getAtividades(new AsyncCallback<List<Atividade>>() {
+			@Override
+			public void onSuccess(List<Atividade> result) {
+				
+//				oficinas = new ArrayList<Atividade>();
+//				palestras = new ArrayList<Atividade>();
+				minicursos = new ArrayList<Atividade>();
+				for (int i = 0; i < result.size(); i++) {
+					Atividade a = result.get(i);
+					if (a.getTipoAtiv().equalsIgnoreCase("Minicurso"))
+						minicursos.add(a);
+//					else if (a.getTipoAtiv().equalsIgnoreCase("Palestra"))
+//						palestras.add(a);
+//					else if (a.getTipoAtiv().equalsIgnoreCase("Minicurso"))
+//						minicursos.add(a);
+				}
+				Collections.sort(minicursos);
+				display.setTabelaMinicurso(minicursos, atividades);
+//				display.setTabelaOficina(oficinas, atividades);
+//				Collections.sort(minicursos);
+//				Collections.sort(palestras);
+//				display.setTabelaPalestras(palestras, atividades);
+//				display.setData(oficinas, minicursos, palestras, atividades);
+				
+				pp.hide();
+				bind();
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				pp.hide();
+				Window.alert("Erro: " + caught.getMessage());
+			}
+		});
+	}
+	
 	@Override
 	public void go() {
 
@@ -490,6 +604,9 @@ public class UsuarioPresenter implements Presenter {
 									ip.getTela().hide();
 									eventBus.fireEvent(new LoginEvent("login"));
 									setDadosUsuario();
+									atualizaMinicurso();
+//									display.setTabelaMinicurso(minicursos, atividades);
+//									display.setDataAtividades(oficinas, atividades);
 								}
 							});
 							ip.getFechar().addClickHandler(new ClickHandler() {														
@@ -498,27 +615,39 @@ public class UsuarioPresenter implements Presenter {
 									ip.getTela().hide();
 									eventBus.fireEvent(new LoginEvent("login"));
 									setDadosUsuario();
+									atualizaMinicurso();
+//									display.setTabelaMinicurso(minicursos, atividades);
+//									display.setDataAtividades(oficinas, atividades);
 								}
 							});
 							
 						}
 						else{
-							ip = new InformacaoPopup("Você está inscrito em outra(s) atividade(s) no mesmo"
-									+ " horário!");
-							ip.getTela().center();
-							ip.getOk().addClickHandler(new ClickHandler() {													
-								@Override
-								public void onClick(ClickEvent event) {
-									ip.getTela().hide();
-								}
-							});
-							ip.getFechar().addClickHandler(new ClickHandler() {													
-								@Override
-								public void onClick(ClickEvent event) {
-									ip.getTela().hide();
-								}
-							});
+							inscritoMesmoHorario();
 						}
+					}
+				});
+	}
+	
+	public void inscritoMesmoHorario(){
+		final InformacaoPopup ip = new InformacaoPopup(
+				"Você está inscrito em outra(s) atividade(s) no mesmo"
+						+ " horário!");
+		ip.getTela().center();
+		ip.getOk().addClickHandler(
+				new ClickHandler() {
+					@Override
+					public void onClick(
+							ClickEvent event) {
+						ip.getTela().hide();
+					}
+				});
+		ip.getFechar().addClickHandler(
+				new ClickHandler() {
+					@Override
+					public void onClick(
+							ClickEvent event) {
+						ip.getTela().hide();
 					}
 				});
 	}
