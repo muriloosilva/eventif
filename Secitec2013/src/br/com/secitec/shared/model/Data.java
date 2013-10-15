@@ -1,11 +1,10 @@
 package br.com.secitec.shared.model;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Time;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.Date;
+
+import com.google.gwt.i18n.shared.DateTimeFormat;
 
 public class Data implements Serializable{
 	private Date data;
@@ -34,22 +33,23 @@ public class Data implements Serializable{
 		if (data == null || data.equals(""))
 			return null;
 		
-        Date date = null;
+        java.util.Date date = null;
         try {
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            date = (Date)formatter.parse(data);
+        	DateTimeFormat fmt = DateTimeFormat.getFormat("yyyy-MM-dd");
+            date = (java.util.Date)fmt.parse(data);
+            
         } catch (Exception e) {            
             throw e;
         }
-        return date;
+        return new Date(date.getTime());
 	}
 	
 	public Time formatTime(String hora){
-		SimpleDateFormat formatador = new SimpleDateFormat("HH:mm:ss");  
+		DateTimeFormat fmt = DateTimeFormat.getFormat("HH:mm:ss");  
 		Date data = null;
 		try {
-			data = (Date) formatador.parse(hora);
-		} catch (ParseException e) {
+			data = new Date(((java.util.Date) fmt.parse(hora)).getTime());
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  

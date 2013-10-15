@@ -28,5 +28,6 @@
   <source path='shared'/>
   <source path='menu'/>
   <source path='popup'/>
+  <source path='model'/>
 
 </module>
