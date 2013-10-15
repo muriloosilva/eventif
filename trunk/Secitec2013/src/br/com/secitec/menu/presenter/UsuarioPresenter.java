@@ -329,7 +329,7 @@ public class UsuarioPresenter implements Presenter {
 				@Override
 				public void onClick(ClickEvent event) {
 					int idAtividade = Integer.parseInt(display.getListaMinicurso().getRowFormatter().getElement(j).getAttribute("id"));
-							eventoInscreverMinicurso(idAtividade);
+					eventoInscreverMinicurso(idAtividade);
 				}
 			});
 		}
@@ -602,7 +602,7 @@ public class UsuarioPresenter implements Presenter {
 								@Override
 								public void onClick(ClickEvent event) {
 									ip.getTela().hide();
-									eventBus.fireEvent(new LoginEvent("login"));
+//									eventBus.fireEvent(new LoginEvent("login"));
 									setDadosUsuario();
 									atualizaMinicurso();
 //									display.setTabelaMinicurso(minicursos, atividades);
@@ -613,7 +613,7 @@ public class UsuarioPresenter implements Presenter {
 								@Override
 								public void onClick(ClickEvent event) {
 									ip.getTela().hide();
-									eventBus.fireEvent(new LoginEvent("login"));
+//									eventBus.fireEvent(new LoginEvent("login"));
 									setDadosUsuario();
 									atualizaMinicurso();
 //									display.setTabelaMinicurso(minicursos, atividades);
