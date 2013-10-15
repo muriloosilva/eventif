@@ -3,6 +3,7 @@ package br.com.secitec.client;
 import java.util.List;
 
 import br.com.secitec.shared.model.Atividade;
+import br.com.secitec.shared.model.Data;
 import br.com.secitec.shared.model.User;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -16,6 +17,8 @@ public interface RPCServiceAsync {
 	public void login(String login, String senha, AsyncCallback<Integer> callback);
 	
 	public void faleConosco(String name, String email, String msg, AsyncCallback<Boolean> callback);
+	
+	public void insereAtividade(Atividade a,  List<Data> ld, AsyncCallback<Boolean> callback);
 	
 	public void reenviaConfirmacaoCadastro(User user, AsyncCallback<Boolean> callback);
 	

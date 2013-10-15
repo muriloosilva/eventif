@@ -55,12 +55,6 @@ FaleConoscoPresenter.Display{
 		titulo.addStyleName("titulo");
 		hpTitulo.add(titulo);
 		
-		HorizontalPanel hpFechar = new HorizontalPanel();
-		hpFechar.setSpacing(0);
-		hpFechar.setWidth("20px");
-		hpFechar.addStyleName("botaoFecharLogin");
-		hpFechar.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
-		
 		Image imgFechar = new Image();
 		imgFechar.setUrl("images/fechar.png");
 		imgFechar.setSize("20px", "20px");

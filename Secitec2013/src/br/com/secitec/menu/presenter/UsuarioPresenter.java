@@ -280,73 +280,90 @@ public class UsuarioPresenter implements Presenter {
 		}	
 	}
 	
-	public void bind() {
-		
-		//Eventos tabela OFICINAS
-		//Mais Informação
-		for (int i = 0; i < display.getListaOficina().getRowCount(); i++) {
-			final int j = i;
-			((Button)display.getListaOficina().getWidget(i, 4)).addClickHandler(new ClickHandler() {
-				
-				@Override
-				public void onClick(ClickEvent event) {
-					int idAtividade = Integer.parseInt(display.getListaOficina().getRowFormatter().getElement(j).getAttribute("id"));
-					eventoMaisInformacao(idAtividade, "Inscrever");
-				}
-			});
-		}
-		//Inscrever
-		for (int i = 0; i < display.getListaOficina().getRowCount(); i++) {
-			final int j = i;
-			((Button)display.getListaOficina().getWidget(i, 5)).addClickHandler(new ClickHandler() {
-				
-				@Override
-				public void onClick(ClickEvent event) {
-					int idAtividade = Integer.parseInt(display.getListaOficina().getRowFormatter().getElement(j).getAttribute("id"));
-							eventoInscreverOficina(idAtividade);
-				}
-			});
-		}
+	public void bindMiniCurso(){
 		
 		//Eventos tabela MINICURSOS
-		//Mais Informação
-		for (int i = 0; i < display.getListaMinicurso().getRowCount(); i++) {
-			final int j = i;
-			((Button)display.getListaMinicurso().getWidget(i, 4)).addClickHandler(new ClickHandler() {
-				
-				@Override
-				public void onClick(ClickEvent event) {
-					int idAtividade = Integer.parseInt(display.getListaMinicurso().getRowFormatter().getElement(j).getAttribute("id"));
-					eventoMaisInformacao(idAtividade, "Inscrever");
+				//Mais Informação
+				for (int i = 0; i < display.getListaMinicurso().getRowCount(); i++) {
+					final int j = i;
+					((Button)display.getListaMinicurso().getWidget(i, 4)).addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							int idAtividade = Integer.parseInt(display.getListaMinicurso().getRowFormatter().getElement(j).getAttribute("id"));
+							eventoMaisInformacao(idAtividade, "Inscrever");
+						}
+					});
 				}
-			});
-		}
-		//Inscrever
-		for (int i = 0; i < display.getListaMinicurso().getRowCount(); i++) {
-			final int j = i;
-			((Button)display.getListaMinicurso().getWidget(i, 5)).addClickHandler(new ClickHandler() {
-				
-				@Override
-				public void onClick(ClickEvent event) {
-					int idAtividade = Integer.parseInt(display.getListaMinicurso().getRowFormatter().getElement(j).getAttribute("id"));
-					eventoInscreverMinicurso(idAtividade);
+				//Inscrever
+				for (int i = 0; i < display.getListaMinicurso().getRowCount(); i++) {
+					final int j = i;
+					((Button)display.getListaMinicurso().getWidget(i, 5)).addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							int idAtividade = Integer.parseInt(display.getListaMinicurso().getRowFormatter().getElement(j).getAttribute("id"));
+									eventoInscreverMinicurso(idAtividade);
+						}
+					});
 				}
-			});
-		}
+		
+	}
+	
+	public void bindOficinas(){
+		
+		//Eventos tabela OFICINAS
+				//Mais Informação
+				for (int i = 0; i < display.getListaOficina().getRowCount(); i++) {
+					final int j = i;
+					((Button)display.getListaOficina().getWidget(i, 4)).addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							int idAtividade = Integer.parseInt(display.getListaOficina().getRowFormatter().getElement(j).getAttribute("id"));
+							eventoMaisInformacao(idAtividade, "Inscrever");
+						}
+					});
+				}
+				//Inscrever
+				for (int i = 0; i < display.getListaOficina().getRowCount(); i++) {
+					final int j = i;
+					((Button)display.getListaOficina().getWidget(i, 5)).addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							int idAtividade = Integer.parseInt(display.getListaOficina().getRowFormatter().getElement(j).getAttribute("id"));
+									eventoInscreverOficina(idAtividade);
+						}
+					});
+				}
+	}
+	
+	public void bindPalestras(){
 		
 		//Eventos tabela PALESTRAS
-		//Mais Informação
-		for (int i = 0; i < display.getListaPalestra().getRowCount(); i++) {
-			final int j = i;
-			((Button)display.getListaPalestra().getWidget(i, 4)).addClickHandler(new ClickHandler() {
-				
-				@Override
-				public void onClick(ClickEvent event) {
-					int idAtividade = Integer.parseInt(display.getListaPalestra().getRowFormatter().getElement(j).getAttribute("id"));
-					eventoMaisInformacao(idAtividade, "Inscrever");
+				//Mais Informação
+				for (int i = 0; i < display.getListaPalestra().getRowCount(); i++) {
+					final int j = i;
+					((Button)display.getListaPalestra().getWidget(i, 4)).addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							int idAtividade = Integer.parseInt(display.getListaPalestra().getRowFormatter().getElement(j).getAttribute("id"));
+							eventoMaisInformacao(idAtividade, "Inscrever");
+						}
+					});
 				}
-			});
-		}
+	}
+	
+	public void bind() {
+		
+		bindMiniCurso();
+		bindOficinas();
+		bindPalestras();
+		
+		
+		
 		
 		
 	}
@@ -527,7 +544,7 @@ public class UsuarioPresenter implements Presenter {
 //				display.setData(oficinas, minicursos, palestras, atividades);
 				
 				pp.hide();
-				bind();
+				bindOficinas();
 			}
 
 			@Override
@@ -568,7 +585,7 @@ public class UsuarioPresenter implements Presenter {
 //				display.setData(oficinas, minicursos, palestras, atividades);
 				
 				pp.hide();
-				bind();
+				bindMiniCurso();
 			}
 
 			@Override
@@ -602,7 +619,7 @@ public class UsuarioPresenter implements Presenter {
 								@Override
 								public void onClick(ClickEvent event) {
 									ip.getTela().hide();
-//									eventBus.fireEvent(new LoginEvent("login"));
+									//eventBus.fireEvent(new LoginEvent("login"));
 									setDadosUsuario();
 									atualizaMinicurso();
 //									display.setTabelaMinicurso(minicursos, atividades);
@@ -613,7 +630,7 @@ public class UsuarioPresenter implements Presenter {
 								@Override
 								public void onClick(ClickEvent event) {
 									ip.getTela().hide();
-//									eventBus.fireEvent(new LoginEvent("login"));
+									eventBus.fireEvent(new LoginEvent("login"));
 									setDadosUsuario();
 									atualizaMinicurso();
 //									display.setTabelaMinicurso(minicursos, atividades);
