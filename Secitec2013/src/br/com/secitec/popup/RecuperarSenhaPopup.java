@@ -353,7 +353,9 @@ public class RecuperarSenhaPopup {
 					email.setText("");
 					email.setFocus(true);
 				}
-				
+				else {
+					vEmail.setVisible(false);
+				}
 //				if(!verificaEmail(tbEmail.getValue()) && !tbEmail.getValue().equals("")){
 //					vEmail.setVisible(true);
 //					email.setSelectionRange(0, tbEmail.getValue().length());
