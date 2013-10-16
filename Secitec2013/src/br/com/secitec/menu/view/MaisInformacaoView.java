@@ -40,7 +40,7 @@ public class MaisInformacaoView extends Composite implements MaisInformacaoPrese
 	}
 	
 	public void montaPopup(String bt){
-		popup = new PopupPanel(true);
+		popup = new PopupPanel(false);
 		popup.setStyleName("demo-popup");
 
 		vpMain = new VerticalPanel();
