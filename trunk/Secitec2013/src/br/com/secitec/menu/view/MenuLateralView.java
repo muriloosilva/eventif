@@ -30,7 +30,7 @@ public class MenuLateralView extends Composite implements MenuLateralPresenter.D
 		
 		login = new Anchor("Login ou Cadastre-se");
 //		login.removeStyleName("gwt-Anchor");
-		login.setWidth("126px");
+		login.setWidth("136px");
 		login.addStyleName("loginCadastro");
 		
 		minhasAtividades = new Anchor("Minhas Atividades");
