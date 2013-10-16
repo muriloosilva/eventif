@@ -4,8 +4,13 @@ import java.util.List;
 
 import br.com.secitec.menu.presenter.FaleConoscoPresenter;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -25,6 +30,9 @@ FaleConoscoPresenter.Display{
 	private VerticalPanel vp;
 	private FlexTable tabela;
 	private Button enviar;
+	private TextBox email;
+	private HTML vEmail;
+	private VerticalPanel vpEmail;
 	
 	public FaleConoscoView() {
 		tela = new PopupPanel(false);
@@ -81,12 +89,12 @@ FaleConoscoPresenter.Display{
 		HorizontalPanel hpFaleConosco = new HorizontalPanel();
 		hpFaleConosco.setSpacing(0);
 		hpFaleConosco.setHeight("40px");
-		hpFaleConosco.setWidth("79px");
+		hpFaleConosco.setWidth("75px");
 		hpFaleConosco.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
 		
 		enviar = new Button();
 		enviar.setText("Enviar");
-		enviar.setHeight("40px");
+		enviar.setHeight("30px");
 		
 		hpFaleConosco.add(enviar);
 		
@@ -111,9 +119,25 @@ FaleConoscoPresenter.Display{
 		HTML hEmail = new HTML("E-mail: ");
 		hEmail.addStyleName("alignDir");
 		tb.setWidget(1, 0, hEmail);
-		TextBox email = new TextBox();
+		
+		vpEmail = new VerticalPanel();
+		vpEmail.setWidth("260px");
+		
+		email = new TextBox();
 		email.setWidth("336px");
-		tb.setWidget(1, 1, email);
+		setEmail();
+//		tb.setWidget(2, 1, email);
+
+		vEmail = new HTML("*Email inválido!");
+		vEmail.setVisible(false);
+		vEmail.addStyleName("vCPF");
+		
+		vpEmail.add(vEmail);
+		vpEmail.add(email);
+//		tb.setWidget(2, 1, vpEmail);
+		
+
+		tb.setWidget(1, 1, vpEmail);
 		
 		HTML hAssunto = new HTML("Assunto: ");
 		hAssunto.addStyleName("alignDir");
@@ -135,6 +159,39 @@ FaleConoscoPresenter.Display{
 		tb.setWidget(3, 1, mensagem);
 	}
 
+	private void setEmail(){
+		email.addBlurHandler(new BlurHandler() {
+			
+			@Override
+			public void onBlur(BlurEvent event) {
+				if(!verificaEmail(email.getValue()) && !email.getValue().equals("")){
+					vEmail.setText("*Email inválido!");
+					vEmail.setVisible(true);
+					email.setText("");
+					email.setFocus(true);
+				} else{
+					vEmail.setVisible(false);
+				}
+			}
+		});
+		
+		email.addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if(event.getNativeEvent().getKeyCode() != 9)
+					email.setValue(email.getValue().toLowerCase());				
+			}
+		});
+	}
+	
+	private boolean verificaEmail(String email){
+		if(!email.matches("^([a-zA-Z0-9_.\\-+])+@(([a-zA-Z0-9\\-])+\\.)+[a-zA-Z0-9]{2,4}$"))
+			return false;
+		else
+			return true;
+	}
+	
 	private FlexTable tabela(FlexTable tb) {
 		tb.setWidth("450px");
 		tb.setHeight("80px");

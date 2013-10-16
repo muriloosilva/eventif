@@ -21,7 +21,6 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -73,26 +72,28 @@ public class VisualizarAlterarDadosPopup {
 
 		HorizontalPanel hpTop = new HorizontalPanel();
 		hpTop.setSpacing(0);
-		hpTop.setWidth("300px");
-		hpTop.setHeight("30px");
-		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
+		hpTop.setWidth("500px");
+		hpTop.setHeight("10px");
+		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+		hpTop.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
+		
+		HorizontalPanel hpTitulo = new HorizontalPanel();
+		hpTitulo.setSpacing(0);
+		hpTitulo.setWidth("500px");
+		hpTitulo.setHeight("40px");
+		hpTitulo.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
+		hpTitulo.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 
 		HTML titulo = new HTML("Visualizar Dados");
 		titulo.addStyleName("titulo");
-		hpTop.add(titulo);
+		hpTitulo.add(titulo);
 
-		HorizontalPanel hpFechar = new HorizontalPanel();
-		hpFechar.setSpacing(0);
-		hpFechar.setWidth("20px");
-		hpFechar.addStyleName("botaoFecharCadastro");
-		hpFechar.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
 
 		imgFechar = new Image();
 		imgFechar.setUrl("images/fechar.png");
 		imgFechar.setSize("20px", "20px");
 
-		hpFechar.add(imgFechar);
-		hpTop.add(hpFechar);
+		hpTop.add(imgFechar);
 
 		tabela = new FlexTable();
 		tabela = tabela(tabela);
@@ -112,12 +113,13 @@ public class VisualizarAlterarDadosPopup {
 		hpRodape.add(ok);
 
 		vp.add(hpTop);
+		vp.add(hpTitulo);
 		vp.add(tabela);
 		vp.add(hpRodape);
 		tela.add(vp);
 		tela.setGlassEnabled(true);
 		tela.center();
-		nome.setFocus(true);
+//		nome.setFocus(true);
 		
 	}
 	
@@ -130,6 +132,7 @@ public class VisualizarAlterarDadosPopup {
 				pp.hide();
 				
 				nome.setText(result.getNome_partic());
+//				System.out.println("nome: "+result.getNome_partic().length());
 				cpf.setText(result.getCpf_partic());
 				email.setText(result.getEmail_partic());
 				senha.setText(result.getSenha_partic());
@@ -159,6 +162,7 @@ public class VisualizarAlterarDadosPopup {
 		tb.setWidget(0, 0, h);
 		nome = new TextBox();
 		nome.setWidth("260px");
+		nome.setMaxLength(100);
 		tb.setWidget(0, 1, nome);
 		
 		vpCpf = new VerticalPanel();
@@ -234,7 +238,7 @@ public class VisualizarAlterarDadosPopup {
 	}
 
 	private FlexTable tabela(FlexTable tb) {
-		tb.setWidth("400px");
+		tb.setWidth("375px");
 		tb.setHeight("80px");
 		tb.setBorderWidth(0);
 		tb.addStyleName("tabelaCadastro");
@@ -275,6 +279,8 @@ public class VisualizarAlterarDadosPopup {
 				if(bt.getText().equals("Editar Dados")){
 					bt.setText("Alterar");
 					nome.setEnabled(true);
+					nome.setFocus(true);
+					nome.setSelectionRange(0, nome.getText().length());
 					cpf.setEnabled(true);
 					email.setEnabled(true);
 					senha.setEnabled(true);

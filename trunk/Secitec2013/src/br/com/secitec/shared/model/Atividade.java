@@ -6,6 +6,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.user.client.Window;
+
 @SuppressWarnings("serial")
 public class Atividade implements Serializable, Comparable<Atividade>{
 	private int idAtiv;
@@ -96,7 +98,7 @@ public class Atividade implements Serializable, Comparable<Atividade>{
 //				return 1;
 //			return String.valueOf(this.hrInicio).compareToIgnoreCase(String.valueOf(a.getHrInicio()));
 //		}
-		
+//		Window.alert("a.getData: "+a.getDatas().get(0).getData());
 		if(String.valueOf(this.datas.get(0).getData()).compareToIgnoreCase(String.valueOf(a.getDatas().get(0).getData())) < 0)
 			return -1;
 		else if(String.valueOf(this.datas.get(0).getData()).compareToIgnoreCase(String.valueOf(a.getDatas().get(0).getData())) > 0)

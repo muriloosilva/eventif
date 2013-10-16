@@ -40,6 +40,8 @@ public class MenuPresenter implements Presenter {
 		HasClickHandlers getFaleConosco();
 		
 		HasClickHandlers getSobre();
+		
+		Label getLbUsuario();
 
 		Anchor getSair();
 		
@@ -91,25 +93,25 @@ public class MenuPresenter implements Presenter {
 			}
 		});
 
-		display.getLoginLabel().addClickHandler(new ClickHandler() {
+//		display.getLoginLabel().addClickHandler(new ClickHandler() {
+//
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				Presenter presenter = new LoginPresenter(rpcService, eventBus,
+//						new LoginView());
+//				if (presenter != null)
+//					presenter.go();
+//			}
+//		});
 
-			@Override
-			public void onClick(ClickEvent event) {
-				Presenter presenter = new LoginPresenter(rpcService, eventBus,
-						new LoginView());
-				if (presenter != null)
-					presenter.go();
-			}
-		});
-
-		display.getAtividadesLabel().addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				eventBus.fireEvent(new LoginEvent("login"));
-			}
-		});
+//		display.getAtividadesLabel().addClickHandler(new ClickHandler() {
+//
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				// TODO Auto-generated method stub
+//				eventBus.fireEvent(new LoginEvent("login"));
+//			}
+//		});
 		
 		display.getFaleConosco().addClickHandler(new ClickHandler(){
 			
@@ -156,10 +158,10 @@ public class MenuPresenter implements Presenter {
 						String s = History.getToken();
 						if (s.equals("apresentacao")){
 //							Window.Location.reload();
-							Anchor a = (Anchor) display.getAtividadesLabel();
-							a.setVisible(false);
-							Anchor b = (Anchor) display.getLoginLabel();
-							b.setVisible(true);
+//							Anchor a = (Anchor) display.getAtividadesLabel();
+//							a.setVisible(false);
+//							Anchor b = (Anchor) display.getLoginLabel();
+//							b.setVisible(true);
 							display.getHpUsuario().setVisible(false);
 						}
 						else

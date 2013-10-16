@@ -60,30 +60,56 @@ public class RecuperarSenhaPopup {
 		vp.setSpacing(0);
 		vp.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 		vp.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
-		vp.setWidth("500px");
+		vp.setWidth("400px");
 
 		HorizontalPanel hpTop = new HorizontalPanel();
 		hpTop.setSpacing(0);
-		hpTop.setWidth("300px");
-		hpTop.setHeight("30px");
-		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
+		hpTop.setWidth("400px");
+		hpTop.setHeight("10px");
+		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+		hpTop.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
 
+		HorizontalPanel hpTitulo = new HorizontalPanel();
+		hpTitulo.setSpacing(0);
+		hpTitulo.setWidth("400px");
+		hpTitulo.setHeight("40px");
+		hpTitulo.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
+		hpTitulo.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
+		
 		HTML titulo = new HTML("Recuperar Senha");
 		titulo.addStyleName("titulo");
-		hpTop.add(titulo);
-
-		HorizontalPanel hpFechar = new HorizontalPanel();
-		hpFechar.setSpacing(0);
-		hpFechar.setWidth("20px");
-		hpFechar.addStyleName("botaoFecharCadastro");
-		hpFechar.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
-
+		hpTitulo.add(titulo);
+		
 		imgFechar = new Image();
 		imgFechar.setUrl("images/fechar.png");
 		imgFechar.setSize("20px", "20px");
-
-		hpFechar.add(imgFechar);
-		hpTop.add(hpFechar);
+//		imgFechar.addClickHandler(new ClickHandler() {
+//			
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				tela.hide();
+//			}
+//		});
+		hpTop.add(imgFechar);
+		
+		
+		
+//		HTML titulo = new HTML("Recuperar Senha");
+//		titulo.addStyleName("titulo");
+//		hpTop.add(titulo);
+//
+//		HorizontalPanel hpFechar = new HorizontalPanel();
+//		hpFechar.setSpacing(0);
+//		hpFechar.setWidth("20px");
+////		hpFechar.addStyleName("botaoFecharCadastro");
+//		hpFechar.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+//
+//		imgFechar = new Image();
+//		imgFechar.setUrl("images/fechar.png");
+//		imgFechar.setSize("20px", "20px");
+//
+//		hpFechar.add(imgFechar);
+//		hpTop.add(hpFechar);
 
 		tabela = new FlexTable();
 		tabela = tabela(tabela);
@@ -97,6 +123,7 @@ public class RecuperarSenhaPopup {
 		hpRodape.add(recuperar);
 
 		vp.add(hpTop);
+		vp.add(hpTitulo);
 		vp.add(tabela);
 		vp.add(hpRodape);
 		tela.add(vp);
@@ -153,10 +180,10 @@ public class RecuperarSenhaPopup {
 	}
 
 	private FlexTable tabela(FlexTable tb) {
-		tb.setWidth("400px");
+		tb.setWidth("300px");
 		tb.setHeight("80px");
 		tb.setBorderWidth(0);
-		tb.addStyleName("tabelaCadastro");
+		tb.addStyleName("tabelaRecuperarSenha");
 
 		return tb;
 	}
