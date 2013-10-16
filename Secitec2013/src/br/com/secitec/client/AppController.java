@@ -1,8 +1,5 @@
 package br.com.secitec.client;
 
-import sun.nio.ch.WindowsAsynchronousChannelProvider;
-import br.com.secitec.menu.event.AdminEvent;
-import br.com.secitec.menu.event.AdminEventHandler;
 import br.com.secitec.menu.event.ApresentationEvent;
 import br.com.secitec.menu.event.ApresentationEventHandler;
 import br.com.secitec.menu.event.FaleConoscoEvent;
@@ -38,7 +35,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -49,6 +45,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	private final RPCServiceAsync rpcService;
 	private HasWidgets container;
 	private MenuPresenter presenterMenu;
+	private MenuLateralPresenter menuLateral;
 	private InfoUsuarioPresenter presenterInfoUsuario;
 	private String token;
 
@@ -92,21 +89,15 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 				History.newItem("sobre");
 			}
 		});
-		eventBus.addHandler(AdminEvent.TYPE, new AdminEventHandler() {
-			public void onAdmin(AdminEvent event) {
-				History.newItem("admineventifsecitecifgformosa");
-			}
-		});
 	}
 
 	@Override
 	public void go(HasWidgets container) {
 		this.container = container;
-		
+
 		if ("".equals(History.getToken())) {
 			History.newItem("apresentacao");
-		} 
-		else {
+		} else {
 			History.fireCurrentHistoryState();
 		}
 	}
@@ -126,9 +117,11 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 	}
 
 	private void loadMenuLateral() {
-		Presenter presenter = new MenuLateralPresenter(rpcService, eventBus,
+		menuLateral = new MenuLateralPresenter(rpcService, eventBus,
 				new MenuLateralView());
-		presenter.go(RootPanel.get("corpoDir"));
+		menuLateral.getLogin().setVisible(true);
+		menuLateral.getMinhasAtividades().setVisible(false);
+		menuLateral.go(RootPanel.get("corpoDir"));
 	}
 
 	@Override
@@ -140,7 +133,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 		presenterInfoUsuario.go(RootPanel.get("menuDir"));
 	} 
 
-	public void configurarMenu(){
+	public void configuraMenuLateral(){
+		menuLateral.getLogin().setVisible(false);
+		menuLateral.getMinhasAtividades().setVisible(true);
+	}
+	
+	public void configurarMenuUsuario(){
 		rpcService.getSession(new AsyncCallback<User>() {
 			
 			@Override
@@ -152,8 +150,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 					nome += "...";
 				}
 				presenterMenu.getNomeUsuario().setText(nome);
-				presenterMenu.getLogin().setVisible(false);
-				presenterMenu.getAtividades().setVisible(true);
 			}
 			
 			@Override
@@ -169,135 +165,95 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 			public void onSuccess(Boolean result) {
 				if (result) {
 					if(token.equals("apresentacao")){
-//						presenterMenu.getHpUsuario().setVisible(true);
-//						presenterMenu.getNomeUsuario().setText();
-//						presenterMenu.getLogin().setVisible(false);
-//						presenterMenu.getAtividades().setVisible(true);
-//						RootPanel.get("menuDir").setVisible(true);
-//						infoUsuario();
-						configurarMenu();
+						configurarMenuUsuario();
+						configuraMenuLateral();
 						Presenter presenter = new ApresentationPresenter(rpcService, eventBus,
 								new ApresentationView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("programacao")){
-//						presenterMenu.getHpUsuario().setVisible(true);
-//						presenterMenu.getLogin().setVisible(false);
-//						presenterMenu.getAtividades().setVisible(true);
-//						RootPanel.get("menuDir").setVisible(true);
-//						infoUsuario();
-						configurarMenu();
+						configurarMenuUsuario();
+						configuraMenuLateral();
 						Presenter presenter = new UsuarioPresenter(rpcService, eventBus,
 								new UsuarioView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("login")){
-//						presenterMenu.getHpUsuario().setVisible(true);
-//						presenterMenu.getLogin().setVisible(false);
-//						presenterMenu.getAtividades().setVisible(true);
-//						RootPanel.get("menuDir").setVisible(true);
-//						infoUsuario();
-						configurarMenu();
+						configurarMenuUsuario();
+						configuraMenuLateral();
 						Presenter presenter = new UsuarioPresenter(rpcService, eventBus,
 								new UsuarioView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("faleConosco")){
-//						presenterMenu.getLogin().setVisible(false);
-//						presenterMenu.getAtividades().setVisible(true);
-//						RootPanel.get("menuDir").setVisible(true);
-//						infoUsuario();
-						configurarMenu();
+						configurarMenuUsuario();
+						configuraMenuLateral();
 						Presenter presenter = new FaleConoscoPresenter(rpcService, eventBus,
 								new FaleConoscoView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("sobre")){
-//						presenterMenu.getLogin().setVisible(false);
-//						presenterMenu.getAtividades().setVisible(true);
-//						RootPanel.get("menuDir").setVisible(true);
-//						infoUsuario();
-						configurarMenu();
+						configurarMenuUsuario();
+						configuraMenuLateral();
 						Presenter presenter = new SobrePresenter(new SobreView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("admineventifsecitecifgformosa")){
 						presenterMenu.getHpUsuario().setVisible(false);
-						presenterMenu.getLogin().setVisible(true);
-						presenterMenu.getAtividades().setVisible(false);
-//						RootPanel.get("menuDir").setVisible(true);
-						//infoUsuario();
+						configuraMenuLateral();
 						Presenter presenter = new AdminPresenter(rpcService, eventBus,new AdminView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 				} else {
 					if(token.equals("apresentacao")){
-						//new LoadingPopup("Aguarde ...");
-						loadMenu();
+						loadMenuLateral();
 						presenterMenu.getHpUsuario().setVisible(false);
-						presenterMenu.getLogin().setVisible(true);
-						presenterMenu.getAtividades().setVisible(false);
-//						RootPanel.get("menuDir").setVisible(false);
 						Presenter presenter = new ApresentationPresenter(rpcService, eventBus,
 								new ApresentationView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("programacao")){
-						loadMenu();
+						loadMenuLateral();
 						presenterMenu.getHpUsuario().setVisible(false);
-						presenterMenu.getLogin().setVisible(true);
-						presenterMenu.getAtividades().setVisible(false);
-//						RootPanel.get("menuDir").setVisible(false);
 						Presenter presenter = new ProgramacaoPresenter(rpcService, eventBus,
 								new ProgramacaoView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("login")){
-						loadMenu();
+						loadMenuLateral();
 						presenterMenu.getHpUsuario().setVisible(false);
-						presenterMenu.getLogin().setVisible(true);
-						presenterMenu.getAtividades().setVisible(false);
-//						RootPanel.get("menuDir").setVisible(false);
-						Presenter presenter = new ApresentationPresenter(rpcService, eventBus,
-								new ApresentationView());
-						if (presenter != null)
-							presenter.go(container);
+//						Presenter presenter = new ApresentationPresenter(rpcService, eventBus,
+//								new ApresentationView());
+//						if (presenter != null)
+//							presenter.go(container);
+						eventBus.fireEvent(new ApresentationEvent("apresentacao"));
 					}
 					else if(token.equals("faleConosco")){
+						loadMenuLateral();
 						presenterMenu.getHpUsuario().setVisible(false);
-						presenterMenu.getLogin().setVisible(true);
-						presenterMenu.getAtividades().setVisible(false);
-//						RootPanel.get("menuDir").setVisible(true);
-						//infoUsuario();
 						Presenter presenter = new FaleConoscoPresenter(rpcService, eventBus,
 								new FaleConoscoView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("sobre")){
+						loadMenuLateral();
 						presenterMenu.getHpUsuario().setVisible(false);
-						presenterMenu.getLogin().setVisible(true);
-						presenterMenu.getAtividades().setVisible(false);
-//						RootPanel.get("menuDir").setVisible(true);
-						//infoUsuario();
 						Presenter presenter = new SobrePresenter(new SobreView());
 						if (presenter != null)
 							presenter.go(container);
 					}
 					else if(token.equals("admineventifsecitecifgformosa")){
+						loadMenuLateral();
 						presenterMenu.getHpUsuario().setVisible(false);
-						presenterMenu.getLogin().setVisible(true);
-						presenterMenu.getAtividades().setVisible(false);
-//						RootPanel.get("menuDir").setVisible(true);
-						//infoUsuario();
 						Presenter presenter = new AdminPresenter(rpcService, eventBus,new AdminView());
 						if (presenter != null)
 							presenter.go(container);

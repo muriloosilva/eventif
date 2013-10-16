@@ -33,8 +33,9 @@ public class InformacaoPopup{
 		hpTop = new HorizontalPanel();
 		hpTop.setSpacing(0);
 		hpTop.setWidth("300px");
-		hpTop.addStyleName("botaoFechar");
+//		hpTop.addStyleName("botaoFechar");
 		hpTop.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
+		hpTop.setVerticalAlignment(VerticalPanel.ALIGN_TOP);
 		
 		imgFechar = new Image();
 		imgFechar.setUrl("images/fechar.png");

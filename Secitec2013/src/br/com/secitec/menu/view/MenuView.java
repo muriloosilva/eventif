@@ -26,32 +26,37 @@ public class MenuView extends Composite implements MenuPresenter.Display {
 	
 	public MenuView() {
 		menuHorizontal = new HorizontalPanel();
-		initWidget(menuHorizontal);
+		menuHorizontal.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
+		menuHorizontal.addStyleName("menuTopDir");
+//		menuHorizontal.setWidth("50%");
+//		initWidget(menuHorizontal);
 		
 		apresentacao = new Anchor("Apresentação");
 		apresentacao.addStyleName("aMenuHorizontal");
 		programacao = new Anchor("Programação");
 		programacao.addStyleName("aMenuHorizontal");
-		login = new Anchor("Login ou Cadastre-se");
-		login.addStyleName("aMenuHorizontal");
-		atividades = new Anchor("Minhas Atividades");
-		atividades.addStyleName("aMenuHorizontal");
-		atividades.setVisible(false);
+//		login = new Anchor("Login ou Cadastre-se");
+//		login.addStyleName("aMenuHorizontal");
+//		atividades = new Anchor("Minhas Atividades");
+//		atividades.addStyleName("aMenuHorizontal");
+//		atividades.setVisible(false);
 		faleConosco = new Anchor("Fale Conosco");
         faleConosco.addStyleName("aMenuHorizontal");
         sobre = new Anchor("Sobre");
-        sobre.addStyleName("aMenuHorizontal");
+        sobre.addStyleName("aMenuHorizontalSobre");
 		
 		menuHorizontal.add(apresentacao);
 		menuHorizontal.add(programacao);
-		menuHorizontal.add(atividades);
-		menuHorizontal.add(login);
+//		menuHorizontal.add(atividades);
+//		menuHorizontal.add(login);
 		menuHorizontal.add(faleConosco);
 		menuHorizontal.add(sobre);
 		
 		hpUsuario = new HorizontalPanel();
 		hpUsuario.setHorizontalAlignment(HorizontalPanel.ALIGN_RIGHT);
 		hpUsuario.addStyleName("hpUsuario");
+//		int x = 46000/menuHorizontal.getOffsetWidth();
+//		hpUsuario.setWidth("50%");
 		
 		sair = new Anchor("Sair");
 		sair.addStyleName("aMenuUsuario");
@@ -68,7 +73,13 @@ public class MenuView extends Composite implements MenuPresenter.Display {
 		hpUsuario.add(nomeUsuario);
 		hpUsuario.add(sair);
 		
-		menuHorizontal.add(hpUsuario);
+//		menuHorizontal.add(hpUsuario);
+		
+		HorizontalPanel hpMain = new HorizontalPanel();
+		hpMain.addStyleName("hpMainMenu");
+		hpMain.add(menuHorizontal);
+		hpMain.add(hpUsuario);
+		initWidget(hpMain);
 		
 	}
 	
@@ -120,5 +131,11 @@ public class MenuView extends Composite implements MenuPresenter.Display {
 	public Anchor getNomeUsuario() {
 		// TODO Auto-generated method stub
 		return this.nomeUsuario;
+	}
+
+	@Override
+	public Label getLbUsuario() {
+		// TODO Auto-generated method stub
+		return this.lbNomeUsuario;
 	}
 }

@@ -6,9 +6,7 @@ import br.com.secitec.menu.presenter.ProgramacaoPresenter;
 import br.com.secitec.shared.model.Atividade;
 import br.com.secitec.shared.model.Data;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -33,6 +31,7 @@ public class ProgramacaoView extends Composite implements
 	private FlexTable tabelaPalestras;
 	private Button btM = new Button();
 	private Button btInsc = new Button();
+	private HTML vagas;
 
 	public ProgramacaoView() {
 		//String value = Window.Location.getParameter("param");
@@ -173,8 +172,7 @@ public class ProgramacaoView extends Composite implements
 			for (int j = 0; j < a.getDatas().size(); j++) {
 				Data d = a.getDatas().get(j);
 				HTML horario = new HTML();
-				//horario.setText(d.getHrInicio().toString()+"h - "+d.getHrFim().toString()+"h");
-				//horario.setText(d.formatTimeShow(d.getHrInicio().toString())+"h - "+d.formatTimeShow(d.getHrFim().toString())+"h");
+//				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
 				horario.setText(""+String.valueOf(d.formatTimeShow(d.getHrInicio().toString())).substring(0, 5)+"h - "+String.valueOf(d.formatTimeShow(d.getHrFim().toString())).substring(0, 5)+"h");
 				horario.removeStyleName("gwt-HTML");
 				horario.addStyleName("tbAtividadesCol3");
@@ -197,10 +195,10 @@ public class ProgramacaoView extends Composite implements
 			ftb.setWidget(i, 4, btM);
 			
 			if(!a.getTipoAtiv().equals("Palestra")){
-				HTML vagas = new HTML();
-				vagas.setText("Vagas: "+a.getVagasDisponiveis());
-				vagas.removeStyleName("gwt-HTML");
-				ftb.setWidget(i, 3, vagas);
+//				HTML vagas = new HTML();
+//				vagas.setText("Vagas: "+a.getVagasDisponiveis());
+//				vagas.removeStyleName("gwt-HTML");
+//				ftb.setWidget(i, 3, vagas);
 				
 				btInsc = new Button("Inscrever");
 				btInsc.removeStyleName("gwt-Button");
@@ -216,10 +214,55 @@ public class ProgramacaoView extends Composite implements
 				ftb.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(a.getIdAtiv()));
 			}
 			
+			vagas(a, i, ftb);
+			
 			ftb.getCellFormatter().addStyleName(i, 0, "col1");
 			ftb.getCellFormatter().addStyleName(i, 1, "col2");
 			ftb.getCellFormatter().addStyleName(i, 2, "col3");
 			ftb.getCellFormatter().addStyleName(i, 3, "col4");
+		}
+	}
+	
+	public void vagas(Atividade a, int i, FlexTable tb){
+		//Esgotado e não está inscrito
+		if(a.getVagasDisponiveis() == 0 && !btInsc.getText().equals("Inscrito")){
+			vagas = new HTML();
+			vagas.setText("Esgotado");
+			vagas.removeStyleName("gwt-HTML");
+			vagas.addStyleName("esgotado");
+			btInsc.removeStyleName("btn-info");
+			btInsc.removeStyleName("btn-success");
+			btInsc.addStyleName("btn-danger");
+			btInsc.setText("Esgotado");
+			btInsc.setEnabled(false);
+			tb.setWidget(i, 3, vagas);
+		}
+		//Esgotado e está inscrito
+		else if(a.getVagasDisponiveis() == 0 && btInsc.getText().equals("Inscrito")){
+			vagas = new HTML();
+			vagas.setText("Esgotado");
+			vagas.removeStyleName("gwt-HTML");
+			vagas.addStyleName("esgotado");
+			tb.setWidget(i, 3, vagas);
+			
+			
+//			HTML vagas = new HTML();
+//			vagas.setText("Vagas: "+oficina.getVagasDisponiveis());
+//			vagas.removeStyleName("gwt-HTML");
+//			tabelaOficinas.setWidget(i, 3, vagas);
+		}
+		//Nao está esgotado e não está inscrito
+		else if(a.getVagasDisponiveis() > 0 && !btInsc.getText().equals("Inscrito")){
+			vagas = new HTML();
+			vagas.setText("Vagas: "+a.getVagasDisponiveis());
+			vagas.removeStyleName("gwt-HTML");
+			tb.setWidget(i, 3, vagas);
+		}
+		else{
+			vagas = new HTML();
+			vagas.setText("Vagas: "+a.getVagasDisponiveis());
+			vagas.removeStyleName("gwt-HTML");
+			tb.setWidget(i, 3, vagas);
 		}
 	}
 	

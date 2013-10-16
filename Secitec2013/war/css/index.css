@@ -27,6 +27,10 @@ body {
 	margin-right: 10%;
 }
 
+.menuTop{
+	float:right;
+}
+
 #menuDir {
 	width: auto;
 	margin-left: 0%;
@@ -46,8 +50,9 @@ body {
 	font: bold;
 	font-size: 14px;
 	text-decoration: none;
-	padding: 10px 0px 10px 5px;
-	margin-right: 20px;
+	padding: 0px 0px 0px 5px;
+	margin: 20px 0px 20px 0px;
+	margin-right: 0px;
 	border: none !important;
 	background-color: #09043F;
 	color: #FFFFFF !important;
@@ -55,12 +60,22 @@ body {
 }
 
 .hpUsuario {
-	margin-right: 0px;
-	margin-left: 331px;
+	margin-right: 10px;
+float: right;
 }
 
 .aMenuDir a:HOVER {
 	text-decoration: none;
+}
+
+.menuTopDir{
+	float: left;
+}
+
+.hpMainMenu{width: 100%;}
+
+.esgotado{
+	color: red;
 }
 
 .aMenuHorizontal {
@@ -69,8 +84,40 @@ body {
 	color: #FFFFFF !important;
 	display: block;
 	text-decoration: none;
-	padding: 10px 0px 10px 5px;
-	margin-right: 40px;
+padding: 0px 0px 0px 5px;
+margin: 20px 40px 20px 0px;
+}
+
+.loginCadastro{
+	border: none !important;
+background-color: #09043F;
+color: #FFFFFF !important;
+display: block;
+text-decoration: none;
+padding: 10px 0px 10px 0px;
+margin-right: 0px;
+}
+
+.vpLogin{
+	background-color: #09043F;
+}
+
+.vpLogin a:HOVER{
+	text-decoration: none;
+}
+
+a:HOVER{
+	text-decoration: none;
+}
+
+.aMenuHorizontalSobre {
+	border: none !important;
+	background-color: #09043F;
+	color: #FFFFFF !important;
+	display: block;
+	text-decoration: none;
+padding: 0px 0px 0px 5px;
+margin: 20px 40px 20px 0px;
 }
 
 .conteudoApresentacao{
@@ -89,7 +136,8 @@ p{
 	color: #FFFFFF !important;
 	display: block;
 	text-decoration: none;
-	padding: 10px 0px 10px 5px;
+	padding: 0px 0px 0px 5px;
+margin: 20px 0px 20px 40px;
 }
 
 /* color: black; */
@@ -145,7 +193,6 @@ p{
 }
 
 #corpoDir {
-	border: solid pink 1px;
 	width: 25%;
 	margin-right: 0%;
 	margin-left: 1%;

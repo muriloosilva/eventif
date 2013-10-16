@@ -32,7 +32,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 	private FlexTable tabelaMinicursos;
 	private FlexTable tabelaPalestras;
 	private Button btInsc, btM;
-	private HTML msg;
+	private HTML msg, vagas;
 
 	public UsuarioView() {
 		main = new VerticalPanel();
@@ -99,6 +99,16 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 		hpAtividades.setWidth("100%");
 		hpAtividades.setHeight("auto");
 
+		HorizontalPanel titulo = new HorizontalPanel();
+		titulo.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
+		titulo.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
+		titulo.setWidth("100%");
+		HTML lbTitulo = new HTML("&nbsp");
+		lbTitulo.addStyleName("lbTituloAtividade");
+		titulo.addStyleName("backLabelAtividades");
+		titulo.add(lbTitulo);
+		hpAtividades.add(titulo);
+		
 		titlePage = new HTML("Atividades em aberto");
 		titlePage.setStyleName("lbTitle");
 		hpAtividades.add(titlePage);
@@ -120,9 +130,9 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 	@Override
 	public void setData(List<Atividade> oficinas, List<Atividade> minicursos,
 			List<Atividade> palestras, List<Atividade> atividadesUsuario) {
-		System.out.println("Preenchenco oficinas...");
+//		System.out.println("Preenchenco oficinas...");
 		preencheTabela(tabelaOficinas, oficinas, atividadesUsuario);
-		System.out.println("Preenchenco minicursos...");
+//		System.out.println("Preenchenco minicursos...");
 		preencheTabela(tabelaMinicursos, minicursos, atividadesUsuario);
 		preencheTabela(tabelaPalestras, palestras, atividadesUsuario);
 	}
@@ -215,9 +225,8 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			for (int j = 0; j < a.getDatas().size(); j++) {
 				Data d = a.getDatas().get(j);
 				HTML horario = new HTML();
+//				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
 				horario.setText(""+String.valueOf(d.formatTimeShow(d.getHrInicio().toString())).substring(0, 5)+"h - "+String.valueOf(d.formatTimeShow(d.getHrFim().toString())).substring(0, 5)+"h");
-				//horario.setText(d.formatTimeShow(d.getHrInicio().toString())+"h - "+d.formatTimeShow(d.getHrFim().toString())+"h");
-				//horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
 				horario.removeStyleName("gwt-HTML");
 				horario.addStyleName("tbAtividadesCol3");
 				vpHorario.add(horario);
@@ -239,7 +248,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			
 			if(a.getTipoAtiv().equals("Oficina") || a.getTipoAtiv().equals("Minicurso")){
 				if(!atividadesUsuario.isEmpty()){
-					System.out.println("Lista de atividades do usuario vazia? "+atividadesUsuario.isEmpty());
+//					System.out.println("Lista de atividades do usuario vazia? "+atividadesUsuario.isEmpty());
 					for (int j = 0; j < atividadesUsuario.size(); j++) {
 						Atividade aUsuario = atividadesUsuario.get(j);
 						btInsc = new Button("Inscrever");
@@ -263,7 +272,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 						ftb.setWidget(i, 5, btInsc);
 					}
 				} else{
-					System.out.println("Lista de atividade do usuario está VAZIA");
+//					System.out.println("Lista de atividade do usuario está VAZIA");
 					btInsc = new Button("Inscrever");
 					btInsc.removeStyleName("gwt-Button");
 					btInsc.addStyleName("btn-info");
@@ -317,8 +326,8 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			for (int j = 0; j < a.getDatas().size(); j++) {
 				Data d = a.getDatas().get(j);
 				HTML horario = new HTML();
+//				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
 				horario.setText(""+String.valueOf(d.formatTimeShow(d.getHrInicio().toString())).substring(0, 5)+"h - "+String.valueOf(d.formatTimeShow(d.getHrFim().toString())).substring(0, 5)+"h");
-				//horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
 				horario.removeStyleName("gwt-HTML");
 				horario.addStyleName("tbAtividadesCol3");
 				vpHorario.add(horario);
@@ -442,21 +451,17 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			for (int j = 0; j < oficina.getDatas().size(); j++) {
 				Data d = oficina.getDatas().get(j);
 				HTML horario = new HTML();
+//				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
 				horario.setText(""+String.valueOf(d.formatTimeShow(d.getHrInicio().toString())).substring(0, 5)+"h - "+String.valueOf(d.formatTimeShow(d.getHrFim().toString())).substring(0, 5)+"h");
-				//horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
 				horario.removeStyleName("gwt-HTML");
 				horario.addStyleName("tbAtividadesCol3");
 				vpHorario.add(horario);
 			}
-
-			HTML vagas = new HTML();
-			vagas.setText("Vagas: "+oficina.getVagasDisponiveis());
-			vagas.removeStyleName("gwt-HTML");
 						
 			tabelaOficinas.setWidget(i, 0, nome);
 			tabelaOficinas.setWidget(i, 1, vpDatas);
 			tabelaOficinas.setWidget(i, 2, vpHorario);
-			tabelaOficinas.setWidget(i, 3, vagas);
+//			tabelaOficinas.setWidget(i, 3, vagas);
 			
 			btM = new Button("Mais Informações");
 			btM.removeStyleName("gwt-Button");
@@ -464,25 +469,22 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			tabelaOficinas.setWidget(i, 4, btM);
 			
 			if(atividadesUsuario != null){
-				System.out.println("\nOFICINAS");
-				System.out.println("Lista de atividades do usuario cheia");				
+//				System.out.println("\nOFICINAS");
+//				System.out.println("Lista de atividades do usuario cheia");				
 				for (int j = 0; j < atividadesUsuario.size(); j++) {
 					Atividade aUsuario = atividadesUsuario.get(j);
-//					btInsc = new Button("Inscrever");
-//					btInsc.removeStyleName("gwt-Button");
-//					btInsc.addStyleName("btn-info");
 					if(oficina.getIdAtiv() == aUsuario.getIdAtiv()){
-						System.out.println("Oficina inscrita");
+//						System.out.println("Oficina inscrita");
 						btInsc = new Button("Inscrito");
 						btInsc.removeStyleName("gwt-Button");
-						btInsc.addStyleName("btn-info");
+						btInsc.addStyleName("btn-success");
 						btInsc.setWidth("69px");
 						btInsc.setEnabled(false);
 						tabelaOficinas.setWidget(i, 5, btInsc);
 						break;
 					}
 					else{
-						System.out.println("Oficina não inscrita");
+//						System.out.println("Oficina não inscrita");
 						btInsc = new Button("Inscrever");
 						btInsc.removeStyleName("gwt-Button");
 						btInsc.addStyleName("btn-info");
@@ -495,6 +497,9 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 				btInsc.addStyleName("btn-info");
 				tabelaOficinas.setWidget(i, 5, btInsc);
 			}
+			
+			vagas(oficina, i, tabelaOficinas);
+			
 			tabelaOficinas.getCellFormatter().addStyleName(i, 0, "col1");
 			tabelaOficinas.getCellFormatter().addStyleName(i, 1, "col2");
 			tabelaOficinas.getCellFormatter().addStyleName(i, 2, "col3");
@@ -532,21 +537,16 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			for (int j = 0; j < minicurso.getDatas().size(); j++) {
 				Data d = minicurso.getDatas().get(j);
 				HTML horario = new HTML();
+//				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
 				horario.setText(""+String.valueOf(d.formatTimeShow(d.getHrInicio().toString())).substring(0, 5)+"h - "+String.valueOf(d.formatTimeShow(d.getHrFim().toString())).substring(0, 5)+"h");
-				//horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
 				horario.removeStyleName("gwt-HTML");
 				horario.addStyleName("tbAtividadesCol3");
 				vpHorario.add(horario);
 			}
-
-			HTML vagas = new HTML();
-			vagas.setText("Vagas: "+minicurso.getVagasDisponiveis());
-			vagas.removeStyleName("gwt-HTML");
 						
 			tabelaMinicursos.setWidget(i, 0, nome);
 			tabelaMinicursos.setWidget(i, 1, vpDatas);
 			tabelaMinicursos.setWidget(i, 2, vpHorario);
-			tabelaMinicursos.setWidget(i, 3, vagas);
 			
 			btM = new Button("Mais Informações");
 			btM.removeStyleName("gwt-Button");
@@ -554,23 +554,23 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			tabelaMinicursos.setWidget(i, 4, btM);
 			
 			if(atividadesUsuario != null){
-				System.out.println("\nMINICURSOS");
-				System.out.println("Lista de atividades do usuario cheia");
+//				System.out.println("\nMINICURSOS");
+//				System.out.println("Lista de atividades do usuario cheia");
 				for (int j = 0; j < atividadesUsuario.size(); j++) {
 					Atividade aUsuario = atividadesUsuario.get(j);
 //					btInsc = new Button();
 					if(minicurso.getIdAtiv() == aUsuario.getIdAtiv()){
-						System.out.println("Inscrito no Minicurso");
+//						System.out.println("Inscrito no Minicurso");
 						btInsc = new Button("Inscrito");
 						btInsc.removeStyleName("gwt-Button");
-						btInsc.addStyleName("btn-info");
+						btInsc.addStyleName("btn-success");
 						btInsc.setWidth("69px");
 						btInsc.setEnabled(false);
 						tabelaMinicursos.setWidget(i, 5, btInsc);
 						break;
 					}
 					else{
-						System.out.println("Não inscrito no Minicurso");
+//						System.out.println("Não inscrito no Minicurso");
 						btInsc = new Button("Inscrever");
 						btInsc.setText("Inscrever");
 						btInsc.removeStyleName("gwt-Button");
@@ -584,6 +584,9 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 				btInsc.addStyleName("btn-info");
 				tabelaMinicursos.setWidget(i, 5, btInsc);
 			}
+			
+			vagas(minicurso, i, tabelaMinicursos);
+			
 			tabelaMinicursos.getCellFormatter().addStyleName(i, 0, "col1");
 			tabelaMinicursos.getCellFormatter().addStyleName(i, 1, "col2");
 			tabelaMinicursos.getCellFormatter().addStyleName(i, 2, "col3");
@@ -591,6 +594,49 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			tabelaMinicursos.getCellFormatter().addStyleName(i, 4, "col5");
 			tabelaMinicursos.getCellFormatter().addStyleName(i, 5, "col6");
 			tabelaMinicursos.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(minicurso.getIdAtiv()));
+		}
+	}
+	
+	public void vagas(Atividade a, int i, FlexTable tb){
+		//Esgotado e não está inscrito
+		if(a.getVagasDisponiveis() == 0 && !btInsc.getText().equals("Inscrito")){
+			vagas = new HTML();
+			vagas.setText("Esgotado");
+			vagas.removeStyleName("gwt-HTML");
+			vagas.addStyleName("esgotado");
+			btInsc.removeStyleName("btn-info");
+			btInsc.removeStyleName("btn-success");
+			btInsc.addStyleName("btn-danger");
+			btInsc.setText("Esgotado");
+			btInsc.setEnabled(false);
+			tb.setWidget(i, 3, vagas);
+		}
+		//Esgotado e está inscrito
+		else if(a.getVagasDisponiveis() == 0 && btInsc.getText().equals("Inscrito")){
+			vagas = new HTML();
+			vagas.setText("Esgotado");
+			vagas.removeStyleName("gwt-HTML");
+			vagas.addStyleName("esgotado");
+			tb.setWidget(i, 3, vagas);
+			
+			
+//			HTML vagas = new HTML();
+//			vagas.setText("Vagas: "+oficina.getVagasDisponiveis());
+//			vagas.removeStyleName("gwt-HTML");
+//			tabelaOficinas.setWidget(i, 3, vagas);
+		}
+		//Nao está esgotado e não está inscrito
+		else if(a.getVagasDisponiveis() > 0 && !btInsc.getText().equals("Inscrito")){
+			vagas = new HTML();
+			vagas.setText("Vagas: "+a.getVagasDisponiveis());
+			vagas.removeStyleName("gwt-HTML");
+			tb.setWidget(i, 3, vagas);
+		}
+		else{
+			vagas = new HTML();
+			vagas.setText("Vagas: "+a.getVagasDisponiveis());
+			vagas.removeStyleName("gwt-HTML");
+			tb.setWidget(i, 3, vagas);
 		}
 	}
 
@@ -621,8 +667,8 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 			for (int j = 0; j < a.getDatas().size(); j++) {
 				Data d = a.getDatas().get(j);
 				HTML horario = new HTML();
+//				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
 				horario.setText(""+String.valueOf(d.formatTimeShow(d.getHrInicio().toString())).substring(0, 5)+"h - "+String.valueOf(d.formatTimeShow(d.getHrFim().toString())).substring(0, 5)+"h");
-				//horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
 				horario.removeStyleName("gwt-HTML");
 				horario.addStyleName("tbAtividadesCol3");
 				vpHorario.add(horario);

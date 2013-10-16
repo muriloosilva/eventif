@@ -2267,6 +2267,7 @@ input[type="button"].btn-block {
   color: #ffffff;
   background-color: #bd362f;
   *background-color: #a9302a;
+  cursor: initial;
 }
 .btn-danger:active,
 .btn-danger.active {
@@ -2299,6 +2300,7 @@ input[type="button"].btn-block {
   color: #ffffff;
   background-color: #51a351;
   *background-color: #499249;
+  cursor: initial;
 }
 .btn-success:active,
 .btn-success.active {
