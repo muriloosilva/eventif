@@ -1,10 +1,13 @@
 package br.com.secitec.shared.model;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.sql.Date;
+import java.sql.Time;
 
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.i18n.client.constants.TimeZoneConstants;
 import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 
 public class Data implements Serializable{
 	private Date data;
@@ -29,33 +32,57 @@ public class Data implements Serializable{
 		this.hrFim = hrFim;
 	}
 	
-	public Date formataData(String data) throws Exception { 
+	public Date formataData(String data) throws Exception {
+		
 		if (data == null || data.equals(""))
 			return null;
 		
         java.util.Date date = null;
+        String d = null;
+        DateTimeFormat fmt = null;
         try {
-        	DateTimeFormat fmt = DateTimeFormat.getFormat("yyyy-MM-dd");
+        	TimeZoneConstants timeZoneConstants = GWT.create(TimeZoneConstants.class);
+        	fmt = DateTimeFormat.getFormat("yyyy-MM-dd");
             date = (java.util.Date)fmt.parse(data);
+            d = fmt.format(date, com.google.gwt.i18n.client.TimeZone.createTimeZone(timeZoneConstants.americaSaoPaulo()));
             
         } catch (Exception e) {            
             throw e;
         }
-        return new Date(date.getTime());
+        
+        return new Date(((java.util.Date)fmt.parse(d)).getTime());
 	}
 	
-	public Time formatTime(String hora){
-		DateTimeFormat fmt = DateTimeFormat.getFormat("HH:mm:ss");  
-		Date data = null;
+	public Time formatTimeShow(String hora){
+		DateTimeFormat fmt= null;
+		java.util.Date date = null;
+		String d = null;
 		try {
-			data = new Date(((java.util.Date) fmt.parse(hora)).getTime());
+			TimeZoneConstants timeZoneConstants = GWT.create(TimeZoneConstants.class);
+			fmt = DateTimeFormat.getFormat("HH:mm:ss"); 
+			date = fmt.parse(hora);
+			d = fmt.format(date, com.google.gwt.i18n.client.TimeZone.createTimeZone(timeZoneConstants.americaRioBranco()));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
-		Time time = new Time(data.getTime());
-		return time;
-	}
+		return new Time(((java.util.Date)fmt.parse(d)).getTime());
+	}	
 	
+	public Time formatTime(String hora){
+		DateTimeFormat fmt=null;  
+		java.util.Date date = null;
+		String d = null;
+		try {
+			TimeZoneConstants timeZoneConstants = GWT.create(TimeZoneConstants.class);
+			fmt = DateTimeFormat.getFormat("HH:mm:ss");  
+			date = fmt.parse(hora);
+			d = fmt.format(date, com.google.gwt.i18n.client.TimeZone.createTimeZone(timeZoneConstants.americaSaoPaulo()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		return new Time(((java.util.Date)fmt.parse(d)).getTime());
+	}	
 	
 }

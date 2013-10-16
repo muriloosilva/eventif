@@ -1,7 +1,5 @@
 package br.com.secitec.menu.view;
 
-import java.util.List;
-
 import br.com.secitec.menu.presenter.AdminPresenter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -37,7 +35,7 @@ AdminPresenter.Display{
 		vp.setSpacing(0);
 		vp.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 		vp.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
-		vp.setWidth("600px");
+		vp.setWidth("650px");
 		
 		HorizontalPanel hpTop = new HorizontalPanel();
 		hpTop.setSpacing(0);
@@ -173,7 +171,7 @@ AdminPresenter.Display{
 	private void addData(int linha, FlexTable ft){
 		
 		TextBox data = new TextBox();
-		data.setWidth("50px");
+		data.setWidth("80px");
 		ft.setWidget(linha, 0, data);
 		
 		HTML hHoraInicio = new HTML("Hora Ini.: ");

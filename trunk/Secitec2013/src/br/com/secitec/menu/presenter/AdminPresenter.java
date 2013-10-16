@@ -12,6 +12,7 @@ import br.com.secitec.shared.model.Data;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -60,16 +61,6 @@ public class AdminPresenter implements Presenter {
 		this.eventBus = eventBus;
 		this.display = view;
 	}
-	
-	/**
-	 * Converte uma String para um objeto Date. Caso a String seja vazia ou nula, 
-	 * retorna null - para facilitar em casos onde formulários podem ter campos
-	 * de datas vazios.
-	 * @param data String no formato dd/MM/yyyy a ser formatada
-	 * @return Date Objeto Date ou null caso receba uma String vazia ou nula
-	 * @throws Exception Caso a String esteja no formato errado
-	 */
-	
 
 	public void bind() {
 		display.getAddData().addClickHandler(new ClickHandler() {
@@ -86,14 +77,10 @@ public class AdminPresenter implements Presenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				Window.alert("entrou");
-				
 				String nome = display.getTbNome().getText();
 				String descricao = display.getTbDescricao().getText();
 				int vagas = Integer.parseInt(display.getTbVagas().getText());
 				String tipo = display.getLbTipo().getValue(display.getLbTipo().getSelectedIndex());
-				
-				Window.alert("entro1u");
 				
 				Atividade a = new Atividade();
 				a.setNomeAtiv(nome);
@@ -102,7 +89,6 @@ public class AdminPresenter implements Presenter {
 				a.setTipoAtiv(tipo);
 				
 				List<Data> ld = new ArrayList<Data>();
-				Window.alert("entro2u");
 				for (int i = 0; i<display.getFlexTableDatas().getRowCount();i++){
 					Data d = new Data();
 					try {
@@ -116,7 +102,6 @@ public class AdminPresenter implements Presenter {
 					ld.add(d);
 				}
 				
-				Window.alert("entrou1");
 				
 				final LoadingPopup lp = new LoadingPopup("Aguarde ...");
 				rpcService.insereAtividade(a, ld, new AsyncCallback<Boolean>() {
@@ -131,6 +116,7 @@ public class AdminPresenter implements Presenter {
 								@Override
 								public void onClick(ClickEvent event) {
 									ip.getTela().hide();
+									History.newItem("admineventifsecitecifgformosa");
 								}
 							});
 							ip.getFechar().addClickHandler(new ClickHandler() {													
