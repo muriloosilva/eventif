@@ -207,14 +207,20 @@ public class ProgramacaoView extends Composite implements
 				ftb.getCellFormatter().addStyleName(i, 5, "col6");
 				ftb.setWidget(i, 5, btInsc);
 				ftb.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(a.getIdAtiv()));
+				vagas(a, i, ftb);
 			}
 			else {
 //				btM.setWidth("199px");
+				HTML vagas = new HTML();
+//				vagas.setText("Vagas: "+a.getVagasDisponiveis());
+				vagas.removeStyleName("gwt-HTML");
+				tabelaPalestras.setWidget(i, 3, vagas);
+				
 				ftb.getCellFormatter().addStyleName(i, 4, "col4Palestra");
 				ftb.getRowFormatter().getElement(i).setAttribute("id", String.valueOf(a.getIdAtiv()));
 			}
 			
-			vagas(a, i, ftb);
+//			vagas(a, i, ftb);
 			
 			ftb.getCellFormatter().addStyleName(i, 0, "col1");
 			ftb.getCellFormatter().addStyleName(i, 1, "col2");
