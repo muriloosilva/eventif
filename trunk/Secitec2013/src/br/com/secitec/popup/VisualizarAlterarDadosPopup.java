@@ -60,7 +60,7 @@ public class VisualizarAlterarDadosPopup {
 	}
 
 	private void montaTela() {
-		tela = new PopupPanel(true);
+		tela = new PopupPanel(false);
 		tela.setStyleName("demo-popup");
 
 		vp = new VerticalPanel();
