@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import br.com.secitec.shared.model.Data;
 
@@ -30,6 +31,9 @@ public class AtiDataDAO {
 	}
 
 	public static List<Data> getData(int idAtivi) {
+		
+		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo")); 
+		
 //		System.out.println("id: "+idAtivi);
 		PreparedStatement stmt;
 		List<Data> datas = new ArrayList<Data>();
