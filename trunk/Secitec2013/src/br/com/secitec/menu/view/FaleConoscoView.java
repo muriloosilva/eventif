@@ -266,7 +266,7 @@ FaleConoscoPresenter.Display{
 	}
 	
 	public TextBox getTbEmail(){
-		return (TextBox) tabela.getWidget(1, 1);
+		return this.email;
 	}
 	
 	public TextBox getTbAssunto(){
