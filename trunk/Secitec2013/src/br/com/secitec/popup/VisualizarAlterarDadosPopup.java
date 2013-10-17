@@ -329,9 +329,9 @@ public class VisualizarAlterarDadosPopup {
 															// TODO Auto-generated method stub
 //															RootPanel.get("menuDir").setVisible(false);
 															String s = History.getToken();
-															if (!s.equals("apresentacao")){
-																eventBus.fireEvent(new ApresentationEvent("apresentacao"));
-															}
+//															if (!s.equals("apresentacao")){
+															eventBus.fireEvent(new ApresentationEvent("apresentacao"));
+//															}
 															
 																
 															// Window.Location.replace("http://127.0.0.1:8888/SecitecGWT.html?gwt.codesvr=127.0.0.1:9997#apresentacao");

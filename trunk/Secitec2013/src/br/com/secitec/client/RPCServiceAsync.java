@@ -32,7 +32,7 @@ public interface RPCServiceAsync {
 
 	public void getSessao(AsyncCallback<Boolean> callback);
 
-	public void inscrever(int codAtividade, AsyncCallback<Boolean> callback);
+	public void inscrever(int codAtividade, AsyncCallback<Integer> callback);
 	
 	public void cancelar(int codAtividade, AsyncCallback<Boolean> callback);
 

@@ -230,8 +230,7 @@ public class ProgramacaoView extends Composite implements
 	}
 	
 	public void vagas(Atividade a, int i, FlexTable tb){
-		//Esgotado e não está inscrito
-		if(a.getVagasDisponiveis() == 0 && !btInsc.getText().equals("Inscrito")){
+		if(a.getVagasDisponiveis() == 0){
 			vagas = new HTML();
 			vagas.setText("Esgotado");
 			vagas.removeStyleName("gwt-HTML");
@@ -243,13 +242,17 @@ public class ProgramacaoView extends Composite implements
 			btInsc.setEnabled(false);
 			tb.setWidget(i, 3, vagas);
 		}
-		//Esgotado e está inscrito
-		else if(a.getVagasDisponiveis() == 0 && btInsc.getText().equals("Inscrito")){
+		else {
 			vagas = new HTML();
-			vagas.setText("Esgotado");
+			vagas.setText("Vagas: "+a.getVagasDisponiveis());
 			vagas.removeStyleName("gwt-HTML");
-			vagas.addStyleName("esgotado");
 			tb.setWidget(i, 3, vagas);
+			
+//			vagas = new HTML();
+//			vagas.setText("Esgotado");
+//			vagas.removeStyleName("gwt-HTML");
+//			vagas.addStyleName("esgotado");
+//			tb.setWidget(i, 3, vagas);
 			
 			
 //			HTML vagas = new HTML();
@@ -258,18 +261,18 @@ public class ProgramacaoView extends Composite implements
 //			tabelaOficinas.setWidget(i, 3, vagas);
 		}
 		//Nao está esgotado e não está inscrito
-		else if(a.getVagasDisponiveis() > 0 && !btInsc.getText().equals("Inscrito")){
-			vagas = new HTML();
-			vagas.setText("Vagas: "+a.getVagasDisponiveis());
-			vagas.removeStyleName("gwt-HTML");
-			tb.setWidget(i, 3, vagas);
-		}
-		else{
-			vagas = new HTML();
-			vagas.setText("Vagas: "+a.getVagasDisponiveis());
-			vagas.removeStyleName("gwt-HTML");
-			tb.setWidget(i, 3, vagas);
-		}
+//		else if(a.getVagasDisponiveis() > 0 && !btInsc.getText().equals("Inscrito")){
+//			vagas = new HTML();
+//			vagas.setText("Vagas: "+a.getVagasDisponiveis());
+//			vagas.removeStyleName("gwt-HTML");
+//			tb.setWidget(i, 3, vagas);
+//		}
+//		else{
+//			vagas = new HTML();
+//			vagas.setText("Vagas: "+a.getVagasDisponiveis());
+//			vagas.removeStyleName("gwt-HTML");
+//			tb.setWidget(i, 3, vagas);
+//		}
 	}
 	
 	private String formataData(String data){

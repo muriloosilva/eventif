@@ -110,13 +110,16 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		return dH;
 	}
 
+	//return 0: conflito de horário
+	//return 1: não tem vagas
+	//return 2: ok
 	@Override
-	public boolean inscrever(int codAtividade) {
+	public int inscrever(int codAtividade) {
 		// TODO Auto-generated method stub
 		User user = getSession();
 		List<Atividade> atividades = getAtividadesUsuario();
 		Atividade atividade = getAtividade(codAtividade);
-		boolean b = false;
+		int r = -1;
 
 		if (atividades != null) {
 			
@@ -136,52 +139,30 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 						if (datasAtividadesInteresse.get(k).getData().equals(datas.get(j).getData())) {
 							if (hora_ini_interesse > hr_ini_data) {
 								if (hora_ini_interesse < hr_fim_data) {
-									b = true;
-									break;
+									r = 0;
 								}
 							} else {
 								if (hora_fim_interesse > hr_ini_data) {
-									b = true;
-									break;
+									r = 0;
 								}
 							}
 						}
 						
 					}
-					
-//					double hr_ini = formataHora(atividades.get(i).getHrInicio().toString());
-//					double hr_fim = formataHora(atividades.get(i).getHrFim().toString());
-					
+				
 				}
-//				double hora_ini = formataHora(atividade.getHrInicio().toString());
-//				double hora_fim = formataHora(atividade.getHrFim().toString());
-//				
-//				double hr_ini = formataHora(atividades.get(i).getHrInicio().toString());
-//				double hr_fim = formataHora(atividades.get(i).getHrFim().toString());
-
-//				if (atividade.getDtAtiv().equals(atividades.get(i).getDtAtiv())) {
-//					if (hora_ini > hr_ini) {
-//						if (hora_ini < hr_fim) {
-//							b = true;
-//							break;
-//						}
-//					} else {
-//						if (hora_fim > hr_ini) {
-//							b = true;
-//							break;
-//						}
-//					}
-//				}
-
 			}
 		}
-		if (b) {
-			return false;
-		} else {
+		if(atividade.getVagasDisponiveis() > 0){
 			InscricaoDAO.inscrever(codAtividade, user.getId_partic());
 			AtividadeDAO.decrementaVagas(codAtividade);
-			return true;
+			r = 2;
 		}
+		else{
+			r = 1;
+		}
+			
+		return r;
 	}
 
 	@Override

@@ -82,7 +82,7 @@ public class ProgramacaoPresenter implements Presenter {
 				pp.hide();
 				//se estiver logado
 				if (result) {
-					inscrever(idAtividade);
+//					inscrever(idAtividade);
 				} else {
 					Presenter presenter = new LoginPresenter(
 							rpcService, eventBus, new LoginView());
@@ -118,7 +118,7 @@ public class ProgramacaoPresenter implements Presenter {
 							// TODO Auto-generated method stub
 							if(result){
 								pp.hide();
-								inscrever(idAtividade);
+//								inscrever(idAtividade);
 							}
 							else{
 								pp.hide();
@@ -381,54 +381,54 @@ public class ProgramacaoPresenter implements Presenter {
 
 	}
 	
-	private void inscrever(int e){
-		final LoadingPopup pp = new LoadingPopup("Aguarde ...");
-		rpcService.inscrever(e,
-				new AsyncCallback<Boolean>() {
-					@Override
-					public void onFailure(Throwable caught) {
-						pp.hide();
-					}
-					@Override
-					public void onSuccess(Boolean result) {
-						pp.hide();
-						if(result){
-							ip = new InformacaoPopup("Inscrição efetuada com sucesso!");
-							ip.getTela().center();
-							ip.getOk().addClickHandler(new ClickHandler() {														
-								@Override
-								public void onClick(ClickEvent event) {
-									ip.getTela().hide();
-									eventBus.fireEvent(new LoginEvent("login"));
-								}
-							});
-							ip.getFechar().addClickHandler(new ClickHandler() {														
-								@Override
-								public void onClick(ClickEvent event) {
-									ip.getTela().hide();
-									eventBus.fireEvent(new LoginEvent("login"));
-								}
-							});
-							
-						}
-						else{
-							ip = new InformacaoPopup("Você está inscrito em outra(s) atividade(s) no mesmo"
-									+ " horário!");
-							ip.getTela().center();
-							ip.getOk().addClickHandler(new ClickHandler() {													
-								@Override
-								public void onClick(ClickEvent event) {
-									ip.getTela().hide();
-								}
-							});
-							ip.getFechar().addClickHandler(new ClickHandler() {													
-								@Override
-								public void onClick(ClickEvent event) {
-									ip.getTela().hide();
-								}
-							});
-						}
-					}
-				});
-	}
+//	private void inscrever(int e){
+//		final LoadingPopup pp = new LoadingPopup("Aguarde ...");
+//		rpcService.inscrever(e,
+//				new AsyncCallback<Boolean>() {
+//					@Override
+//					public void onFailure(Throwable caught) {
+//						pp.hide();
+//					}
+//					@Override
+//					public void onSuccess(Boolean result) {
+//						pp.hide();
+//						if(result){
+//							ip = new InformacaoPopup("Inscrição efetuada com sucesso!");
+//							ip.getTela().center();
+//							ip.getOk().addClickHandler(new ClickHandler() {														
+//								@Override
+//								public void onClick(ClickEvent event) {
+//									ip.getTela().hide();
+//									eventBus.fireEvent(new LoginEvent("login"));
+//								}
+//							});
+//							ip.getFechar().addClickHandler(new ClickHandler() {														
+//								@Override
+//								public void onClick(ClickEvent event) {
+//									ip.getTela().hide();
+//									eventBus.fireEvent(new LoginEvent("login"));
+//								}
+//							});
+//							
+//						}
+//						else{
+//							ip = new InformacaoPopup("Você está inscrito em outra(s) atividade(s) no mesmo"
+//									+ " horário!");
+//							ip.getTela().center();
+//							ip.getOk().addClickHandler(new ClickHandler() {													
+//								@Override
+//								public void onClick(ClickEvent event) {
+//									ip.getTela().hide();
+//								}
+//							});
+//							ip.getFechar().addClickHandler(new ClickHandler() {													
+//								@Override
+//								public void onClick(ClickEvent event) {
+//									ip.getTela().hide();
+//								}
+//							});
+//						}
+//					}
+//				});
+//	}
 }
