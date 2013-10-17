@@ -230,6 +230,8 @@ public class AtividadeDAO {
 			return atividades;
 	}
 	
+	
+	
 	public static Atividade getAtividade(int idAtividade) {
 		PreparedStatement stmt;
 		Atividade atividade = new Atividade();

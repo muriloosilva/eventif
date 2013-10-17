@@ -146,16 +146,16 @@ public class UsuarioPresenter implements Presenter {
 				
 				if (result) {
 					rpcService.inscrever(idAtividade,
-							new AsyncCallback<Boolean>() {
+							new AsyncCallback<Integer>() {
 								@Override
 								public void onFailure(Throwable caught) {
 									pp.hide();
 								}
 
 								@Override
-								public void onSuccess(Boolean result) {
+								public void onSuccess(Integer result) {
 									pp.hide();
-									if (result) {
+									if (result == 2) {
 										ip = new InformacaoPopup(
 												"Inscrição efetuada com sucesso!");
 										ip.getTela().center();
@@ -181,8 +181,62 @@ public class UsuarioPresenter implements Presenter {
 //														display.setDataAtividades(oficinas, atividades);
 													}
 												});
-									} else {
+									} else if(result == 0){
 										inscritoMesmoHorario();
+									}
+									else if(result == 1){
+										ip = new InformacaoPopup(
+												"Limite de vagas esgotado!");
+										ip.getTela().center();
+										ip.getOk().addClickHandler(
+												new ClickHandler() {
+													@Override
+													public void onClick(
+															ClickEvent event) {
+														ip.getTela().hide();
+//														setDadosUsuario();
+														atualizaOficina();
+////														display.setDataAtividades(oficinas, atividades);
+													}
+												});
+										ip.getFechar().addClickHandler(
+												new ClickHandler() {
+													@Override
+													public void onClick(
+															ClickEvent event) {
+														ip.getTela().hide();
+//														setDadosUsuario();
+														atualizaOficina();
+//														display.setDataAtividades(oficinas, atividades);
+													}
+												});
+									}
+									else{
+										ip = new InformacaoPopup(
+												"Não foi possível efetuar a inscrição! Tente mais tarde.");
+										ip.getTela().center();
+										ip.getOk().addClickHandler(
+												new ClickHandler() {
+													@Override
+													public void onClick(
+															ClickEvent event) {
+														ip.getTela().hide();
+//														setDadosUsuario();
+//														atualizaOficina();
+////														display.setDataAtividades(oficinas, atividades);
+													}
+												});
+										ip.getFechar().addClickHandler(
+												new ClickHandler() {
+													@Override
+													public void onClick(
+															ClickEvent event) {
+														ip.getTela().hide();
+//														setDadosUsuario();
+//														atualizaOficina();
+//														display.setDataAtividades(oficinas, atividades);
+													}
+												});
 									}
 								}
 							});
@@ -604,15 +658,15 @@ public class UsuarioPresenter implements Presenter {
 	private void inscrever(int e){
 		final LoadingPopup pp = new LoadingPopup("Aguarde...");
 		rpcService.inscrever(e,
-				new AsyncCallback<Boolean>() {
+				new AsyncCallback<Integer>() {
 					@Override
 					public void onFailure(Throwable caught) {
 						pp.hide();
 					}
 					@Override
-					public void onSuccess(Boolean result) {
+					public void onSuccess(Integer result) {
 						pp.hide();
-						if(result){
+						if(result == 2){
 							ip = new InformacaoPopup("Inscrição efetuada com sucesso!");
 							ip.getTela().center();
 							ip.getOk().addClickHandler(new ClickHandler() {														
@@ -639,8 +693,61 @@ public class UsuarioPresenter implements Presenter {
 							});
 							
 						}
-						else{
+						else if(result == 0){
 							inscritoMesmoHorario();
+						}
+						else if(result == 1){
+							ip = new InformacaoPopup("Limite de vagas esgotado!");
+							ip.getTela().center();
+							ip.getOk().addClickHandler(new ClickHandler() {														
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+									//eventBus.fireEvent(new LoginEvent("login"));
+//									setDadosUsuario();
+									atualizaMinicurso();
+//									display.setTabelaMinicurso(minicursos, atividades);
+//									display.setDataAtividades(oficinas, atividades);
+								}
+							});
+							ip.getFechar().addClickHandler(new ClickHandler() {														
+								@Override
+								public void onClick(ClickEvent event) {
+									ip.getTela().hide();
+									eventBus.fireEvent(new LoginEvent("login"));
+//									setDadosUsuario();
+									atualizaMinicurso();
+//									display.setTabelaMinicurso(minicursos, atividades);
+//									display.setDataAtividades(oficinas, atividades);
+								}
+							});
+						}
+						else{
+							ip = new InformacaoPopup(
+									"Não foi possível efetuar a inscrição! Tente mais tarde.");
+							ip.getTela().center();
+							ip.getOk().addClickHandler(
+									new ClickHandler() {
+										@Override
+										public void onClick(
+												ClickEvent event) {
+											ip.getTela().hide();
+//											setDadosUsuario();
+//											atualizaOficina();
+////											display.setDataAtividades(oficinas, atividades);
+										}
+									});
+							ip.getFechar().addClickHandler(
+									new ClickHandler() {
+										@Override
+										public void onClick(
+												ClickEvent event) {
+											ip.getTela().hide();
+//											setDadosUsuario();
+//											atualizaOficina();
+//											display.setDataAtividades(oficinas, atividades);
+										}
+									});
 						}
 					}
 				});
