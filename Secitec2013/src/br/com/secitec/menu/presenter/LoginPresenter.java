@@ -13,6 +13,8 @@ import br.com.secitec.shared.model.User;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -98,6 +100,26 @@ public class LoginPresenter implements Presenter {
 						//display.getPopup().center();
 					}
 				});
+			}
+		});
+		
+		display.getTbLogin().addKeyPressHandler(new KeyPressHandler() {
+			
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getNativeEvent().getKeyCode() == 13)
+					login();
+			}
+		});
+		
+		display.getTbSenha().addKeyPressHandler(new KeyPressHandler() {
+			
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getNativeEvent().getKeyCode() == 13)
+					login();
 			}
 		});
 	}
