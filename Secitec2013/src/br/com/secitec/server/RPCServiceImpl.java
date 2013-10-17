@@ -119,7 +119,6 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		User user = getSession();
 		List<Atividade> atividades = getAtividadesUsuario();
 		Atividade atividade = getAtividade(codAtividade);
-		int r = -1;
 
 		if (atividades != null) {
 			
@@ -139,11 +138,11 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 						if (datasAtividadesInteresse.get(k).getData().equals(datas.get(j).getData())) {
 							if (hora_ini_interesse > hr_ini_data) {
 								if (hora_ini_interesse < hr_fim_data) {
-									r = 0;
+									return 0;
 								}
 							} else {
 								if (hora_fim_interesse > hr_ini_data) {
-									r = 0;
+									return 0;
 								}
 							}
 						}
@@ -156,13 +155,11 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		if(atividade.getVagasDisponiveis() > 0){
 			InscricaoDAO.inscrever(codAtividade, user.getId_partic());
 			AtividadeDAO.decrementaVagas(codAtividade);
-			r = 2;
+			return 2;
 		}
 		else{
-			r = 1;
+			return 1;
 		}
-			
-		return r;
 	}
 
 	@Override

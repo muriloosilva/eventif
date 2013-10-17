@@ -278,7 +278,7 @@ public class UsuarioPresenter implements Presenter {
 								inscrever(idAtividade);
 							else{
 								//n�o pode ser inscrito
-								ip = new InformacaoPopup("Você já está inscrito em um Minicurso!");
+								ip = new InformacaoPopup("Você já está inscrito em um Minicurso! Você pode-se inscrever em apenas um minicurso.");
 								ip.getTela().center();
 								ip.getOk().addClickHandler(new ClickHandler() {													
 									@Override
