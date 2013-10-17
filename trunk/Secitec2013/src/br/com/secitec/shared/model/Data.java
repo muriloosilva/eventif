@@ -7,7 +7,6 @@ import java.sql.Time;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.i18n.client.constants.TimeZoneConstants;
 import com.google.gwt.i18n.shared.DateTimeFormat;
-import com.google.gwt.user.client.Window;
 
 public class Data implements Serializable{
 	private Date data;
