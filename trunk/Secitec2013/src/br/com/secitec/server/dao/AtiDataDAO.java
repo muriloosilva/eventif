@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
+import br.com.secitec.server.util.DataUtil;
 import br.com.secitec.shared.model.Data;
 
 public class AtiDataDAO {
@@ -46,9 +46,9 @@ public class AtiDataDAO {
 			while (rs.next()) {
 				Data data = new Data();
 				
-				data.setData(rs.getDate(1));
-				data.setHrInicio(rs.getTime(2));
-				data.setHrFim(rs.getTime(3));
+				data.setData(rs.getDate(1).toString());
+				data.setHrInicio(DataUtil.formatTimeShow(rs.getTime(2)).toString());
+				data.setHrFim(DataUtil.formatTimeShow(rs.getTime(3)).toString());
 							
 				datas.add(data);
 			}

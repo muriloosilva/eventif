@@ -95,7 +95,8 @@ public class ParticipanteDAO {
 			stmt.setString(3, user.getEmail_partic().trim());
 			stmt.setString(4, user.getSenha_partic());
 			stmt.setString(5, user.getMatr_aluno_partic());
-			stmt.setInt(6, 0);
+			//stmt.setInt(6, 0);
+			stmt.setInt(6, 1);
 			
 			stmt.execute();
 		} catch (SQLException e) {

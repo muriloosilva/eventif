@@ -92,13 +92,13 @@ public class AdminPresenter implements Presenter {
 				for (int i = 0; i<display.getFlexTableDatas().getRowCount();i++){
 					Data d = new Data();
 					try {
-						d.setData(d.formataData(((TextBox)display.getFlexTableDatas().getWidget(i, 0)).getText()));
+						d.setData(((TextBox)display.getFlexTableDatas().getWidget(i, 0)).getText());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						Window.alert("" + e);
 					}
-					d.setHrInicio((d.formatTime(((TextBox)display.getFlexTableDatas().getWidget(i, 2)).getText())));
-					d.setHrFim((d.formatTime(((TextBox)display.getFlexTableDatas().getWidget(i, 4)).getText())));
+					d.setHrInicio((((TextBox)display.getFlexTableDatas().getWidget(i, 2)).getText()));
+					d.setHrFim((((TextBox)display.getFlexTableDatas().getWidget(i, 4)).getText()));
 					ld.add(d);
 				}
 				

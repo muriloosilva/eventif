@@ -39,7 +39,8 @@ public class ApresentationView extends Composite implements
 				"Não é necessário se inscrever nas palestras.<br>" +
 				"Você pode se inscrever em até 4 oficinas, desde que não haja choque de horário no mesmo dia<br>" +
 				"Você pode ser inscrever em apenas 1 minicurso.<br>" +
-				"Dúvidas com o site, utilize o Fale Conosco no menu acima.</p>"));
+				"Dúvidas com o site, utilize o Fale Conosco no menu acima.<br>--<br>" +
+				"Para uma melhor experiência nesse site, recomendamos os navegadores Google Chrome (versão 30), Firefox (versão 24) e Internet Explorer (versões 9 e 10)</p>"));
 		initWidget(apstViewPage);
 	}
 

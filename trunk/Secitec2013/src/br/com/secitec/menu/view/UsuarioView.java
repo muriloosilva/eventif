@@ -226,7 +226,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 				Data d = a.getDatas().get(j);
 				HTML horario = new HTML();
 //				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
-				horario.setText(""+String.valueOf(d.formatTimeShow(d.getHrInicio().toString())).substring(0, 5)+"h - "+String.valueOf(d.formatTimeShow(d.getHrFim().toString())).substring(0, 5)+"h");
+				horario.setText(""+String.valueOf(d.getHrInicio().toString()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim().toString()).substring(0, 5)+"h");
 				horario.removeStyleName("gwt-HTML");
 				horario.addStyleName("tbAtividadesCol3");
 				vpHorario.add(horario);
@@ -327,7 +327,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 				Data d = a.getDatas().get(j);
 				HTML horario = new HTML();
 //				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
-				horario.setText(""+String.valueOf(d.formatTimeShow(d.getHrInicio().toString())).substring(0, 5)+"h - "+String.valueOf(d.formatTimeShow(d.getHrFim().toString())).substring(0, 5)+"h");
+				horario.setText(""+String.valueOf(d.getHrInicio().toString()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim().toString()).substring(0, 5)+"h");
 				horario.removeStyleName("gwt-HTML");
 				horario.addStyleName("tbAtividadesCol3");
 				vpHorario.add(horario);
@@ -452,7 +452,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 				Data d = oficina.getDatas().get(j);
 				HTML horario = new HTML();
 //				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
-				horario.setText(""+String.valueOf(d.formatTimeShow(d.getHrInicio().toString())).substring(0, 5)+"h - "+String.valueOf(d.formatTimeShow(d.getHrFim().toString())).substring(0, 5)+"h");
+				horario.setText(""+String.valueOf(d.getHrInicio().toString()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim().toString()).substring(0, 5)+"h");
 				horario.removeStyleName("gwt-HTML");
 				horario.addStyleName("tbAtividadesCol3");
 				vpHorario.add(horario);
@@ -538,7 +538,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 				Data d = minicurso.getDatas().get(j);
 				HTML horario = new HTML();
 //				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
-				horario.setText(""+String.valueOf(d.formatTimeShow(d.getHrInicio().toString())).substring(0, 5)+"h - "+String.valueOf(d.formatTimeShow(d.getHrFim().toString())).substring(0, 5)+"h");
+				horario.setText(""+String.valueOf(d.getHrInicio().toString()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim().toString()).substring(0, 5)+"h");
 				horario.removeStyleName("gwt-HTML");
 				horario.addStyleName("tbAtividadesCol3");
 				vpHorario.add(horario);
@@ -668,7 +668,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 				Data d = a.getDatas().get(j);
 				HTML horario = new HTML();
 //				horario.setText(""+String.valueOf(d.getHrInicio()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim()).substring(0, 5)+"h");
-				horario.setText(""+String.valueOf(d.formatTimeShow(d.getHrInicio().toString())).substring(0, 5)+"h - "+String.valueOf(d.formatTimeShow(d.getHrFim().toString())).substring(0, 5)+"h");
+				horario.setText(""+String.valueOf(d.getHrInicio().toString()).substring(0, 5)+"h - "+String.valueOf(d.getHrFim().toString()).substring(0, 5)+"h");
 				horario.removeStyleName("gwt-HTML");
 				horario.addStyleName("tbAtividadesCol3");
 				vpHorario.add(horario);
