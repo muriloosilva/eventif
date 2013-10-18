@@ -267,8 +267,7 @@ public class CadastroPopup {
 										tela.hide();
 										pp.hide();
 										ip = new InformacaoPopup(
-												"Foi enviado para o seu e-mail o link para a confirmação do cadastro. Antes de fazer login, ative o seu cadastro clicando" +
-												" no link que foi enviado. Se não encontrar, verifique em sua caixa de SPAM ou no LIXO de se e-mail.");
+												"Cadastro realizado. Faça login no site.");
 										ip.getTela().center();
 										ClickHandler ch = new ClickHandler() {
 											@Override

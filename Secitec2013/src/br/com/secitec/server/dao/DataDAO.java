@@ -5,14 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import br.com.secitec.server.util.DataUtil;
 import br.com.secitec.shared.model.Data;
 
 public class DataDAO {
@@ -31,9 +28,9 @@ public class DataDAO {
 			System.out.println("###Data:" + d.getData());
 			System.out.println("###Hora ini:"+ d.getHrInicio());
 			System.out.println("###Hora fim:"+ d.getHrFim());
-			stmt.setDate(1, d.getData());
-			stmt.setTime(2, d.getHrInicio());
-			stmt.setTime(3, d.getHrFim());
+			stmt.setDate(1, DataUtil.formatDateToSave(d.getData()));
+			stmt.setTime(2, DataUtil.formatTimeToSave(d.getHrInicio()));
+			stmt.setTime(3, DataUtil.formatTimeToSave(d.getHrFim()));
 			
 			stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys(); 
@@ -48,28 +45,6 @@ public class DataDAO {
 		return id;
 	}
 	
-	private static Time formatTimeShow(Time ti){
-		SimpleDateFormat sdf=null;  
-		Calendar ca = null;
-		try {
-			
-			TimeZone tz = TimeZone.getTimeZone("America/Sao_Paulo");  
-	        TimeZone.setDefault(tz);  
-	        ca = GregorianCalendar.getInstance(tz);
-	        
-	        sdf =  new SimpleDateFormat("HH:mm"); 
-	        
-	        ca.setTime(sdf.parse(ti.toString()));
-			 
-			//data = new Date(((java.util.Date) fmt.parse(hora)).getTime());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		Time t = new Time(ca.getTime().getTime());
-		return t;
-	}
 
 	public static List<Data> getData(int idAtivi) {
 		
@@ -87,9 +62,9 @@ public class DataDAO {
 			while (rs.next()) {
 				Data data = new Data(); 
 				
-				data.setData(rs.getDate(1));
-				data.setHrInicio(formatTimeShow(rs.getTime(2)));
-				data.setHrFim(formatTimeShow(rs.getTime(3)));
+				data.setData(rs.getDate(1).toString());
+				data.setHrInicio(DataUtil.formatTimeShow(rs.getTime(2)).toString());
+				data.setHrFim(DataUtil.formatTimeShow(rs.getTime(3)).toString());
 				
 				System.out.println("###Pegando datas:");
 				System.out.println("###Data:" + data.getData());

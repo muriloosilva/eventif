@@ -34,7 +34,8 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	public boolean cadastraUsuario(User user) {
 		if (ParticipanteDAO.loginDisponivel(user.getLogin_partic())) {
 			ParticipanteDAO.cadastraParticipante(user);
-			return ConfirmacaoCadastro.enviaConfirmacaoCadastro(user);
+			//return ConfirmacaoCadastro.enviaConfirmacaoCadastro(user);
+			return true;
 		} else
 			return false;
 	}
@@ -268,13 +269,14 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 					}
 					else{
 						//confirmar alteração por e-mail
-						ParticipanteDAO.alterarDados(userSession.getEmail_partic(), user, true);
-						if(ConfirmacaoCadastro.enviaConfirmacaoAlteracaoDados(user)){
-							return 1;
-						}
-						else{
-							return 0;
-						}
+						ParticipanteDAO.alterarDados(userSession.getEmail_partic(), user, false);
+						return 2;
+						//if(ConfirmacaoCadastro.enviaConfirmacaoAlteracaoDados(user)){
+						//	return 1;
+						//}
+						//else{
+						//	return 0;
+						//}
 					}
 				}
 				else{
