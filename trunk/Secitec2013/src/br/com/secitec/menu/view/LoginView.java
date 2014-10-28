@@ -3,9 +3,15 @@ package br.com.secitec.menu.view;
 import java.util.List;
 
 import br.com.secitec.menu.presenter.LoginPresenter;
+import br.com.secitec.popup.CPF;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -28,6 +34,7 @@ LoginPresenter.Display{
 	private Button login;
 	private Anchor cadastro;
 	private Anchor esqueceuSenha;
+	private TextBox cpf;
 	
 	public LoginView() {
 		tela = new PopupPanel(false);
@@ -114,12 +121,13 @@ LoginPresenter.Display{
 	}
 
 	private void preencheTabela(FlexTable tb) {
-		HTML hLogin = new HTML("Email: ");
-		hLogin.addStyleName("alignDir");
-		tb.setWidget(0, 0, hLogin);
-		TextBox login = new TextBox();
-		login.setWidth("250px");
-		tb.setWidget(0, 1, login);
+		HTML hCPF = new HTML("CPF: ");
+		hCPF.addStyleName("alignDir");
+		tb.setWidget(0, 0, hCPF);
+		cpf = new TextBox();
+		cpf.setWidth("250px");
+		setCpf();
+		tb.setWidget(0, 1, cpf);
 
 		HTML hSenha = new HTML("Senha: ");
 		hSenha.addStyleName("alignDir");
@@ -257,7 +265,7 @@ LoginPresenter.Display{
 		
 	}
 	
-	public TextBox getTbLogin(){
+	public TextBox getTbCPF(){
 		return (TextBox)tabela.getWidget(0, 1);
 	}
 	
@@ -267,5 +275,38 @@ LoginPresenter.Display{
 	
 	public PopupPanel getPopup(){
 		return this.tela;
+	}
+	
+	private void setCpf() {
+		cpf.addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				System.out.println("teclado: " + event.getNativeEvent().getKeyCode());
+				if (verificaTecla(event)) {
+					if (event.getNativeEvent().getKeyCode() != 8) {
+						if (cpf.getValue().length() == 3
+								|| cpf.getValue().length() == 7) {
+							cpf.setValue(cpf.getValue() + ".");
+						}
+						if (cpf.getValue().length() == 11) {
+							cpf.setValue(cpf.getValue() + "-");
+						}
+					}
+				} else {
+					cpf.cancelKey();
+				}
+			}
+		});
+	}
+
+	private boolean verificaTecla(KeyPressEvent event) {
+		if (event.getCharCode() == 48 || event.getCharCode() == 49
+				|| event.getCharCode() == 50 || event.getCharCode() == 51
+				|| event.getCharCode() == 52 || event.getCharCode() == 53
+				|| event.getCharCode() == 54 || event.getCharCode() == 55
+				|| event.getCharCode() == 56 || event.getCharCode() == 57
+				|| event.getNativeEvent().getKeyCode() == 8) {
+			return true;
+		} else
+			return false;
 	}
 }

@@ -46,13 +46,13 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	}
 
 	@Override
-	public int login(String login, String senha) {
+	public int login(String cpf, String senha) {
 		//0 erro no login
 		//1 inativo cadastro
 		//2 login ok
 		//3 não confirmou alteração dados
 		// TODO Auto-generated method stub
-		User user = LoginDAO.loginUsuario(login, senha);
+		User user = LoginDAO.loginUsuario(cpf, senha);
 		if(user != null){
 //			System.out.println("user logado:" +user.isLogado());
 			if(user.isLogado()){
@@ -154,7 +154,7 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 			}
 		}
 		if(atividade.getVagasDisponiveis() > 0){
-			InscricaoDAO.inscrever(codAtividade, user.getId_partic());
+			InscricaoDAO.inscrever(codAtividade, user.getCpf_partic());
 			AtividadeDAO.decrementaVagas(codAtividade);
 			return 2;
 		}
@@ -168,8 +168,7 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		// TODO Auto-generated method stub
 		User user = (User) getThreadLocalRequest().getSession(true)
 				.getAttribute("user");
-		List<Atividade> atividades = AtividadeDAO.getAtividadesUsuario(user
-				.getId_partic());
+		List<Atividade> atividades = AtividadeDAO.getAtividadesUsuario(user.getCpf_partic());
 
 		if (atividades != null)
 			return atividades;
@@ -200,7 +199,7 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	@Override
 	public boolean cancelar(int codAtividade) {
 		User user = getSession();
-		return InscricaoDAO.cancelar(codAtividade, user.getId_partic());
+		return InscricaoDAO.cancelar(codAtividade, user.getCpf_partic());
 	}
 
 	@Override
@@ -219,7 +218,7 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 		User user = (User) getThreadLocalRequest().getSession(true)
 				.getAttribute("user");
 		
-		return AtividadeDAO.getMinicursosDoAluno(user.getId_partic());
+		return AtividadeDAO.getMinicursosDoAluno(user.getCpf_partic());
 	}
 
 	@Override

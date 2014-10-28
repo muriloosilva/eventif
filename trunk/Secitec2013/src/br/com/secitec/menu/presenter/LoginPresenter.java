@@ -40,7 +40,7 @@ public class LoginPresenter implements Presenter {
 
 		Button getLogin();
 
-		TextBox getTbLogin();
+		TextBox getTbCPF();
 
 		PasswordTextBox getTbSenha();
 
@@ -103,7 +103,7 @@ public class LoginPresenter implements Presenter {
 			}
 		});
 		
-		display.getTbLogin().addKeyPressHandler(new KeyPressHandler() {
+		display.getTbCPF().addKeyPressHandler(new KeyPressHandler() {
 			
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
@@ -127,20 +127,20 @@ public class LoginPresenter implements Presenter {
 	private void login(){
 		final User user = new User();
 
-		TextBox login = display.getTbLogin();
+		TextBox cpf = display.getTbCPF();
 		PasswordTextBox senha = display.getTbSenha();
 
-		System.out.println("Email: "+login.getText());
+		System.out.println("CPF: "+cpf.getText());
 		System.out.println("Senha: "+senha.getText());
 		
-		user.setEmail_partic(login.getText());
+		user.setEmail_partic(cpf.getText());
 		user.setSenha_partic(senha.getText());
 
-		if (!login.getText().equals("") && !senha.getText().equals("")) {
+		if (!cpf.getText().equals("") && !senha.getText().equals("")) {
 			
 			final LoadingPopup pp = new LoadingPopup("Aguarde ...");
 			
-			rpcService.login(login.getText(), senha.getText(), new AsyncCallback<Integer>() {
+			rpcService.login(cpf.getText(), senha.getText(), new AsyncCallback<Integer>() {
 						@Override
 						public void onFailure(Throwable caught) {
 							pp.hide();
@@ -151,9 +151,9 @@ public class LoginPresenter implements Presenter {
 								@Override
 								public void onClick(ClickEvent event) {
 									display.getPopup().center();
-									display.getTbLogin().setText("");
+									display.getTbCPF().setText("");
 									display.getTbSenha().setText("");
-									display.getTbLogin().setFocus(true);
+									display.getTbCPF().setFocus(true);
 									ip.getTela().hide();
 								}
 							};
@@ -179,9 +179,9 @@ public class LoginPresenter implements Presenter {
 									@Override
 									public void onClick(ClickEvent event) {
 										display.getPopup().center();
-										display.getTbLogin().setText("");
+										display.getTbCPF().setText("");
 										display.getTbSenha().setText("");
-										display.getTbLogin().setFocus(true);
+										display.getTbCPF().setFocus(true);
 										ip.getTela().hide();
 									}
 								};
@@ -203,9 +203,9 @@ public class LoginPresenter implements Presenter {
 									@Override
 									public void onClick(ClickEvent event) {
 										display.getPopup().center();
-										display.getTbLogin().setText("");
+										display.getTbCPF().setText("");
 										display.getTbSenha().setText("");
-										display.getTbLogin().setFocus(true);
+										display.getTbCPF().setFocus(true);
 										ip.getTela().hide();
 									}
 								};
@@ -230,9 +230,9 @@ public class LoginPresenter implements Presenter {
 														@Override
 														public void onClick(ClickEvent event) {
 															display.getPopup().center();
-															display.getTbLogin().setText("");
+															display.getTbCPF().setText("");
 															display.getTbSenha().setText("");
-															display.getTbLogin().setFocus(true);
+															display.getTbCPF().setFocus(true);
 															ip.getTela().hide();
 														}
 													};
@@ -248,9 +248,9 @@ public class LoginPresenter implements Presenter {
 														@Override
 														public void onClick(ClickEvent event) {
 															display.getPopup().center();
-															display.getTbLogin().setText("");
+															display.getTbCPF().setText("");
 															display.getTbSenha().setText("");
-															display.getTbLogin().setFocus(true);
+															display.getTbCPF().setFocus(true);
 															ip.getTela().hide();
 														}
 													};
@@ -270,9 +270,9 @@ public class LoginPresenter implements Presenter {
 													@Override
 													public void onClick(ClickEvent event) {
 														display.getPopup().center();
-														display.getTbLogin().setText("");
+														display.getTbCPF().setText("");
 														display.getTbSenha().setText("");
-														display.getTbLogin().setFocus(true);
+														display.getTbCPF().setFocus(true);
 														ip.getTela().hide();
 													}
 												};
@@ -298,9 +298,9 @@ public class LoginPresenter implements Presenter {
 									@Override
 									public void onClick(ClickEvent event) {
 										display.getPopup().center();
-										display.getTbLogin().setText("");
+										display.getTbCPF().setText("");
 										display.getTbSenha().setText("");
-										display.getTbLogin().setFocus(true);
+										display.getTbCPF().setFocus(true);
 										ip.getTela().hide();
 									}
 								};
@@ -325,9 +325,9 @@ public class LoginPresenter implements Presenter {
 														@Override
 														public void onClick(ClickEvent event) {
 															display.getPopup().center();
-															display.getTbLogin().setText("");
+															display.getTbCPF().setText("");
 															display.getTbSenha().setText("");
-															display.getTbLogin().setFocus(true);
+															display.getTbCPF().setFocus(true);
 															ip.getTela().hide();
 														}
 													};
@@ -343,9 +343,9 @@ public class LoginPresenter implements Presenter {
 														@Override
 														public void onClick(ClickEvent event) {
 															display.getPopup().center();
-															display.getTbLogin().setText("");
+															display.getTbCPF().setText("");
 															display.getTbSenha().setText("");
-															display.getTbLogin().setFocus(true);
+															display.getTbCPF().setFocus(true);
 															ip.getTela().hide();
 														}
 													};
@@ -365,9 +365,9 @@ public class LoginPresenter implements Presenter {
 													@Override
 													public void onClick(ClickEvent event) {
 														display.getPopup().center();
-														display.getTbLogin().setText("");
+														display.getTbCPF().setText("");
 														display.getTbSenha().setText("");
-														display.getTbLogin().setFocus(true);
+														display.getTbCPF().setFocus(true);
 														ip.getTela().hide();
 													}
 												};
@@ -390,9 +390,9 @@ public class LoginPresenter implements Presenter {
 				@Override
 				public void onClick(ClickEvent event) {									
 					display.getPopup().center();
-					display.getTbLogin().setText("");
+					display.getTbCPF().setText("");
 					display.getTbSenha().setText("");
-					display.getTbLogin().setFocus(true);
+					display.getTbCPF().setFocus(true);
 					ip.getTela().hide();
 				}
 			};
@@ -407,6 +407,6 @@ public class LoginPresenter implements Presenter {
 	public void go() {
 		bind();
 		display.getPopup().center();
-		display.getTbLogin().setFocus(true);
+		display.getTbCPF().setFocus(true);
 	}
 }

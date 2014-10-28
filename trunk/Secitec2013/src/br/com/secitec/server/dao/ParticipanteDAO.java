@@ -89,7 +89,7 @@ public class ParticipanteDAO {
 		Connection con = ConnectionMannager.getConnetion();
 		try {
 			PreparedStatement stmt = con.prepareStatement("insert into participantes (nome_partic,cpf_partic,email_partic,"
-					+ "senha_partic,matr_aluno_partic,ativo) values (?,?,?,?,?,?)");
+					+ "senha_partic,matr_aluno_partic,ativo, id_tipo) values (?,?,?,?,?,?,?)");
 			stmt.setString(1, user.getNome_partic());
 			stmt.setString(2, user.getCpf_partic());
 			stmt.setString(3, user.getEmail_partic().trim());
@@ -97,6 +97,7 @@ public class ParticipanteDAO {
 			stmt.setString(5, user.getMatr_aluno_partic());
 			//stmt.setInt(6, 0);
 			stmt.setInt(6, 1);
+			stmt.setInt(7, 1);
 			
 			stmt.execute();
 		} catch (SQLException e) {

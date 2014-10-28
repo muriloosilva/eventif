@@ -195,7 +195,7 @@ public class CadastroPopup {
 		vpMatricula = new VerticalPanel();
 		vpMatricula.setWidth("260px");
 		
-		HTML h5 = new HTML("Matrícula:");
+		HTML h5 = new HTML("Matrícula: (alunos IFG)");
 		h5.addStyleName("alignDir");
 		tb.setWidget(5, 0, h5);
 		
@@ -236,7 +236,7 @@ public class CadastroPopup {
 	private boolean verificaCampos() {
 		if (nome.getText().equals("") || cpf.getText().equals("")
 				|| email.getText().equals("") || senha.getText().equals("")
-				|| confirmaSenha.getText().equals("") || matricula.getText().equals("")) {
+				|| confirmaSenha.getText().equals("")) {
 			return false;
 		}
 		return true;
