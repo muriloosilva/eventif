@@ -70,7 +70,7 @@ public class AtividadeDAO {
 		}
 	}
 	
-	public static boolean getMinicursosDoAluno(int idParticipante){
+	public static boolean getMinicursosDoAluno(String cpf){
 		PreparedStatement stmt;
 		List<Atividade> atividades = new ArrayList<Atividade>();
 		try {
@@ -81,11 +81,11 @@ public class AtividadeDAO {
 							+ "from atividades a inner join "
 							+ "inscricoes i on a.id_ativid = i.id_ativid "
 							+ "inner join participantes p on "
-							+ "p.id_partic = i.id_partic where "
-							+ "p.id_partic = "+idParticipante+" and a.tipo_ativid= 'Minicurso'");
+							+ "p.cpf_partic = i.cpf_partic where "
+							+ "p.cpf_partic ='"+cpf+"' and a.tipo_ativid= 'Minicurso'");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				System.out.println("JÁ ESTÁ INSCRITO EM MINICURSO!!!");
+				System.out.println("JÃ� ESTÃ� INSCRITO EM MINICURSO!!!");
 				Atividade atividade = new Atividade();
 				
 				int id = Integer.parseInt(rs.getString(1));
@@ -262,7 +262,7 @@ public class AtividadeDAO {
 		return atividade;
 	}
 	
-	public static List<Atividade> getAtividadesUsuario(int idParticipante) {
+	public static List<Atividade> getAtividadesUsuario(String cpf) {
 		PreparedStatement stmt;
 		List<Atividade> atividades = new ArrayList<Atividade>();
 		try {
@@ -273,8 +273,8 @@ public class AtividadeDAO {
 							+ "from atividades a inner join "
 							+ "inscricoes i on a.id_ativid = i.id_ativid "
 							+ "inner join participantes p on "
-							+ "p.id_partic = i.id_partic where "
-							+ "p.id_partic = "+idParticipante);
+							+ "p.cpf_partic = i.cpf_partic where "
+							+ "p.cpf_partic = '"+cpf+"'");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Atividade atividade = new Atividade();

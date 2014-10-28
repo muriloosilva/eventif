@@ -5,15 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class InscricaoDAO {
-	public static void inscrever(int idAtividade, int idParticipante) {
+	public static void inscrever(int idAtividade, String cpf) {
 		PreparedStatement stmt;
-		String sql = "insert into inscricoes(id_partic, id_ativid, status_insc, "
+		String sql = "insert into inscricoes(cpf_partic, id_ativid, status_insc, "
 				+ "status_pres) values (?,?,?,?)";
 		
 		try {
 			Connection con = ConnectionMannager.getConnetion();
 			stmt = con.prepareStatement(sql);
-			stmt.setInt(1, idParticipante);
+			stmt.setString(1, cpf);
 			stmt.setInt(2, idAtividade);
 			stmt.setBoolean(3, true);
 			stmt.setBoolean(4, false);
@@ -26,14 +26,14 @@ public class InscricaoDAO {
 		}
 	}
 	
-	public static boolean cancelar(int idAtividade, int idParticipante){
+	public static boolean cancelar(int idAtividade, String cpf){
 		PreparedStatement stmt;
-		String sql = "delete from inscricoes where id_partic = ? and id_ativid = ?";
+		String sql = "delete from inscricoes where cpf_partic = ? and id_ativid = ?";
 		
 		try {
 			Connection con = ConnectionMannager.getConnetion();
 			stmt = con.prepareStatement(sql);
-			stmt.setInt(1, idParticipante);
+			stmt.setString(1, cpf);
 			stmt.setInt(2, idAtividade);
 			
 			stmt.execute();

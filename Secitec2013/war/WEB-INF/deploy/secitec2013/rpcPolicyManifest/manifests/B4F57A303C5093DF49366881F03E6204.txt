@@ -1,2 +1,2 @@
 serviceClass: br.com.secitec.client.RPCService
-path: A080FF6BC6620D6FE353B50E60069EAB.gwt.rpc
+path: 511BAE75AA74051746FAC680F6F44C38.gwt.rpc
