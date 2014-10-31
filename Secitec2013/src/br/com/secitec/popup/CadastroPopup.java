@@ -115,17 +115,18 @@ public class CadastroPopup {
 
 	private void preencheTabela(FlexTable tb) {
 		tb.setWidth("400px");
-		HTML h = new HTML("Nome:");
+		HTML h = new HTML("Nome: &nbsp;&nbsp; *");
 		h.addStyleName("alignDir");
 		tb.setWidget(0, 0, h);
 		nome = new TextBox();
 		nome.setWidth("260px");
 		tb.setWidget(0, 1, nome);
+	
 		
 		vpCpf = new VerticalPanel();
 		vpCpf.setWidth("260px");
 
-		HTML h1 = new HTML("CPF:");
+		HTML h1 = new HTML("CPF: &nbsp;&nbsp; *");
 		h1.addStyleName("alignDir");
 		tb.setWidget(1, 0, h1);
 		
@@ -148,7 +149,7 @@ public class CadastroPopup {
 		vpEmail = new VerticalPanel();
 		vpEmail.setWidth("260px");
 		
-		HTML h2 = new HTML("Email:");
+		HTML h2 = new HTML("Email: &nbsp;&nbsp; *");
 		h2.addStyleName("alignDir");
 		tb.setWidget(2, 0, h2);
 		
@@ -165,7 +166,7 @@ public class CadastroPopup {
 		vpEmail.add(email);
 		tb.setWidget(2, 1, vpEmail);
 		
-		HTML h3 = new HTML("Senha:");
+		HTML h3 = new HTML("Senha: &nbsp;&nbsp; *");
 		h3.addStyleName("alignDir");
 		tb.setWidget(3, 0, h3);
 		senha = new PasswordTextBox();
@@ -176,7 +177,7 @@ public class CadastroPopup {
 		vpConfirmaSenha = new VerticalPanel();
 		vpConfirmaSenha.setWidth("260px");
 		
-		HTML h4 = new HTML("Confirma senha:");
+		HTML h4 = new HTML("Confirma senha: &nbsp;&nbsp; *");
 		h4.addStyleName("alignDir");
 		tb.setWidget(4, 0, h4);
 		
@@ -195,7 +196,7 @@ public class CadastroPopup {
 		vpMatricula = new VerticalPanel();
 		vpMatricula.setWidth("260px");
 		
-		HTML h5 = new HTML("Matrícula: (alunos IFG)");
+		HTML h5 = new HTML("Matrícula: &nbsp;&nbsp; <br> (alunos IFG) &nbsp;&nbsp; ");
 		h5.addStyleName("alignDir");
 		tb.setWidget(5, 0, h5);
 		
