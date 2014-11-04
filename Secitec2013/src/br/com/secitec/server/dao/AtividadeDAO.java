@@ -70,6 +70,47 @@ public class AtividadeDAO {
 		}
 	}
 	
+	public static boolean getOficinaColoquioDoAluno(String cpf){
+		PreparedStatement stmt;
+		List<Atividade> atividades = new ArrayList<Atividade>();
+		try {
+			Connection con = ConnectionMannager.getConnetion();
+			stmt = con
+					.prepareStatement("select a.id_ativid, a.nome_ativid, "
+							+ "a.tipo_ativid "
+							+ "from atividades a inner join "
+							+ "inscricoes i on a.id_ativid = i.id_ativid "
+							+ "inner join participantes p on "
+							+ "p.cpf_partic = i.cpf_partic where "
+							+ "p.cpf_partic ='"+cpf+"' and a.tipo_ativid= 'Oficina'");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				System.out.println("JÃ� ESTÃ� INSCRITO EM Oficina!!!");
+				Atividade atividade = new Atividade();
+				
+				int id = Integer.parseInt(rs.getString(1));
+				List<Data> datas = DataDAO.getData(id);
+				atividade.setDatas(datas);
+				
+				atividade.setIdAtiv(rs.getInt(1));
+				atividade.setNomeAtiv(rs.getString(2));
+				atividade.setTipoAtiv(rs.getString(3));
+
+				atividades.add(atividade);
+			}
+			rs.close();
+			stmt.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		if (atividades.size() >= 4)
+			return false;
+		else
+			return true;
+	}
+	
 	public static boolean getMinicursosDoAluno(String cpf){
 		PreparedStatement stmt;
 		List<Atividade> atividades = new ArrayList<Atividade>();
@@ -105,7 +146,7 @@ public class AtividadeDAO {
 			e.printStackTrace();
 		}
 
-		if (atividades.size() >= 1)
+		if (atividades.size() >= 2)
 			return false;
 		else
 			return true;

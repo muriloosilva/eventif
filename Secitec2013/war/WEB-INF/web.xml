@@ -33,7 +33,7 @@
   
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>Secitec2013.html</welcome-file>
+    <welcome-file>Secitec2014.html</welcome-file>
   </welcome-file-list>
 
   <servlet>

@@ -100,10 +100,11 @@ public class SobreView extends Composite implements SobrePresenter.Display{
 		ScrollPanel sp = new ScrollPanel();
 		sp.setHeight("400px");
 		sp.setWidth("600px");
-		HTML content = new HTML("<p align='justify'>Este site foi construído pelos alunos do 4º ano do  curso técnico " +
+		HTML content = new HTML("<p align='justify'>Este site foi construído pelos alunos curso técnico " +
 				"integrado ao ensino médio de informática para internet, Álvaro  Lucas J. Santiago, Geraldo Alves Pereira " +
-				"Júnior e Jeferson Lucas M. do Amaral  juntos ao professor Murilo de Assis Silva como parte do projeto de " +
-				"pesquisa  intitulado &ldquo;Plataforma  Web para gerenciamento organizacional de processos do IFG&rdquo;. </p>"+
+				"Júnior e Jeferson Lucas M. do Amaral juntos ao professor Murilo de Assis Silva como parte do projeto de " +
+				"pesquisa  intitulado &ldquo;Plataforma  Web para gerenciamento organizacional de processos do IFG&rdquo; No ano de 2014, contou com a participação dos alunos"
+				+ "Matheus Wisniewski, Antônio Humberto e Ruan Cavalcante. </p>"+
                 "<p align='justify'><br />"+
                 "  Neste primeiro momento, o projeto visa à criação de  um sistema de gerenciamento de eventos para dinamizar e " +
                 "tornar a promoção  desses eventos algo menos trabalhoso, uma vez que este sistema proverá um maior  controle e " +

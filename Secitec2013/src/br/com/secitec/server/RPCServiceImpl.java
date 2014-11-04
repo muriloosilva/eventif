@@ -117,50 +117,108 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 	@Override
 	public int inscrever(int codAtividade) {
 		// TODO Auto-generated method stub
-		User user = getSession();
-		List<Atividade> atividades = getAtividadesUsuario();
-		Atividade atividade = getAtividade(codAtividade);
-
-		if (atividades != null) {
-			
-			for (int i = 0; i < atividades.size(); i++) {
-				//verificar se já está inscrito na atividade
-				List<Data> datas = atividades.get(i).getDatas();
+		
+		if(getOficinaColoquioDoAluno()==true){
+			User user = getSession();
+			List<Atividade> atividades = getAtividadesUsuario();
+			Atividade atividade = getAtividade(codAtividade);
+	
+			if (atividades != null) {
 				
-				for (int j = 0; j < datas.size(); j++) {
-					double hr_ini_data = formataHora(datas.get(j).getHrInicio().toString());
-					double hr_fim_data = formataHora(datas.get(j).getHrFim().toString());
-					List<Data> datasAtividadesInteresse = atividade.getDatas();
+				for (int i = 0; i < atividades.size(); i++) {
+					//verificar se já está inscrito na atividade
+					List<Data> datas = atividades.get(i).getDatas();
 					
-					for (int k = 0; k < datasAtividadesInteresse.size(); k++) {
-						double hora_ini_interesse = formataHora(datasAtividadesInteresse.get(k).getHrInicio().toString());
-						double hora_fim_interesse = formataHora(datasAtividadesInteresse.get(k).getHrFim().toString());
+					for (int j = 0; j < datas.size(); j++) {
+						double hr_ini_data = formataHora(datas.get(j).getHrInicio().toString());
+						double hr_fim_data = formataHora(datas.get(j).getHrFim().toString());
+						List<Data> datasAtividadesInteresse = atividade.getDatas();
 						
-						if (datasAtividadesInteresse.get(k).getData().equals(datas.get(j).getData())) {
-							if (hora_ini_interesse > hr_ini_data) {
-								if (hora_ini_interesse < hr_fim_data) {
-									return 0;
-								}
-							} else {
-								if (hora_fim_interesse > hr_ini_data) {
-									return 0;
+						for (int k = 0; k < datasAtividadesInteresse.size(); k++) {
+							double hora_ini_interesse = formataHora(datasAtividadesInteresse.get(k).getHrInicio().toString());
+							double hora_fim_interesse = formataHora(datasAtividadesInteresse.get(k).getHrFim().toString());
+							
+							if (datasAtividadesInteresse.get(k).getData().equals(datas.get(j).getData())) {
+								if (hora_ini_interesse > hr_ini_data) {
+									if (hora_ini_interesse < hr_fim_data) {
+										return 0;
+									}
+								} else {
+									if (hora_fim_interesse > hr_ini_data) {
+										return 0;
+									}
 								}
 							}
+							
 						}
-						
+					
 					}
-				
 				}
 			}
-		}
-		if(atividade.getVagasDisponiveis() > 0){
-			InscricaoDAO.inscrever(codAtividade, user.getCpf_partic());
-			AtividadeDAO.decrementaVagas(codAtividade);
-			return 2;
-		}
-		else{
-			return 1;
-		}
+				if(atividade.getVagasDisponiveis() > 0){
+					InscricaoDAO.inscrever(codAtividade, user.getCpf_partic());
+					AtividadeDAO.decrementaVagas(codAtividade);
+					return 2;
+				}
+				else{
+					return 1;
+				}
+			}
+			else{
+				return 9;
+				}
+
+	}
+	
+	@Override
+	public int inscreverMinicurso(int codAtividade) {
+		// TODO Auto-generated method stub
+		
+			User user = getSession();
+			List<Atividade> atividades = getAtividadesUsuario();
+			Atividade atividade = getAtividade(codAtividade);
+	
+			if (atividades != null) {
+				
+				for (int i = 0; i < atividades.size(); i++) {
+					//verificar se já está inscrito na atividade
+					List<Data> datas = atividades.get(i).getDatas();
+					
+					for (int j = 0; j < datas.size(); j++) {
+						double hr_ini_data = formataHora(datas.get(j).getHrInicio().toString());
+						double hr_fim_data = formataHora(datas.get(j).getHrFim().toString());
+						List<Data> datasAtividadesInteresse = atividade.getDatas();
+						
+						for (int k = 0; k < datasAtividadesInteresse.size(); k++) {
+							double hora_ini_interesse = formataHora(datasAtividadesInteresse.get(k).getHrInicio().toString());
+							double hora_fim_interesse = formataHora(datasAtividadesInteresse.get(k).getHrFim().toString());
+							
+							if (datasAtividadesInteresse.get(k).getData().equals(datas.get(j).getData())) {
+								if (hora_ini_interesse > hr_ini_data) {
+									if (hora_ini_interesse < hr_fim_data) {
+										return 0;
+									}
+								} else {
+									if (hora_fim_interesse > hr_ini_data) {
+										return 0;
+									}
+								}
+							}
+							
+						}
+					
+					}
+				}
+			}
+				if(atividade.getVagasDisponiveis() > 0){
+					InscricaoDAO.inscrever(codAtividade, user.getCpf_partic());
+					AtividadeDAO.decrementaVagas(codAtividade);
+					return 2;
+				}
+				else{
+					return 1;
+				}
+
 	}
 
 	@Override
@@ -219,6 +277,13 @@ public class RPCServiceImpl extends RemoteServiceServlet implements RPCService {
 				.getAttribute("user");
 		
 		return AtividadeDAO.getMinicursosDoAluno(user.getCpf_partic());
+	}
+	
+	private boolean getOficinaColoquioDoAluno() {
+		User user = (User) getThreadLocalRequest().getSession(true)
+				.getAttribute("user");
+		
+		return AtividadeDAO.getOficinaColoquioDoAluno(user.getCpf_partic());
 	}
 
 	@Override

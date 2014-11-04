@@ -18,7 +18,7 @@ public class MailUtil {
 	
 	static String host = "smtp.gmail.com";
 	static String userName = "secitecifgformosa@secitecifgformosa.com.br";
-	static String passwd = "12323556111122";
+	static String passwd = "@H8n14B2v22@";
 	
 public static boolean recuperarSenha(User user){
 		

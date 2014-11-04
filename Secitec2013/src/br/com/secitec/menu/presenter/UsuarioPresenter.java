@@ -155,7 +155,23 @@ public class UsuarioPresenter implements Presenter {
 								@Override
 								public void onSuccess(Integer result) {
 									pp.hide();
-									if (result == 2) {
+									if(result ==9){
+										ip = new InformacaoPopup("Cada aluno pode se inscrever em no máximo seis atividades, desde que não exista conflito de horários, sendo no máximo, dois minicursos e o restante entre colóquios e oficinas.");
+										ip.getTela().center();
+										ip.getOk().addClickHandler(new ClickHandler() {													
+											@Override
+											public void onClick(ClickEvent event) {
+												ip.getTela().hide();
+											}
+										});
+										ip.getFechar().addClickHandler(new ClickHandler() {													
+											@Override
+											public void onClick(ClickEvent event) {
+												ip.getTela().hide();
+											}
+										});
+									}
+									else if (result == 2) {
 										ip = new InformacaoPopup(
 												"Inscrição efetuada com sucesso!");
 										ip.getTela().center();
@@ -278,7 +294,7 @@ public class UsuarioPresenter implements Presenter {
 								inscrever(idAtividade);
 							else{
 								//n�o pode ser inscrito
-								ip = new InformacaoPopup("Você já está inscrito em um Minicurso! Você pode-se inscrever em apenas um minicurso.");
+								ip = new InformacaoPopup("Você já está inscrito em dois Minicurso! Você pode-se inscrever em apenas dois minicurso.");
 								ip.getTela().center();
 								ip.getOk().addClickHandler(new ClickHandler() {													
 									@Override
@@ -657,7 +673,7 @@ public class UsuarioPresenter implements Presenter {
 	
 	private void inscrever(int e){
 		final LoadingPopup pp = new LoadingPopup("Aguarde...");
-		rpcService.inscrever(e,
+		rpcService.inscreverMinicurso(e,
 				new AsyncCallback<Integer>() {
 					@Override
 					public void onFailure(Throwable caught) {
