@@ -34,6 +34,8 @@ public interface RPCServiceAsync {
 
 	public void inscrever(int codAtividade, AsyncCallback<Integer> callback);
 	
+	public void inscreverMinicurso(int codAtividade, AsyncCallback<Integer> callback);
+	
 	public void cancelar(int codAtividade, AsyncCallback<Boolean> callback);
 
 	public void getAtividadesUsuario(AsyncCallback<List<Atividade>> callback);
@@ -47,4 +49,6 @@ public interface RPCServiceAsync {
 	public void getEmail(String email, AsyncCallback<Boolean> callback);
 
 	public void getMinicursosDoAluno(AsyncCallback<Boolean> callback);
+	
+	
 }

@@ -64,7 +64,7 @@ public class UsuarioView extends Composite implements UsuarioPresenter.Display {
 
 		oficinas = new VerticalPanel();
 		tabelaOficinas = new FlexTable();
-		montarPainel(oficinas, conteudoOficinas, "Oficinas", tabelaOficinas);
+		montarPainel(oficinas, conteudoOficinas, "Oficinas e Colóquios", tabelaOficinas);
 
 		minicursos = new VerticalPanel();
 		tabelaMinicursos = new FlexTable();

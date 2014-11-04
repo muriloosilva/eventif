@@ -25,6 +25,7 @@ public interface RPCService extends RemoteService {
 	boolean recuperarSenha(User user);
 	boolean getSessao();
 	int inscrever(int codAtividade);
+	int inscreverMinicurso(int codAtividade);
 	boolean cancelar(int codAtividade);
 	void removeSessao();
 	Atividade getAtividade(int idAtividade);
