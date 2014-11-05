@@ -9,9 +9,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.secitec.shared.model.Atividade;
+import br.com.secitec.shared.model.AtividadeJson;
 import br.com.secitec.shared.model.Data;
 
 public class AtividadeDAO {
+	
+	public static ArrayList<AtividadeJson> pegaAtividadesJson() {
+		PreparedStatement stmt;
+		ArrayList<AtividadeJson> atividades = new ArrayList<AtividadeJson>();
+		try {
+			Connection con = ConnectionMannager.getConnetion();
+			stmt = con
+					.prepareStatement("select *from atividades order by id_ativid");
+			ResultSet rs = stmt.executeQuery();
+				
+			
+			while (rs.next()) {
+				AtividadeJson atividade = new AtividadeJson();
+				
+				int id = Integer.parseInt(rs.getString(1));
+				List<Data> datas = DataDAO.getData(id);
+				
+				atividade.setCodigo(Integer.parseInt(rs.getString("id_ativid")));
+				atividade.setNome(rs.getString("nome_ativid"));
+				
+				atividades.add(atividade);
+			}
+//			System.out.println("ATIVIDADES TAMANHO: "+atividades.size());
+			rs.close();
+			stmt.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		if (atividades.isEmpty())
+			return null;
+		else
+			return atividades;
+	}
+	
 	
 	public static int addAtividade(Atividade atividade) {
 		PreparedStatement stmt;

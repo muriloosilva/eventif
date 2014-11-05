@@ -15,7 +15,7 @@ public class ConnectionMannager {
 		if(!openShift){
 			try {
 				Class.forName("org.postgresql.Driver");
-				conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Semanact", "postgres", "123");
+				conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Semanact", "postgres", "ifg");
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
