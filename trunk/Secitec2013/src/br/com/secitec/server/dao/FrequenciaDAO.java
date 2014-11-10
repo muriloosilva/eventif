@@ -10,7 +10,7 @@ import br.com.secitec.shared.model.Frequencia;
 
 public class FrequenciaDAO{
 	
-	public static boolean registraFrequencia(Frequencia frequencia) {
+	public static boolean registraFrequenciaAtividade(Frequencia frequencia) {
 		
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo")); 
 		
@@ -29,6 +29,31 @@ public class FrequenciaDAO{
 			stmt.close();
 			con.close();
 		} catch (SQLException e) {
+			return false;
+	}
+		return true;
+	
+	}
+	
+	public static boolean registraFrequenciaEvento(Frequencia frequencia) {
+		
+		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo")); 
+		
+		PreparedStatement stmt;
+		String sql = "insert into frequencia_evento(cpf_participante, data, hora) values (?,?,?)";
+		
+		try {
+			Connection con = ConnectionMannager.getConnetion();
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, frequencia.getCPF());
+			stmt.setDate(2, DataUtil.pegaDataAtual());
+			stmt.setTime(3,DataUtil.pegaHoraAtual());
+			
+			stmt.executeUpdate();
+			stmt.close();
+			con.close();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 			return false;
 	}
 		return true;

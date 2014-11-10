@@ -32,6 +32,29 @@ public class DataUtil {
 		
 	}
 	
+	public static Date pegaDataAtual(){
+		SimpleDateFormat sdf=null;  
+		Calendar ca = null;
+		Date da = null;
+		try {
+			
+			TimeZone tz = TimeZone.getTimeZone("America/Sao_Paulo");  
+	        TimeZone.setDefault(tz);  
+	        ca = GregorianCalendar.getInstance(tz);
+	        
+	        sdf =  new SimpleDateFormat("yyyy-MM-dd"); 
+	        
+	        da = new Date(sdf.parse(ca.get(GregorianCalendar.YEAR) + "-" + ca.get(GregorianCalendar.MONTH) + "-" + ca.get(GregorianCalendar.DAY_OF_MONTH)).getTime());
+			 
+			//data = new Date(((java.util.Date) fmt.parse(hora)).getTime());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return da;
+	}
+	
 	public static Time pegaHoraAtual(){
 		SimpleDateFormat sdf=null;  
 		Calendar ca = null;

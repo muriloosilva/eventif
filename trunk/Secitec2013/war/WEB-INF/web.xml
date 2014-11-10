@@ -46,6 +46,16 @@
     <url-pattern>/confirmaPresenca</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>ServletEvento</servlet-name>
+    <servlet-class>br.com.secitec.server.ServletEvento</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>ServletEvento</servlet-name>
+    <url-pattern>/confirmaPresencaEvento</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Secitec2014.html</welcome-file>
