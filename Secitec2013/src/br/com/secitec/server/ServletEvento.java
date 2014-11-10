@@ -21,7 +21,7 @@ import br.com.secitec.shared.model.User;
 /**
  * Servlet implementation class Horas
  */
-public class ServletPresenca extends HttpServlet {
+public class ServletEvento extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -29,19 +29,13 @@ public class ServletPresenca extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cpf = request.getParameter("cpf");
-		int atividade = Integer.parseInt(request.getParameter("atividade"));
-		int status = Integer.parseInt(request.getParameter("status"));
 		
 		System.out.println("cpf:"+cpf);
-		System.out.println("atividade:"+atividade);
-		System.out.println("status:"+status);
 
 		Frequencia f = new Frequencia();
 		f.setCPF(cpf);
-		f.setAtividade(atividade);
-		f.setStatus(status);
 		
-		boolean b = FrequenciaDAO.registraFrequenciaAtividade(f);
+		boolean b = FrequenciaDAO.registraFrequenciaEvento(f);
 		
 		PrintWriter pw = response.getWriter();
 		if(b)
